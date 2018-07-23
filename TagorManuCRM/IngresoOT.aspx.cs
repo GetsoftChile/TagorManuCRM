@@ -94,7 +94,7 @@ namespace TagorManuCRM
             string idLocal = Session["variableIdLocal"].ToString();
             string idUsuarioCreacion = Session["variableIdUsuario"].ToString();
             DataTable dt = new DataTable();
-            dt = dal.getBuscarTicketBuscadorParametros(idUsuarioCreacion, null, null, null,null,null,null).Tables[0];
+            dt = dal.getBuscarTicketBuscadorParametros(idUsuarioCreacion, null, null, null,null,null,null, null).Tables[0];
             Session["sessionDtTicket"] = dt;
             grvTickets.DataSource = dt;
             grvTickets.DataBind();
@@ -520,14 +520,12 @@ namespace TagorManuCRM
                 }
 
                 //AQUI
-
                 string idSucursal = string.Empty;
                 idSucursal = Session["variableIdSucursal"].ToString();
 
-
                 string ticket = dal.setIngresarOT(idTipificacion, idUsuario, idUsuarioAsignado, "1", txtComentario.Text.Trim(),
                     "D", ddlNivel1.SelectedValue, "1", tipo, idLocal, txtTelefono.Text.Trim(),
-                    txtSolicitadoPor.Text.Trim(), idZona, ddlArea.SelectedValue, txtFechaAgendamiento.Text,idSucursal);
+                    txtSolicitadoPor.Text.Trim(), idZona, ddlArea.SelectedValue, txtFechaAgendamiento.Text, idSucursal);
                 //FIN ingreso
 
                 dal.setIngresarTicketHistorico(ticket, idUsuario, idUsuarioAsignado, "1", 

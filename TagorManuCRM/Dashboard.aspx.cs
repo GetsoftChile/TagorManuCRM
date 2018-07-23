@@ -20,8 +20,10 @@ namespace TagorManuCRM
             {
                 if (!this.Page.IsPostBack)
                 {
+                    Sucursal();
                     Perfil();
                     com.FillArea(ddlArea);
+                    
                     Buscar();
                 }
             }
@@ -31,13 +33,19 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
             }
         }
-
+        void Sucursal()
+        {
+            ddlSucursal.DataSource = dal.getBuscarSucursal("1");
+            ddlSucursal.DataValueField = "ID_SUCURSAL";
+            ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
+            ddlSucursal.DataBind();
+        }
         void Perfil()
         {
             string idUsuario = Session["variableIdUsuario"].ToString();
             string idPerfil = Session["variableIdPerfil"].ToString();
             string idAreaUsuario = Session["variableIdArea"].ToString();
-            
+            string idSucursal = Session["variableIdSucursal"].ToString();
 
             if (idPerfil=="2" )
             {
@@ -52,6 +60,17 @@ namespace TagorManuCRM
                 else
                 {
                     ddlArea.SelectedValue = idAreaUsuario;
+                }
+                ddlSucursal.Enabled = false;
+                if (String.IsNullOrEmpty(idSucursal))
+                {
+                    lblInfo.Text = "No tiene asignada una sucursal, favor de comunicarse con el administrador.";
+                    divAlerta.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ddlSucursal.SelectedValue = idSucursal;
                 }
             }
             else
@@ -73,6 +92,46 @@ namespace TagorManuCRM
                 {
                     ddlArea.SelectedValue = idAreaUsuario;
                 }
+                ddlSucursal.Enabled = false;
+                if (String.IsNullOrEmpty(idSucursal))
+                {
+                    lblInfo.Text = "No tiene asignada una sucursal, favor de comunicarse con el administrador.";
+                    divAlerta.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ddlSucursal.SelectedValue = idSucursal;
+                }
+            }
+
+            if (idPerfil=="3")
+            {
+                ddlSucursal.Enabled = false;
+                if (String.IsNullOrEmpty(idSucursal))
+                {
+                    lblInfo.Text = "No tiene asignada una sucursal, favor de comunicarse con el administrador.";
+                    divAlerta.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ddlSucursal.SelectedValue = idSucursal;
+                }
+            }
+            if (idPerfil == "6")
+            {
+                ddlSucursal.Enabled = false;
+                if (String.IsNullOrEmpty(idSucursal))
+                {
+                    lblInfo.Text = "No tiene asignada una sucursal, favor de comunicarse con el administrador.";
+                    divAlerta.Visible = true;
+                    return;
+                }
+                else
+                {
+                    ddlSucursal.SelectedValue = idSucursal;
+                }
             }
         }
 
@@ -80,31 +139,38 @@ namespace TagorManuCRM
         {
             string idUsuario = Session["variableIdUsuario"].ToString();
             string idPerfil = Session["variableIdPerfil"].ToString();
+            string idSucursal = ddlSucursal.SelectedValue;
+            if (idSucursal=="0")
+            {
+                idSucursal = null;
+            }
             if (idPerfil != "2")
             {
                 idUsuario = null;
+
             }
             string idArea = ddlArea.SelectedValue;
             if (idArea=="0")
             {
                 idArea = null;
             }
+            
             DataTable dt = new DataTable();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "C", idPerfil).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "C", idPerfil, idSucursal).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivasPendientes.Text= item["TOTAL_ABIERTOS"].ToString();
                 lbtnOTCorrectivasCerradas.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "P", idPerfil).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "P", idPerfil, idSucursal).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTPreventivoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
                 lbtnOTPreventivoCerrado.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "CP", idPerfil).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "CP", idPerfil, idSucursal).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivoPlanificadoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
@@ -299,6 +365,24 @@ namespace TagorManuCRM
         protected void ddlArea_DataBound(object sender, EventArgs e)
         {
             ddlArea.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        protected void ddlSucursal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Buscar();
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void ddlSucursal_DataBound(object sender, EventArgs e)
+        {
+            ddlSucursal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
         }
     }
 }

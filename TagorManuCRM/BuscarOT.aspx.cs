@@ -29,23 +29,46 @@ namespace TagorManuCRM
                 {
                     string perfil = Session["variableIdPerfil"].ToString();
                     string idUsuario = Session["variableIdUsuario"].ToString();
-             
+                    string idSucursal = Session["variableIdSucursal"].ToString();
+
                     usuarioAsig();
                     estado();
                     com.FillArea(ddlArea);
+                    Sucursal();
 
-                    if (perfil == "2")
+                    if (perfil == "2")//tecnico
                     {
                         ddlUsuarioAsig.SelectedValue = idUsuario;
                         ddlUsuarioAsig.Enabled = false;
                         chkResumen.Visible = false;
+
+                        ddlSucursal.SelectedValue = idSucursal;
+                        ddlSucursal.Enabled = false;
                     }
 
-                    if (perfil=="4")
+                    if (perfil == "3")//planificador
+                    {
+                        ddlSucursal.SelectedValue = idSucursal;
+                        ddlSucursal.Enabled = false;
+                    }
+
+                    if (perfil=="4")//cliente
                     {
                         ddlUsuarioCreacion.SelectedValue = idUsuario;
                         ddlUsuarioCreacion.Enabled = false;
                         chkResumen.Visible = false;
+                    }
+
+                    if (perfil == "5")//supervisor
+                    {
+                        ddlSucursal.SelectedValue = idSucursal;
+                        ddlSucursal.Enabled = false;
+                    }
+
+                    if (perfil == "6")//administrador de contrato
+                    {
+                        ddlSucursal.SelectedValue = idSucursal;
+                        ddlSucursal.Enabled = false;
                     }
 
                     string _tipo = Convert.ToString(Request.QueryString["t"]);
@@ -58,7 +81,7 @@ namespace TagorManuCRM
                         ddlTipo.SelectedValue = _tipo;
                         ddlArea.SelectedValue = _area;
 
-                        buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue);
+                        buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue,ddlSucursal.SelectedValue);
 
                         divResumen.Visible = false;
                         divGrilla.Visible = true;
@@ -101,6 +124,14 @@ namespace TagorManuCRM
                 idUsuario = Convert.ToString(rowDs["ID_USUARIO"]);
             }
             return idUsuario;
+        }
+
+         void Sucursal()
+        {
+            ddlSucursal.DataSource = dal.getBuscarSucursal("1");
+            ddlSucursal.DataValueField = "ID_SUCURSAL";
+            ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
+            ddlSucursal.DataBind();
         }
 
         protected void btnBuscar_Click(object sender, EventArgs e)
@@ -272,7 +303,7 @@ namespace TagorManuCRM
                 {
                     divResumen.Visible = false;
                     divGrilla.Visible = true;
-                    buscarTicket(ddlEstado.SelectedValue,null,ddlTipo.SelectedValue,ddlArea.SelectedValue);
+                    buscarTicket(ddlEstado.SelectedValue,null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue);
                 }
             }
             catch (Exception ex)
@@ -283,11 +314,11 @@ namespace TagorManuCRM
             }
         }
 
-        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea)
+        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea, string idSucursal)
         {
             DataTable dt = new DataTable();
             dt = dal.getBuscarTicketBuscadorParametros(ddlUsuarioCreacion.SelectedValue, ddlUsuarioAsig.SelectedValue, 
-                txtFechaDesde.Text, txtFechaHasta.Text, idEstado,  tipo, idArea).Tables[0];
+                txtFechaDesde.Text, txtFechaHasta.Text, idEstado,  tipo, idArea, idSucursal).Tables[0];
 
             Session["sessionDtTicket"] = dt;
             grvTickets.DataSource = dt;
@@ -356,7 +387,7 @@ namespace TagorManuCRM
 
                 divGrilla.Visible = true;
                 divResumen.Visible = false;
-                buscarTicket(_lblIdEstado.Text, null,ddlTipo.SelectedValue,ddlArea.SelectedValue);
+                buscarTicket(_lblIdEstado.Text, null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue);
             }
             catch (Exception ex)
             {
@@ -1134,7 +1165,10 @@ namespace TagorManuCRM
         {
             ddlArea.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
         }
-        
 
+        protected void ddlSucursal_DataBound(object sender, EventArgs e)
+        {
+            ddlSucursal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
     }
 }

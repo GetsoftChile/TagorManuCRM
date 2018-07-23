@@ -910,7 +910,7 @@ namespace DAL
         }
 
 
-        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil)
+        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil ,string idSucursal)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_GenerarDashboard");
 
@@ -926,6 +926,8 @@ namespace DAL
             db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             db.AddInParameter(cmd, "@tipo", DbType.String, tipo);
             db.AddInParameter(cmd, "@idPerfil", DbType.String, idPerfil);
+            db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            
             try
             {
                 return db.ExecuteDataSet(cmd);
@@ -2025,7 +2027,7 @@ namespace DAL
 
 
         public DataSet getBuscarTicketBuscadorParametros(string idUsuarioCreacion, string usuarioAsig, string fechaDesde, string fechaHasta, 
-            string idEstado, string clase, string idArea)
+            string idEstado, string clase, string idArea, string idSucursal)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_buscarTicketBuscadorParametros");
 
@@ -2073,6 +2075,14 @@ namespace DAL
             else
             {
                 db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
+            }
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
             }
             if (fechaDesde == string.Empty)
             {

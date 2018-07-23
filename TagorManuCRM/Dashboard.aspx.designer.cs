@@ -121,6 +121,15 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.DropDownList ddlArea;
         
         /// <summary>
+        /// Control ddlSucursal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSucursal;
+        
+        /// <summary>
         /// Control lbtnOTCorrectivasPendientes.
         /// </summary>
         /// <remarks>

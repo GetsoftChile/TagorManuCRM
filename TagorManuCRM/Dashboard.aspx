@@ -90,6 +90,8 @@
                                 <div class="box-header with-border box-solid">
                                     <h3 class="box-title">AREA</h3>
                                     <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control" Width="33%" AutoPostBack="true" OnSelectedIndexChanged="ddlArea_SelectedIndexChanged" OnDataBound="ddlArea_DataBound"></asp:DropDownList>
+                                    <h3 class="box-title">SUCURSAL</h3>
+                                    <asp:DropDownList ID="ddlSucursal" runat="server" CssClass="form-control" Width="33%" AutoPostBack="true" OnSelectedIndexChanged="ddlSucursal_SelectedIndexChanged" OnDataBound="ddlSucursal_DataBound"></asp:DropDownList>
                                     <div class="box-tools pull-right">
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                         <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>

@@ -231,6 +231,40 @@ namespace TagorManuCRM
             ddlArea.DataTextField = "AREA";
             ddlArea.DataBind();
         }
-        
+
+        public bool ValidarPaginaPerfil(string idPerfil, string pagina)
+        {
+            bool validacion = false;
+            if (idPerfil == "1")
+            {
+                
+            }
+            if (idPerfil == "2")
+            {
+                if (pagina != "Usuarios.aspx")
+                {
+                    validacion = true;
+                    
+                }
+            }
+            if (idPerfil == "3")
+            {
+
+            }
+            if (idPerfil == "4")
+            {
+
+            }
+            if (idPerfil == "5")
+            {
+
+            }
+            if (idPerfil == "6")
+            {
+
+            }
+
+            return validacion;
+        }
     }
 }

@@ -155,6 +155,11 @@
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-xs-12 col-lg-2">
+                                            <label for="ddlEstado">Sucursal</label>
+                                            <asp:DropDownList ID="ddlSucursal" runat="server" OnDataBound="ddlSucursal_DataBound" CssClass="form-control input-sm">
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-xs-12 col-lg-2">
                                             <label for="btnBuscarTicket"></label>
                                             <asp:Button ID="btnBuscarTicket" runat="server" CssClass="btn btn-sm btn-block btn-primary"
                                                 Text="Buscar" OnClick="btnBuscarTicket_Click" />
@@ -186,14 +191,9 @@
                                                 <asp:LinkButton ID="lbtnIdTicket" runat="server" Text='<%# Bind("ID_ATENCION") %>' OnClick="lbtnIdTicket_Click"></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Rut" Visible="false">
+                                        <asp:TemplateField HeaderText="Sucursal" Visible="true">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblRutCliente" runat="server" Visible="true" Text='<%# Bind("RUT_CLIENTE") %>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Nombre" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblNombreCliente" runat="server" Visible="true" Text='<%# Bind("NOMBRE_CLIENTE") %>'></asp:Label>
+                                                <asp:Label ID="lblSucursal" runat="server" Visible="true" Text='<%# Bind("NOMBRE_SUCURSAL") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="U.Creación">
