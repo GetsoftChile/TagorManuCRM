@@ -1,0 +1,654 @@
+ALTER procedure [dbo].[stp_IngresarTicket_20092017]
+(
+	@rutCliente varchar(80),
+	@idUsuarioAsignado varchar(10),
+	@idUsuarioCreacion varchar(10),
+	@idEstadoAtencion varchar(10),
+	@observacion varchar(1000),@tipo varchar(100),
+	@nivel1 varchar(20),@idEmpresa varchar(10),@idTipificacion varchar(10),
+	@obsCliente varchar(1000),@nombreCliente varchar(250),@idCanal int,
+	@telefonoAsociado varchar(20),@tipoCliente varchar(1),
+	@local varchar(10),@idLlamada varchar(30),@idVendedor int
+)
+as begin
+
+--set @idUsuarioAsignado = 10
+-- ALG, en espera de definicion del cliente 
+--select * from GM_ATENCION
+if @rutCliente is null or @rutCliente='' set @rutCliente='99999999-9'
+insert into dbo.GM_ATENCION(RUT_CLIENTE,FECHA,ID_USUARIO_CREACION,ID_USUARIO_ASIGNADO,ID_ESTADO_ATENCION,
+OBSERVACION,TIPO,NIVEL_1,ID_EMPRESA,ID_TIPIFICACION,OBSERVACION_CLIENTE,
+NOMBRE_CLIENTE,ID_CANAL,TELEFONO_ASOCIADO,TIPO_CLIENTE,LOCAL,ID_LLAMADA,
+ID_VENDEDOR)
+VALUES(@rutCliente,getdate(),@idUsuarioCreacion,@idUsuarioAsignado,@idEstadoAtencion,@observacion,
+@tipo,@nivel1,@idEmpresa,@idTipificacion,@obsCliente,@nombreCliente,@idCanal,@telefonoAsociado,@tipoCliente,
+@local,@idLlamada,@idVendedor)
+
+select MAX(ID_ATENCION) ID_ATENCION from GM_ATENCION WHERE ID_USUARIO_CREACION=@idUsuarioCreacion
+
+end
+
+
+
+go
+
+
+ALTER procedure [dbo].[stp_BuscarClientePorEmail]
+(@email varchar(80))
+as begin
+
+select * 
+from gm_cliente
+where EMAIL=@email
+
+end
+
+go
+
+
+
+ALTER procedure [dbo].[stp_ReporteTickets]
+(@idUsuario varchar(10),@fechaDesde varchar(10),@fechaHasta varchar(10),@insistencia tinyint, @idArea int)
+as begin
+
+	---drop table ##TEMP_TICKETS
+	select ORDEN,NIVEL_1,N_ESCALAMIENTO, 
+	ESCALAMIENTO, SUM(PENDIENTE) AS PENDIENTE, 
+	SUM(DETENIDO) AS DETENIDO, SUM(CERRADO) AS CERRADO, 
+	SUM(CERRADO_CD) AS CERRADO_CD ,0 AS TOTAL
+	into ##TEMP_TICKETS
+	from (
+		select distinct 0 as ORDEN,
+		'SIN ESCALAMIENTO' AS ESCALAMIENTO,
+
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A1
+		where A1.ID_ESTADO_ATENCION = 1 and 
+		A.ID_ESTADO_ATENCION = A1.ID_ESTADO_ATENCION and 
+        ((@idUsuario is null) or (A1.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A1.NIVEL_1) AS PENDIENTE,
+
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A2 
+		where ID_ESTADO_ATENCION = 2 and 
+		A.ID_ESTADO_ATENCION = A2.ID_ESTADO_ATENCION and 
+	    ((@idUsuario is null) or (A2.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A2.NIVEL_1) AS DETENIDO,
+
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A3 
+		where ID_ESTADO_ATENCION = 3 and 
+		A.ID_ESTADO_ATENCION = A3.ID_ESTADO_ATENCION and 
+	    ((@idUsuario is null) or (A3.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A3.NIVEL_1) AS CERRADO,
+
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A4 
+		where ID_ESTADO_ATENCION = 4 and 
+		A.ID_ESTADO_ATENCION = A4.ID_ESTADO_ATENCION and 
+	    ((@idUsuario is null) or (A4.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A4.NIVEL_1) AS CERRADO_CD,
+		0 AS N_ESCALAMIENTO,
+
+		(select DISTINCT NIVEL_1 from dbo.GM_TIPIFICACION E where E.nivel_1 <> '' AND  E.nivel_1 IS NOT NULL AND A.ID_TIPIFICACION = E.ID_TIPIFICACION) as NIVEL_1 
+
+		FROM  GM_ATENCION A
+		left join GM_USUARIO u on u.ID_USUARIO=A.ID_USUARIO_ASIGNADO
+		INNER JOIN dbo.GM_ESTADO_ATENCION B ON A.id_ESTADO_ATENCION = B.ID_ESTADO_ATENCION 
+		WHERE ((@idArea is null) or (u.ID_AREA=@idArea))
+		and ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario))
+		and ((@fechaDesde is null) or (CONVERT(datetime,a.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+		and ((@fechaHasta is null) or (CONVERT(datetime,a.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+		and ((@insistencia is null) or (a.INSISTENCIAS = @insistencia)
+		
+		)
+		GROUP BY ID_TIPIFICACION, A.ID_ESTADO_ATENCION,NIVEL_1
+  ) aa 
+  GROUP BY NIVEL_1,N_ESCALAMIENTO,ESCALAMIENTO, ORDEN
+  order by orden
+  
+
+  
+  INSERT INTO ##TEMP_TICKETS
+  select 5,'TOTAL','','',isnull(SUM(PENDIENTE),0), isnull(SUM(DETENIDO),0), isnull(SUM(CERRADO),0), isnull(SUM(CERRADO_CD),0) ,0 from ##TEMP_TICKETS WHERE NIVEL_1 IS NOT NULL
+  
+  UPDATE ##TEMP_TICKETS SET TOTAL = PENDIENTE + DETENIDO + CERRADO + CERRADO_CD
+  
+  select * from ##TEMP_TICKETS WHERE NIVEL_1 IS NOT NULL order by orden
+  
+  DROP TABLE ##TEMP_TICKETS
+
+  
+  
+end
+
+
+go
+
+
+
+--select * from GM_ATENCION where id_estado_atencion=3
+--stp_ReporteTickets '592',null,null,null,null
+--stp_ReporteTickets null,null,null,null,null
+ALTER procedure [dbo].[stp_ReporteTickets21092017]
+(@idUsuario varchar(10),@fechaDesde varchar(10),@fechaHasta varchar(10),@insistencia tinyint, @idArea int)
+as begin
+
+	---drop table ##TEMP_TICKETS
+	select ORDEN,NIVEL_1,N_ESCALAMIENTO, 
+	ESCALAMIENTO, SUM(PENDIENTE) AS PENDIENTE, 
+	SUM(DETENIDO) AS DETENIDO, SUM(CERRADO) AS CERRADO, 
+	SUM(CERRADO_CD) AS CERRADO_CD ,0 AS TOTAL
+	into ##TEMP_TICKETS
+	from (
+		select 0 as ORDEN,'SIN ESCALAMIENTO' AS ESCALAMIENTO,
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A1
+		where A1.ID_ESTADO_ATENCION = 1 and 
+		A.ID_ESTADO_ATENCION = A1.ID_ESTADO_ATENCION and 
+        ((@idUsuario is null) or (A1.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A1.NIVEL_1) AS PENDIENTE,
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A2 
+		where ID_ESTADO_ATENCION = 2 and 
+		A.ID_ESTADO_ATENCION = A2.ID_ESTADO_ATENCION and 
+	    ((@idUsuario is null) or (A2.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A2.NIVEL_1) AS DETENIDO,
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A3 
+		where ID_ESTADO_ATENCION = 3 /*and*/ 
+		--A.ID_ESTADO_ATENCION = A3.ID_ESTADO_ATENCION and 
+	    /*((@idUsuario is null) or (A3.ID_USUARIO_ASIGNADO = @idUsuario)) *//*AND
+		A.NIVEL_1 = A3.NIVEL_1*/) AS CERRADO,
+		(select isnull(COUNT(*),0) AS CANTIDAD 
+		from GM_ATENCION A4 
+		where ID_ESTADO_ATENCION = 4 and 
+		A.ID_ESTADO_ATENCION = A4.ID_ESTADO_ATENCION and 
+	    ((@idUsuario is null) or (A4.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		A.NIVEL_1 = A4.NIVEL_1) AS CERRADO_CD,
+		0 AS N_ESCALAMIENTO,
+		(select NIVEL_1 from dbo.GM_TIPIFICACION E where A.ID_TIPIFICACION = E.ID_TIPIFICACION) as NIVEL_1 
+		FROM  GM_ATENCION A
+		--
+		left join GM_USUARIO u on u.ID_USUARIO=A.ID_USUARIO_ASIGNADO
+		--
+		INNER JOIN dbo.GM_ESTADO_ATENCION B ON A.id_ESTADO_ATENCION = B.ID_ESTADO_ATENCION 
+		WHERE ((@idArea is null) or (u.ID_AREA=@idArea))
+		and ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario))
+		and ((@fechaDesde is null) or (CONVERT(datetime,a.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+		and ((@fechaHasta is null) or (CONVERT(datetime,a.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+		and ((@insistencia is null) or (a.INSISTENCIAS = @insistencia))
+		GROUP BY ID_TIPIFICACION, A.ID_ESTADO_ATENCION,NIVEL_1
+  --UNION
+		--select 1 as ORDEN,'ESCALAMIENTO NIVEL 1' AS ESCALAMIENTO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A1 
+		--where A1.ID_ESTADO_ATENCION = 1 and 
+		--A.ID_ESTADO_ATENCION = A1.ID_ESTADO_ATENCION and
+  --      ((@idUsuario is null) or (A1.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A1.NIVEL_1 ) AS PENDIENTE,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A2 
+		--where ID_ESTADO_ATENCION = 2 and 
+		--A.ID_ESTADO_ATENCION = A2.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A2.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A2.NIVEL_1) AS DETENIDO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A3 
+		--where ID_ESTADO_ATENCION = 3 and 
+		--A.ID_ESTADO_ATENCION = A3.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A3.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A3.NIVEL_1) AS CERRADO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A4 
+		--where ID_ESTADO_ATENCION = 4 and 
+		--A.ID_ESTADO_ATENCION = A4.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A4.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A4.NIVEL_1) AS CERRADO_CD,
+		--1 AS N_ESCALAMIENTO,
+		--(select NIVEL_1 from dbo.GM_TIPIFICACION E where A.ID_TIPIFICACION = E.ID_TIPIFICACION) as NIVEL_1 
+		--FROM  GM_ATENCION A
+		----
+		--left join GM_USUARIO u on u.ID_USUARIO=A.ID_USUARIO_ASIGNADO
+		----
+		--INNER JOIN dbo.GM_ESTADO_ATENCION B ON A.id_ESTADO_ATENCION = B.ID_ESTADO_ATENCION 
+		--WHERE ((@idArea is null) or (u.ID_AREA=@idArea))
+		--and ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario))
+		--and ((@fechaDesde is null) or (CONVERT(datetime,a.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+		--and ((@fechaHasta is null) or (CONVERT(datetime,a.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+		--and ((@insistencia is null) or (a.INSISTENCIAS = @insistencia))
+		--GROUP BY NIVEL_1, A.ID_ESTADO_ATENCION,A.ID_TIPIFICACION
+  --UNION
+		--select 2 as ORDEN,'ESCALAMIENTO NIVEL 2' AS ESCALAMIENTO, 
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A1 
+		--where A1.ID_ESTADO_ATENCION = 1 and 
+		--A.ID_ESTADO_ATENCION = A1.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A1.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A1.NIVEL_1) AS PENDIENTE,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A2 
+		--where ID_ESTADO_ATENCION = 2 and 
+		--A.ID_ESTADO_ATENCION = A2.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A2.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A2.NIVEL_1) AS DETENIDO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A3 
+		--where ID_ESTADO_ATENCION = 3 and 
+		--A.ID_ESTADO_ATENCION = A3.ID_ESTADO_ATENCION and
+		--	    ((@idUsuario is null) or (A3.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+	 --   A.NIVEL_1 = A3.NIVEL_1 ) AS CERRADO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A4 
+		--where ID_ESTADO_ATENCION = 4 and 
+		--A.ID_ESTADO_ATENCION = A4.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A4.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A4.NIVEL_1) AS CERRADO_CD,
+		--2 AS N_ESCALAMIENTO,
+		--(select NIVEL_1 from dbo.GM_TIPIFICACION E where A.ID_TIPIFICACION = E.ID_TIPIFICACION) as NIVEL_1 
+		--FROM  GM_ATENCION A
+		----
+		--left join GM_USUARIO u on u.ID_USUARIO=A.ID_USUARIO_ASIGNADO
+		----
+		--INNER JOIN dbo.GM_ESTADO_ATENCION B ON A.id_ESTADO_ATENCION = B.ID_ESTADO_ATENCION 
+		--WHERE ((@idArea is null) or (u.ID_AREA=@idArea))
+		--and ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario))
+		--and ((@fechaDesde is null) or (CONVERT(datetime,a.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+		--and ((@fechaHasta is null) or (CONVERT(datetime,a.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+		--and ((@insistencia is null) or (a.INSISTENCIAS = @insistencia))
+		--GROUP BY NIVEL_1, A.ID_ESTADO_ATENCION, A.ID_TIPIFICACION
+  --UNION
+		--select 3 as ORDEN,'ESCALAMIENTO NIVEL 3' AS ESCALAMIENTO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A1 where A1.ID_ESTADO_ATENCION = 1 and 
+		--A.ID_ESTADO_ATENCION = A1.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A1.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A1.NIVEL_1 ) AS PENDIENTE,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A2 
+		--where ID_ESTADO_ATENCION = 2 and 
+		--A.ID_ESTADO_ATENCION = A2.ID_ESTADO_ATENCION and 
+		--	    ((@idUsuario is null) or (A2.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A2.NIVEL_1) AS DETENIDO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A3 
+		--where ID_ESTADO_ATENCION = 3 and 
+		--A.ID_ESTADO_ATENCION = A3.ID_ESTADO_ATENCION and A.NIVEL_1 = A3.NIVEL_1 AND
+		--	    ((@idUsuario is null) or (A3.ID_USUARIO_ASIGNADO = @idUsuario)) ) AS CERRADO,
+		--(select isnull(COUNT(*),0) AS CANTIDAD 
+		--from GM_ATENCION A4 
+		--where ID_ESTADO_ATENCION = 4 and 
+		--A.ID_ESTADO_ATENCION = A4.ID_ESTADO_ATENCION and
+		--	    ((@idUsuario is null) or (A4.ID_USUARIO_ASIGNADO = @idUsuario)) AND
+		--A.NIVEL_1 = A4.NIVEL_1) AS CERRADO_CD,
+		--3 AS N_ESCALAMIENTO,
+		--(select NIVEL_1 from dbo.GM_TIPIFICACION E where A.ID_TIPIFICACION = E.ID_TIPIFICACION) as NIVEL_1 
+		--FROM  GM_ATENCION A
+		----
+		--left join GM_USUARIO u on u.ID_USUARIO=A.ID_USUARIO_ASIGNADO
+		----
+		--INNER JOIN dbo.GM_ESTADO_ATENCION B ON A.id_ESTADO_ATENCION = B.ID_ESTADO_ATENCION 
+		--WHERE ((@idArea is null) or (u.ID_AREA=@idArea))
+		--and ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario))
+		--and ((@fechaDesde is null) or (CONVERT(datetime,a.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+		--and ((@fechaHasta is null) or (CONVERT(datetime,a.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+		--and ((@insistencia is null) or (a.INSISTENCIAS = @insistencia))
+		--GROUP BY NIVEL_1, A.ID_ESTADO_ATENCION, A.ID_TIPIFICACION
+  ) aa 
+  GROUP BY NIVEL_1,N_ESCALAMIENTO,ESCALAMIENTO, ORDEN
+  order by orden
+  
+
+  
+  INSERT INTO ##TEMP_TICKETS
+  select 5,'TOTAL','','',isnull(SUM(PENDIENTE),0), isnull(SUM(DETENIDO),0), isnull(SUM(CERRADO),0), isnull(SUM(CERRADO_CD),0) ,0 from ##TEMP_TICKETS
+  
+  UPDATE ##TEMP_TICKETS SET TOTAL = PENDIENTE + DETENIDO + CERRADO + CERRADO_CD
+  
+  select * from ##TEMP_TICKETS order by orden
+  
+  DROP TABLE ##TEMP_TICKETS
+  
+end
+/*
+SELECT ID_ESTADO_ATENCION, COUNT(*) FROM GM_ATENCION GROUP BY ID_ESTADO_ATENCION
+
+
+SELECT * FROM GM_ATENCION WHERE ID_ESTADO_ATENCION <> 1
+
+GROUP BY ID_ESTADO_ATENCION
+
+
+
+select * from GM_ATENCION
+delete from GM_ATENCION where id_tipificacion is null
+
+
+select * from gm_atencion_historico
+where id_atencion=71
+
+delete from gm_atencion_historico
+where id_atencion=71
+
+*/
+
+
+go
+
+
+
+ALTER procedure [dbo].[stp_IngresarCliente]
+(@email varchar(80),@nombre varchar(120),@paterno varchar(50),
+@materno varchar(50),@telefono varchar(20),@celular varchar(20),
+@idUsuarioCreacion int)
+as begin
+
+if not exists (select * from gm_cliente where email = @email)
+begin
+
+insert into gm_cliente(EMAIL,NOMBRE,PATERNO,MATERNO,TELEFONO,CELULAR,
+FECHA_CREACION,ID_USUARIO_CREACION)
+values(@email,@nombre,@paterno,@materno,@telefono,@celular,getdate(),@idUsuarioCreacion)
+
+end
+else begin
+
+update gm_cliente
+set NOMBRE=@nombre, paterno=@paterno, materno=@materno, telefono=@telefono,
+celular=@celular,fecha_modificacion=GETDATE(),id_usuario_modificacion=@idUsuarioCreacion
+where email=@email
+
+end
+end
+
+go
+
+
+--stp_BuscarGestionesExporte null,null,null,null,null,null
+ALTER procedure [dbo].[stp_BuscarGestionesExporte]
+(@campo1 varchar(10), @idUsuario varchar(10),@fechaDesde varchar(10),@fechaHasta varchar(10),
+@idEstado varchar(10),@idArea int)
+as begin
+
+select
+ti.ID_ATENCION as ID_TICKET,Convert(varchar(10),ti.FECHA,103) AS FECHA_INGRESO,u.USUARIO as USUARIO_INGRESO,
+upper(u2.USUARIO) AS USUARIO_ASIGNADO,ea.ESTADO_ATENCION,tip.NIVEL_1 as TIPO_TICKET,
+tip.NIVEL_2 as TIPO_GESTION, tip.NIVEL_3 as CATEGORIA_GESTION, tip.NIVEL_4 as DETALLE_GESTION,
+c.CANAL,REPLACE(REPLACE(REPLACE(ti.OBSERVACION,';',''),CHAR(10),''),CHAR(13),'') AS OBSERVACION,
+
+ti.NOMBRE_CLIENTE,
+ti.INSISTENCIAS,TI.ID_VENDEDOR as VENDEDOR, TI.LOCAL
+
+from GM_ATENCION TI 
+left join GM_TIPIFICACION tip on tip.ID_TIPIFICACION = TI.ID_TIPIFICACION
+left join GM_ESTADO_ATENCION EA ON TI.ID_ESTADO_ATENCION = EA.ID_ESTADO_ATENCION
+left join GM_USUARIO u on u.ID_USUARIO=TI.ID_USUARIO_CREACION
+left join GM_USUARIO u2 on u2.ID_USUARIO=ti.ID_USUARIO_ASIGNADO
+left join GM_CANAL c on ti.ID_CANAL=c.ID_CANAL
+where 
+((@idArea is null) or (u2.ID_AREA=@idArea))
+and ((@idUsuario is null) or (ti.id_usuario_creacion = @idUsuario))
+and ((@fechaDesde is null) or (CONVERT(datetime,ti.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+and ((@fechaHasta is null) or (CONVERT(datetime,ti.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+and ((@idEstado is null) or (TI.ID_ESTADO_ATENCION=@idEstado))
+
+end
+
+
+go
+
+
+ALTER procedure [dbo].[stp_BuscarTicketExporte]
+(@idUsuario varchar(10),@fechaDesde varchar(10),@fechaHasta varchar(10),@insistencia tinyint)
+as begin
+
+select
+ah.ID_ATENCION as ID_TICKET,CONVERT(varchar(10),ah.FECHA,103) AS FECHA_INGRESO,u.USUARIO as USUARIO_INGRESO,t.USUARIO AS USUARIO_ASIGNADO,ea.ESTADO_ATENCION,tip.NIVEL_1 as TIPO_TICKET,
+tip.NIVEL_2 as TIPO_GESTION, tip.NIVEL_3 as CATEGORIA_GESTION, 
+tip.NIVEL_4 as DETALLE_GESTION,ca.CANAL,REPLACE(REPLACE(REPLACE(ah.OBSERVACION,';',''),CHAR(10),''),CHAR(13),'') AS OBSERVACION,
+ah.NOMBRE_CLIENTE,ah.INSISTENCIAS,ah.ID_VENDEDOR as VENDEDOR, ah.LOCAL
+
+from GM_ATENCION ah
+left join GM_USUARIO u on ah.ID_USUARIO_CREACION = u.ID_USUARIO
+left join GM_USUARIO t on ah.ID_USUARIO_ASIGNADO = t.ID_USUARIO
+left join dbo.GM_ESTADO_ATENCION ea on ah.ID_ESTADO_ATENCION=ea.ID_ESTADO_ATENCION
+left join gm_tipificacion tip on tip.ID_TIPIFICACION=ah.ID_TIPIFICACION
+left join gm_canal ca on ca.ID_CANAL=ah.ID_CANAL
+WHERE 
+
+((@idUsuario is null) or (ah.Id_Usuario_creacion = @idUsuario))
+and ((@fechaDesde is null) or (CONVERT(datetime,ah.Fecha,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+and ((@fechaHasta is null) or (CONVERT(datetime,ah.Fecha,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+and ((@insistencia is null) or (ah.INSISTENCIAS <> ''))
+
+end
+
+
+go
+
+
+ALTER procedure [dbo].[stp_IngresarTicket_13102016]
+(
+	@rutCliente varchar(15),
+	@idUsuarioAsignado varchar(10),
+	@idUsuarioCreacion varchar(10),
+	@idEstadoAtencion varchar(10),
+	@observacion varchar(1000),@tipo varchar(100),
+	@nivel1 varchar(20),@idEmpresa varchar(10),@idTipificacion varchar(10),
+	@obsCliente varchar(1000),@nombreCliente varchar(250),@idCanal int,
+	@telefonoAsociado varchar(20),@tipoCliente varchar(1),
+	@local varchar(10),@idLlamada varchar(30),@idVendedor int
+)
+as begin
+
+--set @idUsuarioAsignado = 10
+-- ALG, en espera de definicion del cliente 
+--select * from GM_ATENCION
+if @rutCliente is null or @rutCliente='' set @rutCliente='99999999-9'
+insert into dbo.GM_ATENCION(RUT_CLIENTE,FECHA,ID_USUARIO_CREACION,ID_USUARIO_ASIGNADO,ID_ESTADO_ATENCION,
+OBSERVACION,TIPO,NIVEL_1,ID_EMPRESA,ID_TIPIFICACION,OBSERVACION_CLIENTE,
+NOMBRE_CLIENTE,ID_CANAL,TELEFONO_ASOCIADO,TIPO_CLIENTE,LOCAL,ID_LLAMADA,
+ID_VENDEDOR)
+VALUES(@rutCliente,getdate(),@idUsuarioCreacion,@idUsuarioAsignado,@idEstadoAtencion,@observacion,
+@tipo,@nivel1,@idEmpresa,@idTipificacion,@obsCliente,@nombreCliente,@idCanal,@telefonoAsociado,@tipoCliente,
+@local,@idLlamada,@idVendedor)
+
+select MAX(ID_ATENCION) ID_ATENCION from GM_ATENCION WHERE ID_USUARIO_CREACION=@idUsuarioCreacion
+
+end
+
+
+
+--select * from GM_ATENCION
+
+
+go
+
+
+ --stp_buscarTicketBuscadorParametros null,null,null,null,
+ --null,null,null,null,null,1
+ 
+ALTER procedure [dbo].[stp_buscarTicketBuscadorParametros]
+(@usuarioAsig varchar(10),@fechaDesde varchar(15),
+@fechaHasta varchar(15),@idEstado varchar(10),@insistencia varchar(2),
+@escalamiento varchar(2), @nivel1 varchar(20),@idArea int, 
+@tipo varchar(2),@derivado varchar(2))
+as begin
+ 
+
+if @escalamiento = '666666'
+begin
+ 
+select *,t.USUARIO AS USUARIO_ASIG,
+case when ESTADO_ATENCION='CERRADO' then datediff(Minute,ah.Fecha,ah.Fecha_Cierre) else datediff(Minute,ah.Fecha,getdate()) end as TIEMPO_RESOLUCION
+from GM_ATENCION ah
+left join GM_USUARIO u on ah.ID_USUARIO_CREACION = u.ID_USUARIO
+left join GM_USUARIO t on ah.ID_USUARIO_ASIGNADO = t.ID_USUARIO
+left join dbo.GM_ESTADO_ATENCION ea on ah.ID_ESTADO_ATENCION=ea.ID_ESTADO_ATENCION
+
+where
+ ---(ah.TIPO = 'D')
+----AND
+((@idArea is null) or (t.ID_AREA=@idArea)) and
+                (
+                ((@usuarioAsig is null) or (ah.ID_USUARIO_ASIGNADO = @usuarioAsig))
+                --or ((@usuarioAsig is null) or (ah.ID_USUARIO_CREACION = @usuarioAsig))
+                )
+               
+                AND ((@nivel1 is null) or (ah.NIVEL_1 = @nivel1))
+				AND ((@tipo is null) or (ah.TIPO = @tipo))
+and ((@idEstado is null) or (ah.ID_ESTADO_ATENCION IN (SELECT value FROM dbo.f_params_to_list(@idEstado))))
+and ((@insistencia is null) or (ah.INSISTENCIAS <> ''))
+and ((@fechaDesde is null) or (CONVERT(datetime,ah.FECHA,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+and ((@fechaHasta is null) or (CONVERT(datetime,ah.FECHA,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+ and ((@derivado is null) or (ah.ID_USUARIO_ASIGNADO <> ah.ID_USUARIO_CREACION))
+ order by ah.fecha desc
+end
+else
+begin
+ 
+ 
+select *,t.USUARIO AS USUARIO_ASIG
+,case when ESTADO_ATENCION='CERRADO' then datediff(Minute,ah.Fecha,ah.Fecha_Cierre) else datediff(Minute,ah.Fecha,getdate()) end as TIEMPO_RESOLUCION
+
+from GM_ATENCION ah
+left join GM_USUARIO u on ah.ID_USUARIO_CREACION = u.ID_USUARIO
+left join GM_USUARIO t on ah.ID_USUARIO_ASIGNADO = t.ID_USUARIO
+left join dbo.GM_ESTADO_ATENCION ea on ah.ID_ESTADO_ATENCION=ea.ID_ESTADO_ATENCION
+
+where
+ ---(ah.TIPO = 'D')
+----AND
+((@idArea is null) or (t.ID_AREA=@idArea)) and
+                (
+                ((@usuarioAsig is null) or (ah.ID_USUARIO_ASIGNADO = @usuarioAsig))
+                --or           ((@usuarioAsig is null) or (ah.ID_USUARIO_CREACION = @usuarioAsig))
+                )
+                               AND
+                ((@nivel1 is null) or (ah.NIVEL_1 = @nivel1))
+				AND ((@tipo is null) or (ah.TIPO = @tipo))
+and ((@idEstado is null) or (ah.ID_ESTADO_ATENCION IN (SELECT value FROM dbo.f_params_to_list(@idEstado))))
+and ((@insistencia is null) or (ah.INSISTENCIAS <> ''))
+and ((@fechaDesde is null) or (CONVERT(datetime,ah.FECHA,103)>=convert(datetime,@fechaDesde + ' 00:00',103)))
+and ((@fechaHasta is null) or (CONVERT(datetime,ah.FECHA,103)<=convert(datetime,@fechaHasta + ' 23:59',103)))
+and ((@derivado is null) or (ah.ID_USUARIO_ASIGNADO <> ah.ID_USUARIO_CREACION))
+ order by ah.fecha desc
+ 
+end
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+end
+ 
+--
+--select * from GM_ATENCION
+ 
+
+go
+
+
+
+--- [dbo].[stp_GenerarDashboard] 1161, 6
+ALTER procedure [dbo].[stp_GenerarDashboard]
+(@idUsuario varchar(15), @idArea int)
+
+as begin
+declare 
+@total_cerrados varchar(10),
+@total_abiertos varchar(10),
+@total_detenidos varchar(10),
+@total_usuarios varchar(10),
+@total_ticketInsistencia varchar(10),
+@promedioResolucion varchar(10),
+@casoEscaladoPorDemora varchar(10),
+@totalTicketDerivados varchar(10),
+
+@tipificacionesConsulta varchar(10),
+@tipificacionesReclamo varchar(10),
+@tipificacionesSolicitud varchar(10),
+@tipificacionesIncidencia varchar(10)
+
+set @total_cerrados = (select count(*) as total from GM_ATENCION g inner join gm_usuario u on g.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+						where ID_ESTADO_ATENCION=3 and ((@idArea is null) or (u.ID_AREA=@idArea))
+						and ((@idUsuario is null) or ((g.ID_USUARIO_ASIGNADO = @idUsuario))))
+
+set @total_abiertos = (select  count(*) AS TOTAL_ABIERTOS from GM_ATENCION g inner join gm_usuario u on g.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+						where ID_ESTADO_ATENCION=1 and ((@idArea is null) or (u.ID_AREA=@idArea))
+						and ((@idUsuario is null) or ((g.ID_USUARIO_ASIGNADO = @idUsuario))))
+
+set @total_detenidos =(select count(*) AS TOTAL_DETENIDOS from GM_ATENCION g inner join gm_usuario u on g.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+						where ID_ESTADO_ATENCION=2 and ((@idArea is null) or (u.ID_AREA=@idArea))
+						and ((@idUsuario is null) or ((g.ID_USUARIO_ASIGNADO = @idUsuario))))
+
+set @total_usuarios = (select COUNT(*) from GM_USUARIO u where ACTIVO=1 and ((@idArea is null) or (u.ID_AREA=@idArea)))
+
+set @total_ticketInsistencia = (select COUNT(*) from GM_ATENCION a inner join gm_usuario u on a.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+								where INSISTENCIAS<>'' and ((@idArea is null) or (u.ID_AREA=@idArea))
+								AND ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario)))
+
+set @promedioResolucion = (select AVG(DATEDIFF(minute,FECHA,FECHA_CIERRE)) AS PROMEDIO 
+							from GM_ATENCION a inner join gm_usuario u on a.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+							WHERE ((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario)) and ((@idArea is null) or (u.ID_AREA=@idArea))) 
+
+set @casoEscaladoPorDemora = (select COUNT(*) from GM_ATENCION a inner join gm_usuario u on a.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+								where ((@idArea is null) or (u.ID_AREA=@idArea))
+								AND((@idUsuario is null) or (a.ID_USUARIO_ASIGNADO = @idUsuario)))
+
+set @totalTicketDerivados = (select COUNT(*) from GM_ATENCION a inner join gm_usuario u on a.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+								where ((@idArea is null) or (u.ID_AREA=@idArea))
+								AND((a.ID_USUARIO_ASIGNADO <> a.ID_USUARIO_CREACION)))
+
+set @tipificacionesConsulta = (select COUNT(*) FROM GM_ATENCION T 
+inner join gm_usuario u on T.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+where T.NIVEL_1 = 'Consulta' AND
+((@idUsuario is null) or (t.ID_USUARIO_ASIGNADO = @idUsuario)) and ((@idArea is null) or (u.ID_AREA=@idArea))) 
+
+set @tipificacionesReclamo = (select COUNT(*) FROM GM_ATENCION T 
+inner join gm_usuario u on T.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+where T.NIVEL_1 = 'Reclamo' AND
+((@idUsuario is null) or (t.ID_USUARIO_ASIGNADO = @idUsuario)) and ((@idArea is null) or (u.ID_AREA=@idArea))) 
+
+set @tipificacionesSolicitud = (select COUNT(*) FROM GM_ATENCION T
+inner join gm_usuario u on T.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+where T.NIVEL_1 = 'Solicitud' AND
+((@idUsuario is null) or (t.ID_USUARIO_ASIGNADO = @idUsuario)) and ((@idArea is null) or (u.ID_AREA=@idArea))) 
+
+set @tipificacionesIncidencia = (select COUNT(*) FROM GM_ATENCION T
+inner join gm_usuario u on T.ID_USUARIO_ASIGNADO=u.ID_USUARIO 
+where T.NIVEL_1 = 'Reporte Incidencia' AND
+((@idUsuario is null) or (t.ID_USUARIO_ASIGNADO = @idUsuario)) and ((@idArea is null) or (u.ID_AREA=@idArea))) 
+
+create table #tmp (TOTAL_ABIERTOS varchar(10), TOTAL_CERRADOS varchar(10),
+TOTAL_DETENIDOS varchar(10),TOTAL_USUARIOS varchar(10),TOTAL_INSISTENCIA varchar(10),
+TOTAL_PROMEDIO_RESOLUCION varchar(10),TOTAL_NIVEL_ESCALAMIENTO varchar(10),
+TOTAL_TIPIFICACIONES_CONSULTA VARCHAR(10),TOTAL_TIPIFICACIONES_RECLAMO VARCHAR(10),
+TOTAL_TIPIFICACIONES_SOLICITUD VARCHAR(10),TOTAL_TIPIFICACIONES_INCIDENCIA VARCHAR(10),
+TOTAL_DERIVADOS VARCHAR(10))
+insert into #tmp  (TOTAL_ABIERTOS,TOTAL_CERRADOS, TOTAL_DETENIDOS,TOTAL_USUARIOS,
+TOTAL_INSISTENCIA,TOTAL_PROMEDIO_RESOLUCION,TOTAL_NIVEL_ESCALAMIENTO,TOTAL_TIPIFICACIONES_CONSULTA,
+TOTAL_TIPIFICACIONES_RECLAMO,TOTAL_TIPIFICACIONES_SOLICITUD,
+TOTAL_TIPIFICACIONES_INCIDENCIA,TOTAL_DERIVADOS)
+values (@total_abiertos,@total_cerrados,@total_detenidos,@total_usuarios,
+@total_ticketInsistencia,@promedioResolucion,@casoEscaladoPorDemora,@tipificacionesConsulta,
+@tipificacionesReclamo,@tipificacionesSolicitud,@tipificacionesIncidencia,@totalTicketDerivados)
+
+select * from #tmp
+
+end

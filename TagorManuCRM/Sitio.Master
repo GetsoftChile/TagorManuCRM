@@ -1,0 +1,288 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Sitio.master.cs" Inherits="TagorManuCRM.Sitio" %>
+
+<%--<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>--%>
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><asp:Literal ID="ltrTitle" runat="server"></asp:Literal></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    
+    <!-- Bootstrap 3.3.5 -->
+   <link href="AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<%--<link href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />--%>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link href="AdminLTE-2.3.0/dist/css/AdminLTE.css" rel="stylesheet" />
+<%--  <link href="assets/dist/css/AdminLTE.css" rel="stylesheet" />--%>
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css">
+<%--<link href="assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" />--%>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+      <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+
+      </asp:ContentPlaceHolder>
+  </head>
+
+  <body class="hold-transition skin-red sidebar-mini">
+      <form id="form" runat="server">
+          <asp:ScriptManager ID="ScriptManager1"  runat="server"></asp:ScriptManager>
+
+          <!-- Site wrapper -->
+          <div class="wrapper">
+
+              <header class="main-header">
+                  <!-- Logo -->
+                  <a href="#" class="logo">
+                      <!-- mini logo for sidebar mini 50x50 pixels -->
+                      <span class="logo-mini"><b>CRM SOLPED</b></span>
+                      <!-- logo for regular state and mobile devices -->
+                      <span class="logo-lg"><b>CRM SOLPED</b> Tagor</span>
+                  </a>
+                  <!-- Header Navbar: style can be found in header.less -->
+                  <nav class="navbar navbar-static-top" role="navigation">
+                      <!-- Sidebar toggle button-->
+                      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </a>
+                      <div class="navbar-custom-menu">
+                          <ul class="nav navbar-nav">
+
+                              <!-- User Account: style can be found in dropdown.less -->
+                              <li class="dropdown user user-menu">
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      
+                                      <span class="hidden-xs"><b><asp:Label ID="lblEmpresa" runat="server" Text=""></asp:Label></b></span>
+                                      
+                                  </a>
+                              </li>
+                              <li class="dropdown user user-menu">
+                                  
+                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                      <img src="<%= Session["variableImagenUsuario"]%>" class="user-image" alt="">
+                                      <span class="hidden-xs"><%= Session["variableUsuario"] %></span>
+                                  </a>
+
+                                  <ul class="dropdown-menu">
+                                      <!-- User image -->
+                                      <li class="user-header">
+                                          <img src="<%= Session["variableImagenUsuario"]%>" class="img-circle" alt="User Image">
+                                          <p>
+                                              <%= Session["variableNomUsuario"]%>
+                                              <small><%= Session["variablePerfil"]%></small>
+                                              <small><%= Session["variableFechaSession"] %> </small>
+                                          </p>
+                                      </li>
+
+                                      <!-- Menu Footer-->
+                                      <li class="user-footer">
+                                          <div class="pull-left">
+                                              <a href="Contrasena.aspx" class="btn btn-default btn-flat">Cambio Contraseña</a>
+                                          </div>
+                                          <div class="pull-right">
+                                              <asp:LinkButton Text="Cerrar Sesión" ID="btnCerrerSesion" runat="server" OnClick="btnCerrarSesion_Click" CssClass="btn btn-default btn-flat"  />
+                                          </div>
+
+                                      </li>
+                                  </ul>
+                              </li>
+
+                              <!--
+                <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> 
+              </li>
+                   
+                   -->
+                          </ul>
+                      </div>
+                  </nav>
+              </header>
+
+              <!-- =============================================== -->
+
+              <!-- Left side column. contains the sidebar -->
+              <aside class="main-sidebar">
+                  <!-- sidebar: style can be found in sidebar.less -->
+                  <section class="sidebar">
+
+                      <div class="text-center image">
+                              <img src="assets/img/logo-tagor.png"  class="img-circle" alt="" style="width: 60%;max-height: 60%">
+                          </div>
+                      <div class="text-center image">
+                              <img src="assets/img/logo-Cencosud.png" class="img-circle" alt="" style="width: 60%;max-height: 60%">
+
+                          </div>
+                          
+
+                      <!-- Sidebar user panel -->
+                      <div class="user-panel">
+                          <div class="pull-left image">
+                              <img src="<%= Session["variableImagenUsuario"]%>" class="img-circle" alt="">
+                          </div>
+                          <div class="pull-left info">
+                              <p><%= Session["variableNomUsuario"]%></p>
+                              <a href="#"><i class="fa fa-circle text-success"></i>En linea</a>
+                          </div>
+                      </div>
+
+                      <!-- sidebar menu: : style can be found in sidebar.less -->
+                      <ul class="sidebar-menu">
+                          <li class="header">:: Menu Principal ::</li>
+                     
+                          <li runat="server" id="liDashboard" visible="true"><a href="Dashboard.aspx"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                          <li runat="server" id="liIngresoOT" visible="false"><a href="IngresoOT.aspx"><i class="fa fa-clipboard"></i><span>SOLPED</span></a></li>
+                          <li class="treeview">
+                              <a href="#">
+                                  <i class="fa fa-clipboard"></i>
+                                  <span>SOLPED</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li runat="server" id="liIngresarOT"><a href="IngresoOT.aspx"><i class="fa fa-archive"></i>Ingreso de SOLPED</a></li>
+                                  <li runat="server" id="lbtnBuscarOT"><a href="BuscarOT.aspx"><i class="fa fa-search"></i>Buscador de SOLPED</a></li>
+<%--                                  <li runat="server" id="liBuscarTipificacion"><a href="BuscarTipificaciones.aspx"><i class="fa fa-circle-o"></i>Buscador de Tipificaciones</a></li>--%>
+                              </ul>
+                          </li>
+
+
+                          <li class="treeview">
+                              <a href="#">
+                                  <i class="fa fa-pie-chart"></i>
+                                  <span>Reportes</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li runat="server" id="liReporteTickets"><a href="ReporteSolped.aspx"><i class="fa fa-circle-o"></i>Reporte de SOLPED</a></li>
+                              </ul>
+                          </li>
+
+                          <li class="treeview" id="liAdministracion" runat="server">
+                              <a href="#">
+                                  <i class="fa fa-edit"></i><span>Administración</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liUsuarios" runat="server"><a href="Usuarios.aspx"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+                                  <li id="liMantenciones" runat="server"><a href="Mantenciones.aspx"><i class="fa fa-circle-o"></i>Mantenciones</a></li>
+                                  <%--<li id="liParametros" runat="server"><a href="Parametros.aspx"><i class="fa fa-circle-o"></i>Parametros</a></li>
+                                  <li id="liConfiguracion" runat="server"><a href="Configuracion.aspx"><i class="fa fa-circle-o"></i>Escalamiento</a></li>--%>
+                                 
+                              </ul>
+                          </li>
+                          <li runat="server" id="liAyuda" visible="false"><a href="Ayuda.aspx"><i class="fa fa-book"></i><span>Ayuda</span></a></li>
+                      </ul>
+                  </section>
+                  <!-- /.sidebar -->
+              </aside>
+
+              <!-- =============================================== -->
+              <div class="content-wrapper">
+                  <!-- content-wrapper -->
+
+                  <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+                  </asp:ContentPlaceHolder>
+              </div>
+              <!--/. content-wrapper -->
+
+              <footer class="main-footer">
+                  <div class="pull-right hidden-xs">
+                      <b>Version</b> 1.0
+                  </div>
+                  <strong>Copyright &copy; <a href="#">Tagor</a>.</strong> todos los derechos reservados.
+     
+              </footer>
+
+              <!-- Control Sidebar -->
+              
+              <!-- /.control-sidebar -->
+              <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+              <div class="control-sidebar-bg"></div>
+          </div>
+          <!-- ./wrapper -->
+
+
+      </form>
+   
+ <!-- jQuery 2.1.4 -->
+    <script src="AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<%--<script src="assets/bower_components/jquery/dist/jquery.min.js"></script>--%>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
+<%--<link href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />--%>
+    <!-- SlimScroll -->
+    <script src="AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<%--<script src="assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>--%>
+    <!-- FastClick -->
+    <script src="AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+<%--<script src="assets/bower_components/fastclick/lib/fastclick.js"></script>--%>
+    <!-- AdminLTE App -->
+    <script src="AdminLTE-2.3.0/dist/js/app.min.js"></script>
+<%--<script src="assets/dist/js/adminlte.min.js"></script>--%>
+     <%-- <script src="assets/dist/js/demo.js"></script>--%>
+
+    <script type="text/javascript">
+<!--
+        $(document).ready(function () {
+            cargarMaster();
+        });
+
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+
+        prm.add_endRequest(function () {
+            cargarMaster();
+        });
+
+        function cargarMaster() {
+            //agregar jquery de las funciones...
+            window.setTimeout(function () {
+                $(".alert").fadeTo(1500, 0).slideUp(400, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        }
+
+    //-->
+      </script>
+        
+        <asp:ContentPlaceHolder ID="footer" runat="server">
+
+        </asp:ContentPlaceHolder>
+  
+  </body>
+</html>
