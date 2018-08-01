@@ -954,7 +954,9 @@
     <Content Include="AdminLTE-2.3.0\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="AdminLTE-2.3.0\starter.html" />
     <Content Include="ArchivoOT\index.html" />
+    <Content Include="ArchivoOT\temp\index.html" />
     <Content Include="archivosGestion\index.html" />
+    <Content Include="archivosGestion\temp\index.html" />
     <Content Include="assets\bower_components\bootstrap-colorpicker\.bower.json" />
     <Content Include="assets\bower_components\bootstrap-colorpicker\bower.json" />
     <Content Include="assets\bower_components\bootstrap-colorpicker\CONTRIBUTING.md" />

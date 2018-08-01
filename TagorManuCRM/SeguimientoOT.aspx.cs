@@ -10,6 +10,8 @@ using DAL;
 using System.Data;
 using System.Net.Mail;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace TagorManuCRM
 {
@@ -459,14 +461,51 @@ namespace TagorManuCRM
                 if (fuArchivo1.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo1.FileName;
-                    fuArchivo1.SaveAs(Server.MapPath(carpeta));
+                    string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo1.FileName;
+                    fuArchivo1.SaveAs(Server.MapPath(carpetaTemp));
+                    
+                    bool fileOK = false;
+                    String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
+                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    for (int i = 0; i < allowedExtensions.Length; i++)
+                    {
+                        if (fileExtension == allowedExtensions[i])
+                        {
+                            fileOK = true;
+                            if (fileOK == true)
+                            {
+                         
+                                GenerateThumbNail(carpetaTemp, carpeta, 900, 600);
+                            }
+                        }
+                    }
+
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), carpeta, "");
+
                 }
 
                 if (fuArchivo2.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo2.FileName;
-                    fuArchivo2.SaveAs(Server.MapPath(carpeta));
+                    string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo2.FileName;
+
+                    fuArchivo2.SaveAs(Server.MapPath(carpetaTemp));
+
+                    bool fileOK = false;
+                    String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
+                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    for (int i = 0; i < allowedExtensions.Length; i++)
+                    {
+                        if (fileExtension == allowedExtensions[i])
+                        {
+                            fileOK = true;
+                            if (fileOK == true)
+                            {
+                                GenerateThumbNail(carpetaTemp, carpeta, 900, 600);
+                            }
+                        }
+                    }
+
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta);
                 }
 
@@ -542,7 +581,41 @@ namespace TagorManuCRM
             }
 
         }
-        
+
+
+
+        public void GenerateThumbNail(string sourcefile, string destinationfile, int width, int height)
+        {
+            System.Drawing.Image image = System.Drawing.Image.FromFile(Server.MapPath(sourcefile));
+
+
+
+            int srcWidth = image.Width;
+            int srcHeight = image.Height;
+            int thumbWidth = image.Width / 4;
+            int thumbHeight = image.Height / 4;
+            Bitmap bmp;
+
+            bmp = new Bitmap(thumbWidth, thumbHeight);
+
+            System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(bmp);
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, thumbWidth, thumbHeight);
+            //
+            gr.SmoothingMode = SmoothingMode.HighQuality;
+            //
+
+            gr.DrawImage(image, rectDestination, 0, 0, srcWidth, srcHeight, GraphicsUnit.Pixel);
+
+            bmp.Save(Server.MapPath(destinationfile));
+            bmp.Dispose();
+            image.Dispose();
+            gr.Flush();
+        }
+
+
         protected void lbtnGenerarPdf_Click(object sender, EventArgs e)
         {
             try
@@ -625,11 +698,11 @@ namespace TagorManuCRM
             string nombreArchivoPdf = "SOLPED_" + idTicket + ".pdf";
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
 
-            Font times = new Font(bfTimes, 7, Font.NORMAL);
-            Font timesRojo = new Font(bfTimes, 9, Font.BOLD, BaseColor.RED);
-            Font timesCorrelativo = new Font(bfTimes, 9, Font.BOLD);
-            Font fontCabecera = new Font(bfTimes, 8, Font.BOLD);
-            Font fontFirma = new Font(bfTimes, 8, Font.BOLD);
+            iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 7, iTextSharp.text.Font.NORMAL);
+            iTextSharp.text.Font timesRojo = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.BOLD, BaseColor.RED);
+            iTextSharp.text.Font timesCorrelativo = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.BOLD);
+            iTextSharp.text.Font fontCabecera = new iTextSharp.text.Font(bfTimes, 8, iTextSharp.text.Font.BOLD);
+            iTextSharp.text.Font fontFirma = new iTextSharp.text.Font(bfTimes, 8, iTextSharp.text.Font.BOLD);
 
             Document doc = new Document(PageSize.A4, 25, 25, 30, 30);
             PdfWriter writePdf = PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("pdfOT/" + nombreArchivoPdf), FileMode.Create));
@@ -655,24 +728,24 @@ namespace TagorManuCRM
             tableNumeroComprobante.AddCell(celdaCodLocal);
             tableNumeroComprobante.AddCell(new Paragraph(codLocalTitulo, fontCabecera));
 
-            tableNumeroComprobante.DefaultCell.Border = Rectangle.NO_BORDER;
+            tableNumeroComprobante.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
 
             tableNumeroComprobante.HorizontalAlignment = Element.ALIGN_RIGHT;
             tableNumeroComprobante.WidthPercentage = 25.0f;
 
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[0].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
             }
 
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[1].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
                 //celda.HorizontalAlignment = 2;
             }
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[2].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
                 //celda.HorizontalAlignment = 2;
             }
 

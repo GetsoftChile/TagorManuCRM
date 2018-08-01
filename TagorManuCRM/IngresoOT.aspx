@@ -85,10 +85,20 @@
                                         <asp:Label ID="lblUsuarioAsignado" runat="server" Text='<%# Bind("USUARIO_ASIG") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Zona">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblIdZona" runat="server" Text='<%# Bind("ID_ZONA") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Local">
                                     <ItemTemplate>
                                         <asp:Label ID="Label1" runat="server" Text='<%# Bind("COD_LOCAL") %>'></asp:Label>
                                         <asp:Label ID="lblLocal" runat="server" Text='<%# Bind("NOMBRE_LOCAL") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Area">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblArea" runat="server" Text='<%# Bind("AREA") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Tipo">

@@ -10,6 +10,9 @@ using DAL;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace TagorManuCRM
 {
@@ -204,7 +207,31 @@ namespace TagorManuCRM
                 //    //txtComentario.Text = "";
                 //}
 
-                
+
+                if (ddlNivel1.SelectedValue== "QUINCENAL" && ddlArea.SelectedValue=="1")
+                {
+                    txtComentario.Text = "Mantenimiento preventivo quincenal a iluminacion y enchufes:";
+                    txtComentario.Text += "\r\n\r\n- Chequear lampisteria.";
+                    txtComentario.Text += "\r\n- Chequear  Ballast Electronicos.";
+                    txtComentario.Text += "\r\n- Chequeo de funcionamiento general.";
+                    txtComentario.Text += "\r\n- Revision de modulos en enchufes.";
+                }
+                if (ddlNivel1.SelectedValue == "QUINCENAL" && ddlArea.SelectedValue == "2")
+                {
+                    txtComentario.Text = "LAVATORIOS Y LAVAMANOS:";
+                    txtComentario.Text += "\r\n\r\n- Chequear llaves.";
+                    txtComentario.Text += "\r\n- Chequear flexible";
+                    txtComentario.Text += "\r\n- Chequear Sifones.";
+                    txtComentario.Text += "\r\n- Chequear Desague Visible.";
+                    txtComentario.Text += "\r\n\r\nWC y Urinarios: ";
+                    txtComentario.Text += "\r\n- Chequear equipo.";
+                    txtComentario.Text += "\r\n- Chequear funcionamiento de descarga.";
+                    txtComentario.Text += "\r\n- Chequear funcionamiento llave de corte.";
+                    txtComentario.Text += "\r\n\r\n Piletas de piso y desagues: ";
+                    txtComentario.Text += "\r\n- Chequear equipos.";
+                    txtComentario.Text += "\r\n- Chequear sellos.";
+                }
+
             }
             catch (Exception ex)
             {
@@ -411,6 +438,16 @@ namespace TagorManuCRM
                     return;
                 }
 
+                if (ddlTipoOT.SelectedValue == "CP" || ddlTipoOT.SelectedValue == "CP")
+                {
+                    if (txtFechaAgendamiento.Text == string.Empty)
+                    {
+                        lblInfo.Text = "La fecha de agendamiento es obligatoria para las OT tipo preventivo o planificado.";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+                }
+
                 string idUsuario = Session["variableIdUsuario"].ToString();
                 string idLocal = ddlLocal.SelectedValue;
                 string idZona = ddlZona.SelectedValue;
@@ -535,6 +572,23 @@ namespace TagorManuCRM
                 {
                     ruta1 = ticket + "_" + fuArchivo.FileName;
                     fuArchivo.SaveAs(Server.MapPath("ArchivoOT/"+ruta1));
+                    bool fileOK = false;
+                    String fileExtension = System.IO.Path.GetExtension(ruta1).ToLower();
+                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    for (int i = 0; i < allowedExtensions.Length; i++)
+                    {
+                        if (fileExtension == allowedExtensions[i])
+                        {
+                            fileOK = true;
+                            if (fileOK == true)
+                            {
+                                System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
+                                GenerateThumbNail("ArchivoOT/temp/" + ruta1, "ArchivoOT/" + ruta1, 900, 600);
+                                System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
+                            }
+                        }
+                    }
+                        
                     dal.setEditarRutaArchivoGestion(Convert.ToInt32(ticket), ruta1);
                 }
 
@@ -542,6 +596,23 @@ namespace TagorManuCRM
                 {
                     ruta2 = ticket + "_" + fuArchivo2.FileName;
                     fuArchivo2.SaveAs(Server.MapPath("ArchivoOT/" + ruta2));
+                    
+                    bool fileOK = false;
+                    String fileExtension = System.IO.Path.GetExtension(ruta2).ToLower();
+                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    for (int i = 0; i < allowedExtensions.Length; i++)
+                    {
+                        if (fileExtension == allowedExtensions[i])
+                        {
+                            fileOK = true;
+                            if (fileOK == true)
+                            {
+                                System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
+                                GenerateThumbNail("ArchivoOT/" + ruta2, "ArchivoOT/" + ruta2, 900, 600);
+                                System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
+                            }
+                        }
+                    }
                     dal.setEditarRutaArchivoGestion2(Convert.ToInt32(ticket), ruta2);
                 }
 
@@ -805,11 +876,11 @@ namespace TagorManuCRM
             string nombreArchivoPdf = "SOLPED_" + idTicket + ".pdf";
             BaseFont bfTimes = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
 
-            Font times = new Font(bfTimes, 7, Font.NORMAL);
-            Font timesRojo = new Font(bfTimes, 9, Font.BOLD, BaseColor.RED);
-            Font timesCorrelativo = new Font(bfTimes, 9, Font.BOLD);
-            Font fontCabecera = new Font(bfTimes, 8, Font.BOLD);
-            Font fontFirma = new Font(bfTimes, 8, Font.BOLD);
+            iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 7, iTextSharp.text.Font.NORMAL);
+            iTextSharp.text.Font timesRojo = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.BOLD, BaseColor.RED);
+            iTextSharp.text.Font timesCorrelativo = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.BOLD);
+            iTextSharp.text.Font fontCabecera = new iTextSharp.text.Font(bfTimes, 8, iTextSharp.text.Font.BOLD);
+            iTextSharp.text.Font fontFirma = new iTextSharp.text.Font(bfTimes, 8, iTextSharp.text.Font.BOLD);
 
             Document doc = new Document(PageSize.A4, 25, 25, 30, 30);
             PdfWriter writePdf = PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("pdfOT/" + nombreArchivoPdf), FileMode.Create));
@@ -835,24 +906,24 @@ namespace TagorManuCRM
             tableNumeroComprobante.AddCell(celdaCodLocal);
             tableNumeroComprobante.AddCell(new Paragraph(codLocalTitulo, fontCabecera));
 
-            tableNumeroComprobante.DefaultCell.Border = Rectangle.NO_BORDER;
+            tableNumeroComprobante.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
 
             tableNumeroComprobante.HorizontalAlignment = Element.ALIGN_RIGHT;
             tableNumeroComprobante.WidthPercentage = 25.0f;
 
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[0].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
             }
 
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[1].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
                 //celda.HorizontalAlignment = 2;
             }
             foreach (PdfPCell celda in tableNumeroComprobante.Rows[2].GetCells())
             {
-                celda.Border = Rectangle.NO_BORDER;
+                celda.Border = iTextSharp.text.Rectangle.NO_BORDER;
                 //celda.HorizontalAlignment = 2;
             }
 
@@ -1926,5 +1997,43 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
             }
         }
+        
+
+        public void GenerateThumbNail(string sourcefile, string destinationfile, int width, int height)
+        {
+            System.Drawing.Image image = System.Drawing.Image.FromFile(Server.MapPath(sourcefile));
+
+
+
+            int srcWidth = image.Width;
+            int srcHeight = image.Height;
+            int thumbWidth = image.Width / 4;
+            int thumbHeight = image.Height / 4;
+            Bitmap bmp;
+
+            bmp = new Bitmap(thumbWidth, thumbHeight);
+
+            System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(bmp);
+            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            System.Drawing.Rectangle rectDestination = new System.Drawing.Rectangle(0, 0, thumbWidth, thumbHeight);
+            //
+            gr.SmoothingMode = SmoothingMode.HighQuality;
+            //
+
+            gr.DrawImage(image, rectDestination, 0, 0, srcWidth, srcHeight, GraphicsUnit.Pixel);
+
+            bmp.Save(Server.MapPath(destinationfile));
+            bmp.Dispose();
+            image.Dispose();
+            gr.Flush();
+        }
+
+        public static System.Drawing.Image resizeImage(System.Drawing.Image imgToResize, Size size)
+        {
+            return (System.Drawing.Image)(new Bitmap(imgToResize, size));
+        }
+
     }
 }
