@@ -438,7 +438,7 @@ namespace TagorManuCRM
                     return;
                 }
 
-                if (ddlTipoOT.SelectedValue == "CP" || ddlTipoOT.SelectedValue == "CP")
+                if (ddlTipoOT.SelectedValue == "CP" || ddlTipoOT.SelectedValue == "P")
                 {
                     if (txtFechaAgendamiento.Text == string.Empty)
                     {

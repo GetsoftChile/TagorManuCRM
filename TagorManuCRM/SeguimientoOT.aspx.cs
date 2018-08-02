@@ -463,7 +463,9 @@ namespace TagorManuCRM
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo1.FileName;
                     string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo1.FileName;
                     fuArchivo1.SaveAs(Server.MapPath(carpetaTemp));
+                    System.IO.File.Copy(Server.MapPath(carpetaTemp), Server.MapPath(carpeta));
                     
+
                     bool fileOK = false;
                     String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
                     String[] allowedExtensions = { ".jpg", ".gif", ".png" };
@@ -474,12 +476,12 @@ namespace TagorManuCRM
                             fileOK = true;
                             if (fileOK == true)
                             {
-                         
                                 GenerateThumbNail(carpetaTemp, carpeta, 900, 600);
+                                
                             }
                         }
                     }
-
+                    System.IO.File.Delete(Server.MapPath(carpetaTemp));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), carpeta, "");
 
                 }
@@ -490,6 +492,8 @@ namespace TagorManuCRM
                     string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo2.FileName;
 
                     fuArchivo2.SaveAs(Server.MapPath(carpetaTemp));
+                    System.IO.File.Copy(Server.MapPath(carpetaTemp), Server.MapPath(carpeta));
+                    //.//System.IO.File.Copy
 
                     bool fileOK = false;
                     String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
@@ -505,7 +509,7 @@ namespace TagorManuCRM
                             }
                         }
                     }
-
+                    System.IO.File.Delete(Server.MapPath(carpetaTemp));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta);
                 }
 
