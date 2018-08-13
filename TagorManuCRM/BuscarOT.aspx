@@ -188,7 +188,7 @@
                                         <asp:TemplateField HeaderText="OT">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblIdTicket" runat="server" Visible="false" Text='<%# Bind("ID_ATENCION") %>'></asp:Label>
-                                                <asp:LinkButton ID="lbtnIdTicket" runat="server" Text='<%# Bind("ID_ATENCION") %>' OnClick="lbtnIdTicket_Click"></asp:LinkButton>
+                                                <asp:LinkButton ID="lbtnIdTicket" runat="server" Text='<%# Bind("ID_ATENCION") %>' OnClick="lbtnIdTicket_Click" Font-Bold="true" Font-Size="Large" ></asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Sucursal" Visible="true">
@@ -286,6 +286,12 @@
                                             <ItemTemplate>
                                                 <asp:LinkButton ID="lbtnGenerarPdf" CssClass="btn btn-danger btn-xs" runat="server"
                                                     OnClick="lbtnGenerarPdf_Click"><i aria-hidden="true" class="fa fa-file-pdf-o"></i> </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField >
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="lbtnEliminarOT" CssClass="btn btn-danger btn-xs" runat="server"
+                                                    OnClick="lbtnEliminarOT_Click" OnClientClick="return confirm('¿Esta seguro que desea eliminar la OT?');"><i aria-hidden="true" class="fa fa-close" ></i> </asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

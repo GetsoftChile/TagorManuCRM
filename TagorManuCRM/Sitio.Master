@@ -221,10 +221,9 @@
 
               <footer class="main-footer">
                   <div class="pull-right hidden-xs">
-                      <b>Version</b> 1.0
+                      <b>Version</b> 1.1
                   </div>
-                  <strong>Copyright &copy; <a href="#">Tagor</a>.</strong> todos los derechos reservados.
-     
+                  <strong>Copyright &copy; <a  href="http://www.tagor.cl" target="_blank">Tagor</a>.</strong> todos los derechos reservados. By <a href="http://www.getsoft.cl" target="_blank">Getsoft</a>
               </footer>
 
               <!-- Control Sidebar -->

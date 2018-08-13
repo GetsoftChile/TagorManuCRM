@@ -85,50 +85,49 @@ namespace TagorManuCRM
                 liAdministracion.Visible = false;
                 liUsuarios.Visible = false;
                 liReporteTickets.Visible = false;
-
                 liMantenciones.Visible = false;
 
-                lblEmpresa.Text = "Tagor";
+                lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
 
-            //if (idPerfil == "5")
-            //{
-            //    liAdministracion.Visible = false;
-            //    liUsuarios.Visible = false;
-            //    liParametros.Visible = false;
-            //    liConfiguracion.Visible = false;
-                
-            //    lblEmpresa.Text = "Tagor";
-            //}
+            if (idPerfil == "5")
+            {
+                liAdministracion.Visible = false;
+                liUsuarios.Visible = false;
+                liReporteTickets.Visible = true;
+                liMantenciones.Visible = false;
 
-            //if (idPerfil == "6")
-            //{
-            //    liAdministracion.Visible = false;
-            //    liUsuarios.Visible = false;
-            //    liParametros.Visible = false;
-            //    liConfiguracion.Visible = false;
-                
+                lblEmpresa.Text = Session["variableEmpresa"].ToString();
+            }
 
-            //    lblEmpresa.Text = "Tagor";
-            //}
+            if (idPerfil == "6")
+            {
+                liAdministracion.Visible = true;
+                liUsuarios.Visible = false;
+                liReporteTickets.Visible = true;
+                liMantenciones.Visible = true;
+
+                lblEmpresa.Text = Session["variableEmpresa"].ToString();
+            }
+            
         }
 
         void visible()
         {
-            DataTable dt = new DataTable();
-            dt = dal.getBuscarParametro("1").Tables[0];
+            //DataTable dt = new DataTable();
+            //dt = dal.getBuscarParametro("1").Tables[0];
 
-            foreach (DataRow item in dt.Rows)
-            {
-                string campo1 = item["NOMBRE_CAMPO1"].ToString();
-                string campo2 = item["NOMBRE_CAMPO2"].ToString();
-                string campo3 = item["NOMBRE_CAMPO3"].ToString();
-                string campo4 = item["NOMBRE_CAMPO4"].ToString();
-                string campo5 = item["NOMBRE_CAMPO5"].ToString();
-                string gestion = item["GESTION_ADJUNTO"].ToString();
+            //foreach (DataRow item in dt.Rows)
+            //{
+            //    string campo1 = item["NOMBRE_CAMPO1"].ToString();
+            //    string campo2 = item["NOMBRE_CAMPO2"].ToString();
+            //    string campo3 = item["NOMBRE_CAMPO3"].ToString();
+            //    string campo4 = item["NOMBRE_CAMPO4"].ToString();
+            //    string campo5 = item["NOMBRE_CAMPO5"].ToString();
+            //    string gestion = item["GESTION_ADJUNTO"].ToString();
 
                 
-            }
+            //}
 
         }
     }

@@ -2999,6 +2999,28 @@ namespace DAL
             }
         }
 
+
+        public void setEliminarOT(string idOt)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_EliminarOT");
+
+            db.AddInParameter(cmd, "@idOt", DbType.String, idOt);
+
+            try
+            {
+                db.ExecuteNonQuery(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo eliminar la OT, ERROR: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo eliminar la OT, ERROR: " + ex.Message, ex);
+            }
+        }
+
+
         public void setEliminarTicket(string idTicket)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_EliminarTicket");

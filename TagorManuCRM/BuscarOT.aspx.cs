@@ -572,6 +572,8 @@ namespace TagorManuCRM
 
         protected void paginacion_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            string perfil = Session["variableIdPerfil"].ToString();
+
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 Label _lblArchivo = (Label)e.Row.FindControl("lblArchivo");
@@ -579,9 +581,11 @@ namespace TagorManuCRM
 
                 LinkButton _btnArchivo = (LinkButton)e.Row.FindControl("btnArchivo");
                 LinkButton _btnArchivo2 = (LinkButton)e.Row.FindControl("btnArchivo2");
-        
-                Label _lblEstado = (Label)e.Row.FindControl("lblEstado");
 
+                LinkButton _lbtnEliminarOT = (LinkButton)e.Row.FindControl("lbtnEliminarOT");
+                
+                Label _lblEstado = (Label)e.Row.FindControl("lblEstado");
+                
                 if (_lblEstado.Text == "PENDIENTE")
                 {
                     _lblEstado.CssClass = "label label-danger";
@@ -607,6 +611,15 @@ namespace TagorManuCRM
                 else
                 {
                     _btnArchivo2.Visible = true;
+                }
+
+                if (perfil=="3" || perfil == "1")
+                {
+                    _lbtnEliminarOT.Visible = true;
+                }
+                else
+                {
+                    _lbtnEliminarOT.Visible = false;
                 }
             }
 
@@ -1169,6 +1182,26 @@ namespace TagorManuCRM
         protected void ddlSucursal_DataBound(object sender, EventArgs e)
         {
             ddlSucursal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        protected void lbtnEliminarOT_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton btn = (LinkButton)sender;
+                GridViewRow row = (GridViewRow)btn.NamingContainer;
+                Label _lblIdTicket = (Label)grvTickets.Rows[row.RowIndex].FindControl("lblIdTicket");
+                dal.setEliminarOT(_lblIdTicket.Text);
+
+
+                buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-danger";
+                divAlerta.Visible = true;
+            }
         }
     }
 }
