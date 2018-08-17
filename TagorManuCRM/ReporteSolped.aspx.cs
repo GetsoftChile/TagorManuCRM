@@ -75,7 +75,7 @@ namespace TagorManuCRM
                 //Utilidad.ExportDataTableToExcel(dt, "exporte_gestiones.xls", "", "", "", "");
 
                 Response.ContentType = "Application/x-msexcel";
-                Response.AddHeader("content-disposition", "attachment;filename=exporte_ticket.csv");
+                Response.AddHeader("content-disposition", "attachment;filename=exporte_OT.csv");
                 //Response.Charset = "UTF-8";
                 Response.ContentEncoding = Encoding.Unicode;
                 Response.Write(Utilidad.ExportToCSVFile(dt));

@@ -232,6 +232,25 @@ namespace TagorManuCRM
                     txtComentario.Text += "\r\n- Chequear sellos.";
                 }
 
+
+                if (ddlNivel1.SelectedValue == "QUINCENAL-MENSUAL" && ddlArea.SelectedValue == "1")
+                {
+                    txtComentario.Text = "- Chequeo de alumbrado y ballast electrónicos.";
+                    txtComentario.Text += "\r\n- Chequeo y mediciones de enchufes y módulos.";
+                    txtComentario.Text += "\r\n- Chequeo de circuitos y canalizaciones (revisar operación).";
+                    txtComentario.Text += "\r\n- Aspirado y soplado de tableros.";
+                    txtComentario.Text += "\r\n\r\n Recuerde cambiar luminaria y/o enchufe si se requiere,  dejando registrado de cambio y repuesto  en OT , además  tomando las medidas de control y seguridad, utilización de EPP y realizar AST.";
+                }
+                if (ddlNivel1.SelectedValue == "QUINCENAL-MENSUAL" && ddlArea.SelectedValue == "2")
+                {
+                    txtComentario.Text = "- Chequeo lavatorios y lavamanos.";
+                    txtComentario.Text += "\r\n- Chequeo de WC y urinarios.";
+                    txtComentario.Text += "\r\n- Chequeo de piletas de piso y desagües.";
+                    txtComentario.Text += "\r\n- Sondeo o varillaje de cámaras.";
+                    txtComentario.Text += "\r\n- Chequear Desague Visible.";
+                    txtComentario.Text += "\r\n\r\nRecuerde indicar si hay cambio de artefactos.";
+                }
+
             }
             catch (Exception ex)
             {

@@ -309,7 +309,7 @@
                    <div class="row">
                        <div class="col-lg-6 col-xs-12">
                            <strong>Observación</strong>
-                           <asp:TextBox ID="txtComentario" TextMode="MultiLine" CssClass="form-control input-sm" ClientIDMode="Static" runat="server" Width="100%" Height="100px" />
+                           <asp:TextBox ID="txtComentario" TextMode="MultiLine" CssClass="form-control input-sm" ClientIDMode="Static" runat="server" Width="100%" Height="180px" />
                        </div>
                        <div class="col-lg-6 col-xs-12">
                            <strong>Archivo Adjunto 1</strong>
