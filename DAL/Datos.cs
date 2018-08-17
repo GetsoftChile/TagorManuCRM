@@ -1201,8 +1201,11 @@ namespace DAL
             }
         }
 
-        public DataSet getReporteTickets(string idUsuario, string fechaDesde, string fechaHasta, string insistencia, string idArea)
+        public DataSet getReporteTickets(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado)
         {
+            //@fechaDesde varchar(10),@fechaHasta varchar(10),@idArea int,@idUsuario varchar(10),@idSucursal int, @idZona varchar(20),
+            //@idLocal varchar(10), @idEstado int
             DbCommand cmd = db.GetStoredProcCommand("stp_ReporteTickets");
 
             if (idUsuario == "0")
@@ -1231,16 +1234,97 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
             }
-
-            if (insistencia == "0")
+            
+            if (idArea == "0")
             {
-                db.AddInParameter(cmd, "@insistencia", DbType.String, null);
+                db.AddInParameter(cmd, "@idArea", DbType.String, null);
             }
             else
             {
-                db.AddInParameter(cmd, "@insistencia", DbType.String, insistencia);
+                db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             }
 
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
+
+            if (idEstado == "0")
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
+            }
+            
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el reporte de OT, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el reporte de OT, " + ex.Message, ex);
+            }
+        }
+
+
+        public DataSet getReporteTicketsPorUsuario(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_ReporteTicketsPorUsuario");
+            if (idUsuario == "0")
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, idUsuario);
+            }
+
+            if (fechaDesde == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, fechaDesde);
+            }
+
+            if (fechaHasta == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
+            }
 
             if (idArea == "0")
             {
@@ -1251,17 +1335,53 @@ namespace DAL
                 db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             }
 
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
+
+            if (idEstado == "0")
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
+            }
+
             try
             {
                 return db.ExecuteDataSet(cmd);
             }
             catch (SqlException ex)
             {
-                throw new Exception("No se pudo buscar el reporte de tickets, " + ex.Message, ex);
+                throw new Exception("No se pudo buscar el reporte de usuarios, " + ex.Message, ex);
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo buscar el reporte de tickets, " + ex.Message, ex);
+                throw new Exception("No se pudo buscar el reporte de usuarios, " + ex.Message, ex);
             }
         }
 
@@ -2281,13 +2401,14 @@ namespace DAL
             }
         }
 
+        
 
-
-        public DataSet getBuscarTicketBuscadorParametrosExporte(string usuarioAsig, string fechaDesde, string fechaHasta, string idEstado)
+        public DataSet getBuscarTicketBuscadorParametrosExporte(string idUsuarioCreacion, string usuarioAsig, string fechaDesde, string fechaHasta,
+            string idEstado, string clase, string idArea, string idSucursal)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_buscarTicketBuscadorParametrosExporte");
 
-            if (usuarioAsig == "0")
+            if (usuarioAsig == "0" || usuarioAsig == string.Empty)
             {
                 db.AddInParameter(cmd, "@usuarioAsig", DbType.String, null);
             }
@@ -2295,6 +2416,17 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@usuarioAsig", DbType.String, usuarioAsig);
             }
+
+
+            if (idUsuarioCreacion == "0" || idUsuarioCreacion == string.Empty)
+            {
+                db.AddInParameter(cmd, "@idUsuarioCreacion", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idUsuarioCreacion", DbType.String, idUsuarioCreacion);
+            }
+
 
             if (idEstado == "0")
             {
@@ -2305,6 +2437,30 @@ namespace DAL
                 db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
             }
 
+            if (clase == "0")
+            {
+                db.AddInParameter(cmd, "@tipo", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@tipo", DbType.String, clase);
+            }
+            if (idArea == "0")
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
+            }
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
             if (fechaDesde == string.Empty)
             {
                 db.AddInParameter(cmd, "@fechaDesde", DbType.String, null);
@@ -2322,6 +2478,7 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
             }
+
 
             try
             {
@@ -2924,8 +3081,101 @@ namespace DAL
                 throw new Exception("No se pudo buscar el Local, " + ex.Message, ex);
             }
         }
+        
+        public DataSet getBuscarAVGTiempoResolucion(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado, string tipo)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarAVGTiempoResolucion");
 
-        public DataSet getBuscarTicketExporte(string idUsuario, string fechaDesde, string fechaHasta, string insistencia)
+            if (idUsuario == "0")
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, idUsuario);
+            }
+
+            if (fechaDesde == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, fechaDesde);
+            }
+
+            if (fechaHasta == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
+            }
+
+            if (idArea == "0")
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
+            }
+
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
+
+            if (idEstado == "0")
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
+            }
+
+            db.AddInParameter(cmd, "@tipo", DbType.String, tipo);
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el reporte de OT's, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el reporte de ot, " + ex.Message, ex);
+            }
+        }
+
+        public DataSet getBuscarTicketExporte(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_BuscarTicketExporte");
 
@@ -2956,14 +3206,51 @@ namespace DAL
                 db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
             }
 
-            if (insistencia == "0")
+            if (idArea == "0")
             {
-                db.AddInParameter(cmd, "@insistencia", DbType.String, null);
+                db.AddInParameter(cmd, "@idArea", DbType.String, null);
             }
             else
             {
-                db.AddInParameter(cmd, "@insistencia", DbType.String, insistencia);
+                db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             }
+
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
+
+            if (idEstado == "0")
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
+            }
+
 
             try
             {
@@ -3088,7 +3375,16 @@ namespace DAL
         public DataSet getBuscarLocalPorZona(string idZona)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_BuscarLocalPorZona");
-            db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            if (idZona=="0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            
             try
             {
                 return db.ExecuteDataSet(cmd);
@@ -3315,12 +3611,20 @@ namespace DAL
             }
         }
 
-        public DataSet getCantidadTicketPorTipoYArea(string fechaDesde, 
-            string fechaHasta, string idEstado, string idArea, string idZonas)
+        public DataSet getCantidadTicketPorTipoYArea(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_CantidadTicketPorTipoYArea");
 
-           
+            if (idUsuario == "0")
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, idUsuario);
+            }
+
             if (fechaDesde == string.Empty)
             {
                 db.AddInParameter(cmd, "@fechaDesde", DbType.String, null);
@@ -3339,7 +3643,7 @@ namespace DAL
                 db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
             }
 
-            if (idArea=="0")
+            if (idArea == "0")
             {
                 db.AddInParameter(cmd, "@idArea", DbType.String, null);
             }
@@ -3347,16 +3651,33 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             }
-            db.AddInParameter(cmd, "@idZonas", DbType.String, idZonas);
-            //if (string.IsNullOrEmpty(idZonas))
-            //{
-            //    db.AddInParameter(cmd, "@idZonas", DbType.String, null);
-            //}
-            //else
-            //{
-            //    db.AddInParameter(cmd, "@idZonas", DbType.String, idZonas);
-            //}
-            
+
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
 
             if (idEstado == "0")
             {
@@ -3366,7 +3687,7 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
             }
-
+            
             try
             {
                 return db.ExecuteDataSet(cmd);

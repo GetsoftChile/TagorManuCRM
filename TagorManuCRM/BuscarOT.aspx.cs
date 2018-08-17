@@ -10,7 +10,7 @@ using DataTableToExcel;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
-
+using System.Text;
 
 namespace TagorManuCRM
 {
@@ -24,6 +24,9 @@ namespace TagorManuCRM
             {
                 lblInfo.Text = "";
                 divAlerta.Visible = false;
+                
+                ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+                scriptManager.RegisterPostBackControl(this.lbtnExportar);
 
                 if (!Page.IsPostBack)
                 {
@@ -76,10 +79,12 @@ namespace TagorManuCRM
                     {
                         string _estado = Convert.ToString(Request.QueryString["e"]);
                         string _area = Convert.ToString(Request.QueryString["a"]);
+                        string _sucursal = Convert.ToString(Request.QueryString["s"]);
 
                         ddlEstado.SelectedValue = _estado;
                         ddlTipo.SelectedValue = _tipo;
                         ddlArea.SelectedValue = _area;
+                        ddlSucursal.SelectedValue = _sucursal;
 
                         buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue,ddlSucursal.SelectedValue);
 
@@ -314,16 +319,6 @@ namespace TagorManuCRM
             }
         }
 
-        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea, string idSucursal)
-        {
-            DataTable dt = new DataTable();
-            dt = dal.getBuscarTicketBuscadorParametros(ddlUsuarioCreacion.SelectedValue, ddlUsuarioAsig.SelectedValue, 
-                txtFechaDesde.Text, txtFechaHasta.Text, idEstado,  tipo, idArea, idSucursal).Tables[0];
-
-            Session["sessionDtTicket"] = dt;
-            grvTickets.DataSource = dt;
-            grvTickets.DataBind();
-        }
 
         protected void ddlUsuarioAsig_DataBound(object sender, EventArgs e)
         {
@@ -455,7 +450,7 @@ namespace TagorManuCRM
                 Label _lblIdEstado = (Label)grvResumen.Rows[row.RowIndex].FindControl("lblIdEstado");
 
                 DataTable dt = new DataTable();
-                dt = dal.getBuscarTicketBuscadorParametrosExporte("0", txtFechaDesde.Text, txtFechaHasta.Text, _lblIdEstado.Text).Tables[0];
+                //dt = dal.getBuscarTicketBuscadorParametrosExporte("0", txtFechaDesde.Text, txtFechaHasta.Text, _lblIdEstado.Text).Tables[0];
 
                 Utilidad.ExportDataTableToExcel(dt, "Exporte.xls", "", "", "", "");
             }
@@ -1195,6 +1190,41 @@ namespace TagorManuCRM
 
 
                 buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-danger";
+                divAlerta.Visible = true;
+            }
+        }
+
+
+        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea, string idSucursal)
+        {
+            DataTable dt = new DataTable();
+            dt = dal.getBuscarTicketBuscadorParametros(ddlUsuarioCreacion.SelectedValue, ddlUsuarioAsig.SelectedValue,
+                txtFechaDesde.Text, txtFechaHasta.Text, idEstado, tipo, idArea, idSucursal).Tables[0];
+
+            Session["sessionDtTicket"] = dt;
+            grvTickets.DataSource = dt;
+            grvTickets.DataBind();
+        }
+
+        protected void lbtnExportar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                dt = dal.getBuscarTicketBuscadorParametrosExporte(ddlUsuarioCreacion.SelectedValue, ddlUsuarioAsig.SelectedValue,
+                txtFechaDesde.Text, txtFechaHasta.Text, ddlEstado.SelectedValue, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue).Tables[0];
+
+                Response.ContentType = "Application/x-msexcel";
+                Response.AddHeader("content-disposition", "attachment;filename=exporte_OT.csv");
+                //Response.Charset = "UTF-8";
+                Response.ContentEncoding = Encoding.Unicode;
+                Response.Write(Utilidad.ExportToCSVFile(dt));
+                Response.End();
             }
             catch (Exception ex)
             {

@@ -159,10 +159,16 @@
                                             <asp:DropDownList ID="ddlSucursal" runat="server" OnDataBound="ddlSucursal_DataBound" CssClass="form-control input-sm">
                                             </asp:DropDownList>
                                         </div>
-                                        <div class="col-xs-12 col-lg-2">
+                                        <div class="col-xs-12 col-lg-1">
                                             <label for="btnBuscarTicket"></label>
                                             <asp:Button ID="btnBuscarTicket" runat="server" CssClass="btn btn-sm btn-block btn-primary"
                                                 Text="Buscar" OnClick="btnBuscarTicket_Click" />
+                                            
+                                        </div>
+                                        <div class="col-xs-12 col-lg-1">
+                                            <label for="lbtnExportar"></label>
+                                            <asp:LinkButton ID="lbtnExportar" runat="server" OnClick="lbtnExportar_Click"  CssClass="btn btn-success btn-sm btn-block">
+                                                <i aria-hidden="true" class="fa fa-lg fa-file-excel-o"></i></asp:LinkButton>
                                         </div>
                                         <div class="col-xs-2 col-lg-2" runat="server" visible="false">
                                             <label for=""></label>

@@ -1562,6 +1562,7 @@
     <Content Include="Contrasena.aspx" />
     <Content Include="Dashboard.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="DetalleOT.aspx" />
     <Content Include="Firma.aspx" />
     <Content Include="IngresoOT.aspx" />
     <Content Include="Mantenciones.aspx" />
@@ -8264,6 +8265,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleOT.aspx.cs">
+      <DependentUpon>DetalleOT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetalleOT.aspx.designer.cs">
+      <DependentUpon>DetalleOT.aspx</DependentUpon>
     </Compile>
     <Compile Include="Firma.aspx.cs">
       <DependentUpon>Firma.aspx</DependentUpon>

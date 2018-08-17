@@ -27,13 +27,15 @@ namespace TagorManuCRM
 
                     area();
                     Estado();
-                    zonas(idUsuario);
-                    
-                    foreach (ListItem fila in chkZonas.Items)
-                    {
-                        fila.Selected = true;
-                    }
-
+                    Sucursal();
+                    Zona();
+                    Local();
+                    //zonas(idUsuario);
+                    //foreach (ListItem fila in chkZonas.Items)
+                    //{
+                    //    fila.Selected = true;
+                    //}
+                    usuarioAsig();
                     buscar();
                     grafico();
                 }
@@ -67,7 +69,8 @@ namespace TagorManuCRM
             {
                 //string idUsuario = ddlUsuario.SelectedValue;
                 DataTable dt = new DataTable();
-                dt = dal.getBuscarTicketExporte(null, txtFechaDesde.Text, txtFechaHasta.Text, null).Tables[0];
+                dt = dal.getBuscarTicketExporte(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue).Tables[0];
 
                 //Utilidad.ExportDataTableToExcel(dt, "exporte_gestiones.xls", "", "", "", "");
 
@@ -86,15 +89,15 @@ namespace TagorManuCRM
             }
         }
 
-        void zonas(string idUsuario)
-        {
-            DataTable dt = new DataTable();
-            dt = dal.getBuscarZonaPorIdUsuario(idUsuario).Tables[0];
-            chkZonas.DataSource = dt;
-            chkZonas.DataTextField = "ID_ZONA";
-            chkZonas.DataValueField = "ID_ZONA";
-            chkZonas.DataBind();
-        }
+        //void zonas(string idUsuario)
+        //{
+        //    DataTable dt = new DataTable();
+        //    dt = dal.getBuscarZonaPorIdUsuario(idUsuario).Tables[0];
+        //    chkZonas.DataSource = dt;
+        //    chkZonas.DataTextField = "ID_ZONA";
+        //    chkZonas.DataValueField = "ID_ZONA";
+        //    chkZonas.DataBind();
+        //}
 
         void area()
         {
@@ -114,28 +117,86 @@ namespace TagorManuCRM
 
         void buscar()
         {
+            //string idZona = string.Empty;
+            //foreach (ListItem fila in chkZonas.Items)
+            //{
+            //    if (fila.Selected == true)
+            //    {
+            //        idZona += fila.Value.ToString() + ",";
+            //    }
+            //}
+            //idZona = idZona.TrimEnd(',');
+
+            DataTable dtTiempoResolucion = new DataTable();
+            dtTiempoResolucion = dal.getBuscarAVGTiempoResolucion(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue, "C").Tables[0];
+
+            //grvCorrectiva.DataSource = dtTiempoResolucion;
+            //grvCorrectiva.DataBind();
+            foreach (DataRow item in dtTiempoResolucion.Rows)
+            {
+                lblAvgTiempoResolucionCorrectiva.Text = item["DIAS"].ToString() + ":" + item["HORAS"].ToString() + ":" + item["MINUTOS"].ToString() + ":" + item["SEGUNDOS"].ToString();
+            }
+            dtTiempoResolucion.Clear();
+            dtTiempoResolucion = dal.getBuscarAVGTiempoResolucion(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue, "CP").Tables[0];
+            foreach (DataRow item in dtTiempoResolucion.Rows)
+            {
+                lblAvgTiempoResolucionCorrectivaPlanificada.Text =  item["DIAS"].ToString() + ":" + item["HORAS"].ToString() + ":" + item["MINUTOS"].ToString() + ":" + item["SEGUNDOS"].ToString();
+            }
+            dtTiempoResolucion.Clear();
+            dtTiempoResolucion = dal.getBuscarAVGTiempoResolucion(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue, "P").Tables[0];
+            foreach (DataRow item in dtTiempoResolucion.Rows)
+            {
+                lblAvgTiempoResolucionPreventiva.Text = item["DIAS"].ToString() + ":" + item["HORAS"].ToString() + ":" + item["MINUTOS"].ToString() + ":" + item["SEGUNDOS"].ToString();
+            }
+
             DataTable dt = new DataTable();
-            dt = dal.getReporteTickets(null, txtFechaDesde.Text, txtFechaHasta.Text, null, ddlArea.SelectedValue).Tables[0];
+            dt = dal.getReporteTickets(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(), 
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue).Tables[0];
+            grvAtencionCliente.DataSource = dt;
+            grvAtencionCliente.DataBind();
+
+            grvDetallePorUsuario.DataSource = dal.getReporteTicketsPorUsuario(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue);
+            grvDetallePorUsuario.DataBind();
+        }
+
+        void buscarDetallePorUsuario()
+        {
+            //string idZona = string.Empty;
+            //foreach (ListItem fila in chkZonas.Items)
+            //{
+            //    if (fila.Selected == true)
+            //    {
+            //        idZona += fila.Value.ToString() + ",";
+            //    }
+            //}
+            //idZona = idZona.TrimEnd(',');
+            DataTable dt = new DataTable();
+            dt = dal.getReporteTicketsPorUsuario(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue).Tables[0];
             grvAtencionCliente.DataSource = dt;
             grvAtencionCliente.DataBind();
         }
 
+
         void grafico()
         {
-            //string dataPointConsulta = "";
-            string idZona = string.Empty;
-            foreach (ListItem fila in chkZonas.Items)
-            {
-                if (fila.Selected == true)
-                {
-                    idZona += fila.Value.ToString() + ",";
-                }
-            }
-
-            idZona = idZona.TrimEnd(',');
-
+            //string idZona = string.Empty;
+            //foreach (ListItem fila in chkZonas.Items)
+            //{
+            //    if (fila.Selected == true)
+            //    {
+            //        idZona += fila.Value.ToString() + ",";
+            //    }
+            //}
+            //idZona = idZona.TrimEnd(',');
+            string idZona = ddlZonas.SelectedValue;
             DataTable dt = new DataTable();
-            dt = dal.getCantidadTicketPorTipoYArea(txtFechaDesde.Text, txtFechaHasta.Text, ddlEstado.SelectedValue, ddlArea.SelectedValue, idZona).Tables[0];
+            dt = dal.getCantidadTicketPorTipoYArea(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue).Tables[0];
             if (dt.Rows.Count == 0)
             {
                 return;
@@ -193,14 +254,18 @@ namespace TagorManuCRM
                 string idArea = ddlArea.SelectedValue;
                 LinkButton lbtn = sender as LinkButton;
                 GridViewRow row = (GridViewRow)lbtn.NamingContainer;
-                //Label _lblIdNivel1 = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblIdNivel1");
-                
+                Label _lblIdNivel1 = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblIdNivel1");
                 string fechaDesde = txtFechaDesde.Text;
                 string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = ddlUsuario.SelectedValue;
+
                 //string idUsuario = ddlUsuario.SelectedValue;
 
-                Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
-
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx");
             }
             catch (Exception ex)
             {
@@ -224,8 +289,8 @@ namespace TagorManuCRM
                 string fechaHasta = txtFechaHasta.Text;
                 //string idUsuario = ddlUsuario.SelectedValue;
 
-                Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=" );
-
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=" );
+                Response.Redirect("DetalleOT.aspx");
             }
             catch (Exception ex)
             {
@@ -249,16 +314,17 @@ namespace TagorManuCRM
                 string fechaHasta = txtFechaHasta.Text;
                 //string idUsuario = ddlUsuario.SelectedValue;
 
-                if (_lblEscalamiento.Text.ToUpper() == "TOTAL")
-                {
-                    Session["strTituloBuscadorTicket"] = "Detalle";
-                    Response.Redirect("BuscarOT.aspx?fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
-                }
-                else
-                {
-                    Session["strTituloBuscadorTicket"] = "Detalle";
-                    Response.Redirect("BuscarOT.aspx?idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
-                }
+                Response.Redirect("DetalleOT.aspx");
+                //if (_lblEscalamiento.Text.ToUpper() == "TOTAL")
+                //{
+                //    Session["strTituloBuscadorTicket"] = "Detalle";
+                //    Response.Redirect("BuscarOT.aspx?fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
+                //}
+                //else
+                //{
+                //    Session["strTituloBuscadorTicket"] = "Detalle";
+                //    Response.Redirect("BuscarOT.aspx?idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
+                //}
             }
             catch (Exception ex)
             {
@@ -266,6 +332,142 @@ namespace TagorManuCRM
                 divAlerta.Attributes["class"] = "alert alert-warning";
                 divAlerta.Visible = true;
             }
+        }
+
+        protected void grvDetallePorUsuario_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
+        }
+
+        protected void lbtnPendientePorUsuario_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("DetalleOT.aspx");
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-warning";
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void lbtnCerradoPorUsuario_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("DetalleOT.aspx");
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-warning";
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void lbtnTotalPorUsuario_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("DetalleOT.aspx");
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-warning";
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void ddlUsuario_DataBound(object sender, EventArgs e)
+        {
+            ddlUsuario.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        void usuarioAsig()
+        {
+            string misZonas = string.Empty;
+            string activo = "1";
+            string perfil = Session["variableIdPerfil"].ToString();
+            string idUsuario = Session["variableIdUsuario"].ToString();
+
+            foreach (DataRow item in dal.getBuscarZonaPorIdUsuario(idUsuario).Tables[0].Rows)
+            {
+                misZonas = item["ID_ZONA"].ToString() + ",";
+            }
+
+            if (misZonas != string.Empty)
+            {
+                misZonas = misZonas.TrimEnd(',');
+            }
+
+
+            ddlUsuario.DataSource = dal.getBuscarUsuarioPorIdZonas(misZonas, activo);
+            //ddlUsuario.DataSource = dal.getBuscarUsuarioPorId(null);
+            ddlUsuario.DataValueField = "ID_USUARIO";
+            ddlUsuario.DataTextField = "USUARIO";
+            ddlUsuario.DataBind();
+            
+        }
+
+
+        protected void ddlZona_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Local();
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-danger";
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void ddlZonas_DataBound(object sender, EventArgs e)
+        {
+            ddlZonas.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todas", "0"));
+        }
+
+        void Zona()
+        {
+            string idUsuario = Session["variableIdUsuario"].ToString();
+            ddlZonas.DataSource = dal.getBuscarZonaPorIdUsuario(idUsuario);
+            ddlZonas.DataValueField = "ID_ZONA";
+            ddlZonas.DataTextField = "ID_ZONA";
+            ddlZonas.DataBind();
+        }
+
+        protected void ddlSucursal_DataBound(object sender, EventArgs e)
+        {
+            ddlSucursal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        void Sucursal()
+        {
+            ddlSucursal.DataSource = dal.getBuscarSucursal("1");
+            ddlSucursal.DataValueField = "ID_SUCURSAL";
+            ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
+            ddlSucursal.DataBind();
+        }
+
+        protected void ddlLocal_DataBound(object sender, EventArgs e)
+        {
+            ddlLocal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        
+        void Local()
+        {
+            DataTable dt = new DataTable();
+            dt = dal.getBuscarLocalPorZona(ddlZonas.SelectedValue).Tables[0];
+            ddlLocal.DataSource = dt;
+            ddlLocal.DataValueField = "ID_LOCAL";
+            ddlLocal.DataTextField = "LOCAL";
+            ddlLocal.DataBind();
         }
     }
 }

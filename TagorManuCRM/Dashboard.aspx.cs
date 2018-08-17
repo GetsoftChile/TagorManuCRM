@@ -268,8 +268,8 @@ namespace TagorManuCRM
             {
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Pendientes";
                 string idArea = ddlArea.SelectedValue;
-
-                Response.Redirect("BuscarOT.aspx?t=C&e=1&a=" + idArea);
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=1&a=" + idArea + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {
@@ -282,9 +282,10 @@ namespace TagorManuCRM
         {
             try
             {
+                string idSucursal = ddlSucursal.SelectedValue;
                 string idArea = ddlArea.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=C&e=3&a=" + idArea);
+                Response.Redirect("BuscarOT.aspx?t=C&e=3&a=" + idArea + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {
@@ -297,8 +298,9 @@ namespace TagorManuCRM
         {
             try
             {
+                string idSucursal = ddlSucursal.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Pendientes";
-                Response.Redirect("BuscarOT.aspx?t=CP&e=1&a=" + ddlArea.SelectedValue);
+                Response.Redirect("BuscarOT.aspx?t=CP&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {
@@ -311,8 +313,9 @@ namespace TagorManuCRM
         {
             try
             {
+                string idSucursal = ddlSucursal.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=CP&e=3&a=" + ddlArea.SelectedValue);
+                Response.Redirect("BuscarOT.aspx?t=CP&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {
@@ -325,8 +328,9 @@ namespace TagorManuCRM
         {
             try
             {
+                string idSucursal = ddlSucursal.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivas Pendientes";
-                Response.Redirect("BuscarOT.aspx?t=P&e=1&a=" + ddlArea.SelectedValue);
+                Response.Redirect("BuscarOT.aspx?t=P&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {
@@ -339,8 +343,9 @@ namespace TagorManuCRM
         {
             try
             {
+                string idSucursal = ddlSucursal.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=P&e=3&a=" + ddlArea.SelectedValue);
+                Response.Redirect("BuscarOT.aspx?t=P&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
             }
             catch (Exception ex)
             {

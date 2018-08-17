@@ -39,9 +39,7 @@
                         <div class="col-xs-12 col-lg-2">
                             <strong>Nombre Solicitante:</strong><br />
                             <asp:Label ID="lblNombreUsuario" runat="server"></asp:Label>
-                          
                         </div>
-                        
                     </div>
             </div>
                 
@@ -382,12 +380,13 @@
         prm.add_endRequest(function () {
             cargar();
         });
-
+        
         function cargar() {
             //agregar jquery de las funciones...
             $('nh').select2();
 
-
+           var date = new Date();
+           date.setDate(date.getDate());
            var dp = $(".class-date");
             dp.datepicker({
                 changeMonth: true,
@@ -396,8 +395,22 @@
                 format: "dd-mm-yyyy",
                 language: "es",
                 todayHighlight: true,
-                autoclose: true
+                autoclose: true,
+                startDate: date
             });
+
+//            var dates = $(".class-date").datepicker({
+//    defaultDate: "+1w",
+//    changeMonth: true,
+//    numberOfMonths: 3,
+//    minDate: dateToday,
+//    onSelect: function(selectedDate) {
+//        var option = this.id == "from" ? "minDate" : "maxDate",
+//            instance = $(this).data("datepicker"),
+//            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+//        dates.not(this).datepicker("option", option, date);
+//    }
+//});
         }
     </script>
 </asp:Content>
