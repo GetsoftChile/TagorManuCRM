@@ -55,54 +55,54 @@
                 </div>--%>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="">Fecha Desde:</label>
                         <asp:TextBox ID="txtFechaDesde" ClientIDMode="Static" runat="server" CssClass="form-control input-sm class-date"></asp:TextBox>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="">Fecha Hasta:</label>
                         <asp:TextBox ID="txtFechaHasta" ClientIDMode="Static" runat="server" CssClass="form-control input-sm class-date"></asp:TextBox>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="ddlUsuario">Sucursal</label>
                         <asp:DropDownList ID="ddlSucursal" runat="server" OnDataBound="ddlSucursal_DataBound" CssClass="form-control input-sm">
                         </asp:DropDownList>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                         <ContentTemplate>
-                            <div class="col-xs-2">
+                            <div class="col-lg-2 col-xs-12">
                                 <label for="ddlZonas">Zonas</label>
                                 <asp:DropDownList ID="ddlZonas" runat="server" OnDataBound="ddlZonas_DataBound" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlZona_SelectedIndexChanged">
                                 </asp:DropDownList>
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-lg-2 col-xs-12">
                                 <label for="ddlUsuario">Local</label>
                                 <asp:DropDownList ID="ddlLocal" runat="server" OnDataBound="ddlLocal_DataBound" CssClass="form-control input-sm">
                                 </asp:DropDownList>
                             </div>
                         </ContentTemplate>
                     </asp:UpdatePanel>
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="ddlUsuario">Usuario Asignado</label>
                         <asp:DropDownList ID="ddlUsuario" runat="server" OnDataBound="ddlUsuario_DataBound" CssClass="form-control input-sm">
                         </asp:DropDownList>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="ddlArea">Area</label>
                         <asp:DropDownList ID="ddlArea" runat="server" OnDataBound="ddlArea_DataBound" CssClass="form-control input-sm">
                         </asp:DropDownList>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-lg-2 col-xs-12">
                         <label for="">Estado</label>
                         <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-control input-sm" OnDataBound="ddlEstado_DataBound">
                         </asp:DropDownList>
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-lg-1 col-xs-12">
                         <label></label>
                         <asp:LinkButton ID="lbtnBuscar" CssClass="btn btn-primary btn-sm btn-block" runat="server"
                             OnClick="lbtnBuscar_Click"><i aria-hidden="true" class="glyphicon glyphicon-search"></i>Buscar</asp:LinkButton>
                     </div>
-                    <div class="col-xs-1">
+                    <div class="col-lg-1 col-xs-12">
                         <label></label>
                         <asp:LinkButton ID="btnExcel" Text="text" OnClick="btnExcel_Click" CssClass="btn btn-success btn-sm btn-block" runat="server"><i class="fa fa-lg fa-file-excel-o"></i></asp:LinkButton>
                     </div>
@@ -197,7 +197,7 @@
                 </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body " style="width: 100%;  overflow-y: scroll;">
                 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
             </div>
             <!-- /.box-body -->
