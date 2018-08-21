@@ -46,9 +46,6 @@
             <asp:Label Text="" ID="lblInfo" runat="server" />
         </div>
 
-
-
-
         <div class="box box-success">
             <%--<div class="box-header with-border">
                     <h3 class="box-title">Buscar</h3>

@@ -23,7 +23,6 @@ namespace TagorManuCRM
                     Sucursal();
                     Perfil();
                     com.FillArea(ddlArea);
-                    
                     Buscar();
                 }
             }
@@ -133,6 +132,11 @@ namespace TagorManuCRM
                     ddlSucursal.SelectedValue = idSucursal;
                 }
             }
+            if (idPerfil == "4")
+            {
+                divContador.Visible = false;
+            }
+
         }
 
         void Buscar()

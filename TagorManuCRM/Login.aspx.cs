@@ -46,6 +46,7 @@ namespace TagorManuCRM
             string activo = string.Empty;
             string idArea = string.Empty;
             string idSucursal = string.Empty;
+            string email = string.Empty;
             //nomUsuario = row["NOMBRES"].ToString();
             //perfil = row["PERFIL"].ToString();
 
@@ -63,6 +64,7 @@ namespace TagorManuCRM
                 activo = item["ACTIVO"].ToString();
                 idArea= item["ID_AREA"].ToString();
                 idSucursal = item["ID_SUCURSAL"].ToString();
+                email = item["EMAIL"].ToString();
             }
 
 
@@ -86,6 +88,7 @@ namespace TagorManuCRM
                 Session["variableEmpresa"] = empresa;
                 Session["variableIdSucursal"] = idSucursal;
                 Session["variableIdArea"] = idArea;
+                Session["variableEmail"] = email;
 
                 if (activo == "True")
                 {

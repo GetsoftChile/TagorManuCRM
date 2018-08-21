@@ -6,7 +6,6 @@
     <!-- Content Header (Page header) -->
         <section class="content-header">
           <h5>
-            
           </h5>
           <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> SOLPED</a></li>
@@ -39,6 +38,10 @@
                         <div class="col-xs-12 col-lg-2">
                             <strong>Nombre Solicitante:</strong><br />
                             <asp:Label ID="lblNombreUsuario" runat="server"></asp:Label>
+                        </div>
+                        <div class="col-xs-12 col-lg-2">
+                            <strong>E-Mail Solicitante:</strong><br />
+                            <asp:Label ID="lblEmail" runat="server"></asp:Label>
                         </div>
                     </div>
             </div>

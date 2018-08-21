@@ -69,16 +69,30 @@ namespace TagorManuCRM
 
         void Local()
         {
-            ddlLocal.DataSource = dal.getBuscarLocalPorZona(ddlZona.SelectedValue);
-            ddlLocal.DataValueField = "ID_LOCAL";
-            ddlLocal.DataTextField = "LOCAL";
-            ddlLocal.DataBind();
+            string idUsuario = Session["variableIdUsuario"].ToString();
+            string idPerfil = Session["variableIdPerfil"].ToString();
+            if (idPerfil=="4")
+            {
+                ddlLocal.DataSource = dal.getBuscarLocalPorZona(ddlZona.SelectedValue, idUsuario);
+                ddlLocal.DataValueField = "ID_LOCAL";
+                ddlLocal.DataTextField = "LOCAL";
+                ddlLocal.DataBind();
+            }
+            else
+            {
+                ddlLocal.DataSource = dal.getBuscarLocalPorZona(ddlZona.SelectedValue,"0");
+                ddlLocal.DataValueField = "ID_LOCAL";
+                ddlLocal.DataTextField = "LOCAL";
+                ddlLocal.DataBind();
+            }
+            
         }
 
         void infoUsuario()
         {
             lblUsuario.Text = Session["variableUsuario"].ToString();
             lblNombreUsuario.Text= Session["variableNomUsuario"].ToString() + " " + Session["variableApeUsuario"].ToString();
+            lblEmail.Text = Session["variableEmail"].ToString();
             string idLocal = Session["variableIdLocal"].ToString();
             DataTable dt = new DataTable();
             dt = dal.getBuscarLocalPorId(idLocal).Tables[0];
@@ -206,7 +220,6 @@ namespace TagorManuCRM
                 //{
                 //    //txtComentario.Text = "";
                 //}
-
 
                 if (ddlNivel1.SelectedValue== "QUINCENAL" && ddlArea.SelectedValue=="1")
                 {
@@ -591,22 +604,22 @@ namespace TagorManuCRM
                 {
                     ruta1 = ticket + "_" + fuArchivo.FileName;
                     fuArchivo.SaveAs(Server.MapPath("ArchivoOT/"+ruta1));
-                    bool fileOK = false;
-                    String fileExtension = System.IO.Path.GetExtension(ruta1).ToLower();
-                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
-                    for (int i = 0; i < allowedExtensions.Length; i++)
-                    {
-                        if (fileExtension == allowedExtensions[i])
-                        {
-                            fileOK = true;
-                            if (fileOK == true)
-                            {
-                                System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
-                                GenerateThumbNail("ArchivoOT/temp/" + ruta1, "ArchivoOT/" + ruta1, 900, 600);
-                                System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
-                            }
-                        }
-                    }
+                    //bool fileOK = false;
+                    //String fileExtension = System.IO.Path.GetExtension(ruta1).ToLower();
+                    //String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    //for (int i = 0; i < allowedExtensions.Length; i++)
+                    //{
+                    //    if (fileExtension == allowedExtensions[i])
+                    //    {
+                    //        fileOK = true;
+                    //        if (fileOK == true)
+                    //        {
+                    //            System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
+                    //            GenerateThumbNail("ArchivoOT/temp/" + ruta1, "ArchivoOT/" + ruta1, 900, 600);
+                    //            System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
+                    //        }
+                    //    }
+                    //}
                         
                     dal.setEditarRutaArchivoGestion(Convert.ToInt32(ticket), ruta1);
                 }
@@ -616,22 +629,22 @@ namespace TagorManuCRM
                     ruta2 = ticket + "_" + fuArchivo2.FileName;
                     fuArchivo2.SaveAs(Server.MapPath("ArchivoOT/" + ruta2));
                     
-                    bool fileOK = false;
-                    String fileExtension = System.IO.Path.GetExtension(ruta2).ToLower();
-                    String[] allowedExtensions = { ".jpg", ".gif", ".png" };
-                    for (int i = 0; i < allowedExtensions.Length; i++)
-                    {
-                        if (fileExtension == allowedExtensions[i])
-                        {
-                            fileOK = true;
-                            if (fileOK == true)
-                            {
-                                System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
-                                GenerateThumbNail("ArchivoOT/" + ruta2, "ArchivoOT/" + ruta2, 900, 600);
-                                System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
-                            }
-                        }
-                    }
+                    //bool fileOK = false;
+                    //String fileExtension = System.IO.Path.GetExtension(ruta2).ToLower();
+                    //String[] allowedExtensions = { ".jpg", ".gif", ".png" };
+                    //for (int i = 0; i < allowedExtensions.Length; i++)
+                    //{
+                    //    if (fileExtension == allowedExtensions[i])
+                    //    {
+                    //        fileOK = true;
+                    //        if (fileOK == true)
+                    //        {
+                    //            System.IO.File.Move(Server.MapPath("ArchivoOT/" + ruta1), Server.MapPath("ArchivoOT/temp/" + ruta1));
+                    //            GenerateThumbNail("ArchivoOT/" + ruta2, "ArchivoOT/" + ruta2, 900, 600);
+                    //            System.IO.File.Delete(Server.MapPath("ArchivoOT/temp/" + ruta1));
+                    //        }
+                    //    }
+                    //}
                     dal.setEditarRutaArchivoGestion2(Convert.ToInt32(ticket), ruta2);
                 }
 

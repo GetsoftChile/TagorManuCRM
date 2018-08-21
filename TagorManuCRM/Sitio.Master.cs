@@ -84,6 +84,7 @@ namespace TagorManuCRM
             {
                 liAdministracion.Visible = false;
                 liUsuarios.Visible = false;
+                liReportes.Visible = false;
                 liReporteTickets.Visible = false;
                 liMantenciones.Visible = false;
 

@@ -255,6 +255,7 @@ namespace TagorManuCRM
                 LinkButton lbtn = sender as LinkButton;
                 GridViewRow row = (GridViewRow)lbtn.NamingContainer;
                 Label _lblIdNivel1 = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblIdNivel1");
+                string nivel1 = _lblIdNivel1.Text;
                 string fechaDesde = txtFechaDesde.Text;
                 string fechaHasta = txtFechaHasta.Text;
                 string idSucursal = ddlSucursal.SelectedValue;
@@ -265,7 +266,10 @@ namespace TagorManuCRM
                 //string idUsuario = ddlUsuario.SelectedValue;
 
                 //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
-                Response.Redirect("DetalleOT.aspx");
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea + 
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + 
+                    "&Nivel1="+ nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -280,17 +284,25 @@ namespace TagorManuCRM
             try
             {
                 string idEstadoTicket = "3";
+                string idArea = ddlArea.SelectedValue;
                 LinkButton lbtn = sender as LinkButton;
                 GridViewRow row = (GridViewRow)lbtn.NamingContainer;
                 Label _lblIdNivel1 = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblIdNivel1");
-                Label _lblConEscalamiento = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblConEscalamiento");
-
+                string nivel1 = _lblIdNivel1.Text;
                 string fechaDesde = txtFechaDesde.Text;
                 string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = ddlUsuario.SelectedValue;
+
                 //string idUsuario = ddlUsuario.SelectedValue;
 
-                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=" );
-                Response.Redirect("DetalleOT.aspx");
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea +
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta +
+                    "&Nivel1=" + nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -304,27 +316,26 @@ namespace TagorManuCRM
         {
             try
             {
+                string idEstadoTicket = "0";
+                string idArea = ddlArea.SelectedValue;
                 LinkButton lbtn = sender as LinkButton;
                 GridViewRow row = (GridViewRow)lbtn.NamingContainer;
                 Label _lblIdNivel1 = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblIdNivel1");
-                Label _lblEscalamiento = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblEscalamiento");
-                Label _lblConEscalamiento = (Label)grvAtencionCliente.Rows[row.RowIndex].FindControl("lblConEscalamiento");
-
+                string nivel1 = _lblIdNivel1.Text;
                 string fechaDesde = txtFechaDesde.Text;
                 string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = ddlUsuario.SelectedValue;
+
                 //string idUsuario = ddlUsuario.SelectedValue;
 
-                Response.Redirect("DetalleOT.aspx");
-                //if (_lblEscalamiento.Text.ToUpper() == "TOTAL")
-                //{
-                //    Session["strTituloBuscadorTicket"] = "Detalle";
-                //    Response.Redirect("BuscarOT.aspx?fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
-                //}
-                //else
-                //{
-                //    Session["strTituloBuscadorTicket"] = "Detalle";
-                //    Response.Redirect("BuscarOT.aspx?idEstatus=" + _lblIdNivel1.Text + "&escalamiento=" + _lblConEscalamiento.Text + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta + "&user=");
-                //}
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea +
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta +
+                    "&Nivel1=" + nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -343,7 +354,26 @@ namespace TagorManuCRM
         {
             try
             {
-                Response.Redirect("DetalleOT.aspx");
+                string idEstadoTicket = "1";
+                string idArea = ddlArea.SelectedValue;
+                LinkButton lbtn = sender as LinkButton;
+                GridViewRow row = (GridViewRow)lbtn.NamingContainer;
+                Label _lblIdUsuario = (Label)grvDetallePorUsuario.Rows[row.RowIndex].FindControl("lblIdUsuario");
+                string nivel1 = "";
+                string fechaDesde = txtFechaDesde.Text;
+                string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = _lblIdUsuario.Text;
+
+                //string idUsuario = ddlUsuario.SelectedValue;
+
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea +
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta +
+                    "&Nivel1=" + nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -357,7 +387,26 @@ namespace TagorManuCRM
         {
             try
             {
-                Response.Redirect("DetalleOT.aspx");
+                string idEstadoTicket = "3";
+                string idArea = ddlArea.SelectedValue;
+                LinkButton lbtn = sender as LinkButton;
+                GridViewRow row = (GridViewRow)lbtn.NamingContainer;
+                Label _lblIdUsuario = (Label)grvDetallePorUsuario.Rows[row.RowIndex].FindControl("lblIdUsuario");
+                string nivel1 = "";
+                string fechaDesde = txtFechaDesde.Text;
+                string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = _lblIdUsuario.Text;
+
+                //string idUsuario = ddlUsuario.SelectedValue;
+
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea +
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta +
+                    "&Nivel1=" + nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -371,7 +420,25 @@ namespace TagorManuCRM
         {
             try
             {
-                Response.Redirect("DetalleOT.aspx");
+                string idEstadoTicket = "0";
+                string idArea = ddlArea.SelectedValue;
+                LinkButton lbtn = sender as LinkButton;
+                GridViewRow row = (GridViewRow)lbtn.NamingContainer;
+                Label _lblIdUsuario = (Label)grvDetallePorUsuario.Rows[row.RowIndex].FindControl("lblIdUsuario");
+                string nivel1 = "";
+                string fechaDesde = txtFechaDesde.Text;
+                string fechaHasta = txtFechaHasta.Text;
+                string idSucursal = ddlSucursal.SelectedValue;
+                string idZona = ddlZonas.SelectedValue;
+                string idLocal = ddlLocal.SelectedValue;
+                string idUsuarioAsignado = _lblIdUsuario.Text;
+
+                //string idUsuario = ddlUsuario.SelectedValue;
+                //Response.Redirect("BuscarOT.aspx?estado=" + idEstadoTicket + "&a=" + idArea + "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta);
+                Response.Redirect("DetalleOT.aspx?Detalle=1&e=" + idEstadoTicket + "&a=" + idArea +
+                    "&fechaDesde=" + fechaDesde + "&fechaHasta=" + fechaHasta +
+                    "&Nivel1=" + nivel1 + "&idSucursal=" + idSucursal + "&idZona=" + idZona + "&idLocal=" + idLocal +
+                    "&idUsuarioAsignado=" + idUsuarioAsignado);
             }
             catch (Exception ex)
             {
@@ -462,12 +529,29 @@ namespace TagorManuCRM
         
         void Local()
         {
-            DataTable dt = new DataTable();
-            dt = dal.getBuscarLocalPorZona(ddlZonas.SelectedValue).Tables[0];
-            ddlLocal.DataSource = dt;
-            ddlLocal.DataValueField = "ID_LOCAL";
-            ddlLocal.DataTextField = "LOCAL";
-            ddlLocal.DataBind();
+            //DataTable dt = new DataTable();
+            //dt = dal.getBuscarLocalPorZona(ddlZonas.SelectedValue).Tables[0];
+            //ddlLocal.DataSource = dt;
+            //ddlLocal.DataValueField = "ID_LOCAL";
+            //ddlLocal.DataTextField = "LOCAL";
+            //ddlLocal.DataBind();
+
+            string idUsuario = Session["variableIdUsuario"].ToString();
+            string idPerfil = Session["variableIdPerfil"].ToString();
+            if (idPerfil == "4")
+            {
+                ddlLocal.DataSource = dal.getBuscarLocalPorZona(ddlZonas.SelectedValue, idUsuario);
+                ddlLocal.DataValueField = "ID_LOCAL";
+                ddlLocal.DataTextField = "LOCAL";
+                ddlLocal.DataBind();
+            }
+            else
+            {
+                ddlLocal.DataSource = dal.getBuscarLocalPorZona(ddlZonas.SelectedValue, "0");
+                ddlLocal.DataValueField = "ID_LOCAL";
+                ddlLocal.DataTextField = "LOCAL";
+                ddlLocal.DataBind();
+            }
         }
     }
 }
