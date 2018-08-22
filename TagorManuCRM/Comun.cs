@@ -182,8 +182,11 @@ namespace TagorManuCRM
             correo.IsBodyHtml = true;
             correo.Body = bodyEmail;
 
-
+            //port = "25" userName = "notificaciones@getsoft.cl" password = "nuevaetica123!"
             SmtpClient client = new SmtpClient();
+            client.Host = "mail.getsoft.cl";
+            client.Port = 25;
+            client.Credentials = new System.Net.NetworkCredential("notificaciones@getsoft.cl", "nuevaetica123!");
 
             client.Send(correo);
         }

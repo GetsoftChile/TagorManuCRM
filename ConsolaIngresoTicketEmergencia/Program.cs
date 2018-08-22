@@ -37,15 +37,15 @@ namespace ConsolaIngresoTicketEmergencia
             //ConnectPop3 oCP3 = new ConnectPop3();
 
             //invocamos el metodo para obtener mensajes
-            //List<OpenPop.Mime.Message> lstMensajes = oCP3.getMensajes();
             Console.WriteLine("Descargando correos...");
-            //List<OpenPop.Mime.Message> lstMensajes = oCP3.FetchAllMessages();
 
             
             Pop3Client client = new Pop3Client();
             client.Connect(hostname, port, useSsl);
             client.Authenticate(email, pass);
             int messageCount = client.GetMessageCount();
+            
+            
             //List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>(messageCount);
             for (int i = messageCount; i > 0; i--)
             {
@@ -54,7 +54,17 @@ namespace ConsolaIngresoTicketEmergencia
                     int cont = i;
                     Console.WriteLine(cont);
                     //allMessages.Add(client.GetMessage(i));
+              
                     OpenPop.Mime.Message oMessage = client.GetMessage(i);
+                    string idGmail = oMessage.Headers.MessageId;
+
+                    DataTable dt = new DataTable();
+                    dt = dal.getBuscarEmailCasilla(idGmail).Tables[0];
+                    if (dt.Rows.Count > 0)
+                    {
+                        continue;
+                    }
+                    
                     string subject = oMessage.Headers.Subject;
                     string from = oMessage.Headers.From.MailAddress.Address;
                     string cc = oMessage.Headers.From.MailAddress.Address;
@@ -77,7 +87,7 @@ namespace ConsolaIngresoTicketEmergencia
                         continue;
                     }
                     Console.WriteLine(oMessage.Headers.MessageId);
-                    string idGmail = oMessage.Headers.MessageId;
+                    
                     string para = string.Empty;
                     foreach (var item in oMessage.Headers.To)
                     {
@@ -99,6 +109,24 @@ namespace ConsolaIngresoTicketEmergencia
                     string local = texto.Substring(index - 4, 4);
                     Console.WriteLine(local);
 
+                    DataTable dtLocal = new DataTable();
+                    dtLocal = dal.getBuscarLocalPorCod(local).Tables[0];
+                    string idLocal = string.Empty;
+                    string idSucursal = string.Empty;
+                    string idZona = string.Empty;
+                    foreach (DataRow item in dtLocal.Rows)
+                    {
+                        idLocal = item["ID_LOCAL"].ToString();
+                        if (item["REGION"].ToString() == "Valparaíso")
+                        {
+                            idSucursal = "3";
+                        } else if (item["REGION"].ToString() == "Region Metropolitana")
+                        {
+                            idSucursal = "1";
+                        }
+                        idZona = item["ID_ZONA"].ToString();
+                    }
+
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(bodyHtml);
                     HtmlNodeCollection ImageNodes = doc.DocumentNode.SelectNodes("//span");
@@ -113,25 +141,24 @@ namespace ConsolaIngresoTicketEmergencia
                         {
                             textoHtm += htm + ";";
                             DataRow toInsert = dtTabla.NewRow();
-                            //toInsert.
                             dtTabla.Rows.Add(htm);
                         }
                     }
-
-                    string fkjns = dtTabla.Rows.Count.ToString();
-                    if (fkjns == "27")
-                    {
-                        string djdjdj = "";
-                    }
-                    Console.WriteLine(fkjns);
-
+                    
                     string comentario = string.Empty;
-                    //string nroReporte = string.Empty;
-                    //if (!string.IsNullOrEmpty(dtTabla.Rows[5]["TEXTO"].ToString()))
-                    //{
-                    //    comentario = dtTabla.Rows[4]["TEXTO"].ToString();
-                    //    nroReporte = dtTabla.Rows[1]["TEXTO"].ToString();
-                    //}
+                    string nroReporte = string.Empty;
+                    string fallaOAnomalia = string.Empty;
+                    string supuestaArea = string.Empty;
+                    string telefono = string.Empty;
+                    string solicitadoPor = string.Empty;
+                    if (!string.IsNullOrEmpty(dtTabla.Rows[5]["TEXTO"].ToString()))
+                    {
+                        nroReporte = dtTabla.Rows[1]["TEXTO"].ToString();
+                        fallaOAnomalia = dtTabla.Rows[2]["TEXTO"].ToString();
+                        supuestaArea = dtTabla.Rows[10]["TEXTO"].ToString();
+                        telefono = dtTabla.Rows[18]["TEXTO"].ToString();
+                        solicitadoPor = dtTabla.Rows[14]["TEXTO"].ToString();
+                    }
 
                     foreach (DataRow item in dtTabla.Rows)
                     {
@@ -155,26 +182,35 @@ namespace ConsolaIngresoTicketEmergencia
                     }
                     
                     string fileName = string.Empty;
+                    int cantidadAdjuntos = oMessage.FindAllAttachments().Count;
+                    string archivo1 = string.Empty;
+                    string archivo2 = string.Empty;
+                    int contador = 0;
                     foreach (var attachment in oMessage.FindAllAttachments())
                     {
-                        //string filePath = Path.Combine(@"C:\adjuntos", attachment.FileName);
+                        contador++;
+
                         string filePath = ConfigurationSettings.AppSettings["adjunto"];
-                        filePath = filePath + attachment.FileName.Replace("?","");
-                        fileName = attachment.FileName.Replace("?", "");
+                        fileName = idGmail + "_" + attachment.FileName.Replace("?", "");
+                        filePath = filePath + fileName;
+                      
                         FileStream Stream = new FileStream(@filePath, FileMode.Create);
                         BinaryWriter BinaryStream = new BinaryWriter(Stream);
                         BinaryStream.Write(attachment.Body);
                         BinaryStream.Close();
 
-                        string sql = "stp_IngresarAdjuntoEmail '" + idGmail + "','" + fileName + "','" + filePath + "'";
+                        if (contador == 1)
+                        {
+                            archivo1 = fileName;
+                        }
+
+                        if (contador == 2)
+                        {
+                            archivo2 = fileName;
+                        }
+
+                        string sql = "stp_IngresarAdjuntoEmail '" + idGmail + "','" + fileName + "','" + fileName + "'";
                         setQuery(cnnStr, sql);
-                        //if (attachment.FileName.Equals("blabla.pdf"))
-                        //{
-                        //    FileStream Stream = new FileStream(filePath, FileMode.Create);
-                        //    BinaryWriter BinaryStream = new BinaryWriter(Stream);
-                        //    BinaryStream.Write(attachment.Body);
-                        //    BinaryStream.Close();
-                        //}
                     }
 
                     foreach (var copia in oMessage.Headers.Cc)
@@ -182,17 +218,34 @@ namespace ConsolaIngresoTicketEmergencia
                         copy = copia.MailAddress.Address + ";";
                     }
 
-                    //Console.WriteLine(builder.ToString());
-                    //
                     StringBuilder sb = new StringBuilder();
                     sb.Append("stp_IngresarEmailCasilla '" + idGmail + "','" + from 
                         + "','" + subject + "','" + builder + "','" + date.ToString() + "','','" + para + "','" + bodyHtml + "','" + copy + "'");
-                    //sb.Append(" '" + idGmail + "','" + from + "','" + subject + "','" + builder + "','" + date.ToString() + "',0,getdate(),'" + to + "'");
-                    //@idEmail varchar(250),@fromed varchar(250), @subject varchar(250),
-                    //@body varchar(max),@date varchar(20),@tipificado varchar(250),@emailOrigen varchar(250),
-                    //@bodyHtml varchar(max),@copy varchar(250)
-
+                
                     setQuery(cnnStr, sb.ToString());
+
+                    string tipo = string.Empty;
+                    int ddd = fallaOAnomalia.IndexOf("Falla Técnica");
+                    if (fallaOAnomalia.IndexOf("Falla Técnica") > 0)
+                    {
+                        tipo = "C";
+                    }
+                    else if (fallaOAnomalia.IndexOf("Falla Técnica") == -1)
+                    {
+                        tipo = "CP";
+                    }
+                    string idArea = string.Empty;
+                    if (supuestaArea=="Facility Servicios Sanitarios")
+                    {
+                        idArea = "2";
+                    }
+                    else /*if (supuestaArea=="")*/
+                    {
+                        idArea = "1";
+                    }
+
+                    IngresarOT(tipo, idLocal, idArea, idSucursal, comentario, telefono, solicitadoPor, idZona, archivo1, archivo2);
+
                 }
                 catch (Exception ex)
                 {
@@ -202,6 +255,119 @@ namespace ConsolaIngresoTicketEmergencia
             int cantidad = messageCount;
             Console.WriteLine("Cantidad de msj: " + cantidad.ToString());
             Console.ReadKey();
+
+        }
+
+        static void IngresarOT(string tipo, string idLocal, string idArea, string idSucursal, string comentario, string telefono, string solicitadoPor,
+            string idZona, string archivo1, string archivo2)
+        {
+            Datos dal = new Datos();
+            //MUY IMPORTANTE
+            string email = string.Empty;
+            string idUsuarioAsignado = string.Empty;
+            if (tipo == "C")//si es correctivo se le asigna al supervisor
+            {
+                DataTable dtUsuarios = new DataTable();
+                dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(idLocal, "5", idArea).Tables[0];
+
+                if (dtUsuarios.Rows.Count == 0)
+                {
+                    //lblInfo.Text = "No se puede ingresar la SOLPED. <br> Razon: No hay un supervisor asignado al local seleccionado";
+                    //divAlerta.Visible = true;
+                    return;
+                }
+
+                foreach (DataRow item in dtUsuarios.Rows)
+                {
+                    idUsuarioAsignado = item["ID_USUARIO"].ToString();
+                    email = item["EMAIL"].ToString();
+                    break;
+                }
+            }
+            else if (tipo == "CP")
+            {
+                DataTable dtUsuarios = new DataTable();
+                dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(idLocal, "3", null).Tables[0];
+
+                if (dtUsuarios.Rows.Count == 0)
+                {
+                    //lblInfo.Text = "No se puede ingresar la SOLPED. <br> Razon: No hay un coordinador asignado al local seleccionado";
+                    //divAlerta.Visible = true;
+                    return;
+                }
+
+                foreach (DataRow item in dtUsuarios.Rows)
+                {
+                    idUsuarioAsignado = item["ID_USUARIO"].ToString();
+                    email = item["EMAIL"].ToString();
+                    break;
+                }
+
+                //if (string.IsNullOrEmpty(txtFechaAgendamiento.Text))
+                //{
+                //    lblInfo.Text = "La fecha de agendamiento es obligatoria cuando es de tipo Correctiva Planificada";
+                //    divAlerta.Visible = true;
+                //    return;
+                //}
+            }
+
+            /////////////////////////////////////////////////
+
+            //ingreso OT
+
+
+            //if (ddlTipoOT.SelectedValue == "C")
+            //{
+            //    txtFechaAgendamiento.Text = string.Empty;
+            //}
+
+            //AQUI
+            string idTipificacion = string.Empty;
+            if (idArea=="1")
+            {
+                idTipificacion = "281";
+            }
+            else if (idArea=="2")
+            {
+                idTipificacion = "282";
+                    
+            }
+            string idUsuario = "0";
+
+            string ticket = dal.setIngresarOT(idTipificacion, idUsuario, idUsuarioAsignado, "1", comentario,
+                "D", "EMERGENCIA", "1", tipo, idLocal, telefono,
+                solicitadoPor, idZona, idArea, null, idSucursal);
+            //FIN ingreso
+
+            dal.setIngresarTicketHistorico(ticket, idUsuario, idUsuarioAsignado, "1",
+                comentario, null);
+
+            if (archivo1 != string.Empty)
+            {
+
+                dal.setEditarRutaArchivoGestion(Convert.ToInt32(ticket), archivo1);
+            }
+
+            if (archivo2 != string.Empty)
+            {
+              
+                dal.setEditarRutaArchivoGestion2(Convert.ToInt32(ticket), archivo2);
+            }
+            
+
+            string bodyResolutor = "Estimado(a) Usuario:<br>";
+            bodyResolutor += "Se ha generado la siguiente SOLPED con Nº " + ticket + " para su gestión:";
+            bodyResolutor += "<br><br>Observacion: <b>";
+            bodyResolutor += comentario + "</b>";
+            bodyResolutor += "<br>";
+            bodyResolutor += "Le agradecemos revisar a la brevedad en el sistema de mantenimiento de Tagor.​";
+            bodyResolutor += "http://190.96.2.126/eot/SeguimientoOT.aspx?t=" + ticket;
+            bodyResolutor += "<br><br>";
+            bodyResolutor += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+            bodyResolutor += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+            TagorManuCRM.Comun com = new TagorManuCRM.Comun();
+            com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "Nueva OT Nº" + ticket);
 
         }
 

@@ -34,6 +34,26 @@ namespace DAL
                 throw new Exception("No se pudo buscar el usuario, " + ex.Message, ex);
             }
         }
+        
+        public DataSet getBuscarEmailCasilla(string idEmail)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarEmailCasilla");
+            
+            db.AddInParameter(cmd, "@idEmail", DbType.String, idEmail);
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar la casilla, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar la casilla, " + ex.Message, ex);
+            }
+        }
 
         public DataSet getBuscarComuna(string nombre)
         {

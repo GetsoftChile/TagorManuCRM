@@ -89,6 +89,10 @@
       <Project>{4ad4b76f-b348-49a6-82a3-4ed7de4a0839}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TagorManuCRM\TagorManuCRM.csproj">
+      <Project>{6705d57b-5e99-4605-90f0-20cb50e4c14c}</Project>
+      <Name>TagorManuCRM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
