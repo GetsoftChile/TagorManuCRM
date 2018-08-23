@@ -103,10 +103,9 @@ namespace TagorManuCRM
                     ddlSucursal.SelectedValue = idSucursal;
                 }
             }
-
-            if (idPerfil=="3")
+            if (idPerfil == "3")
             {
-                ddlSucursal.Enabled = false;
+                ddlSucursal.Enabled = true;
                 if (String.IsNullOrEmpty(idSucursal))
                 {
                     lblInfo.Text = "No tiene asignada una sucursal, favor de comunicarse con el administrador.";

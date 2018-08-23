@@ -175,6 +175,7 @@ namespace TagorManuCRM
                 idLocal= item["LOCAL"].ToString();
                 DataTable dtLocal = new DataTable();
                 dtLocal = dal.getBuscarLocalPorId(idLocal).Tables[0];
+                string idZona = string.Empty;
                 foreach (DataRow itemLocal in dtLocal.Rows)
                 {
                     lblCodLocal.Text = itemLocal["COD_LOCAL"].ToString();
@@ -183,6 +184,7 @@ namespace TagorManuCRM
                     lblRegionLocal.Text = itemLocal["REGION"].ToString();
                     lblDireccionLocal.Text = itemLocal["DIRECCION"].ToString();
                     lblTelefonoLocal.Text = itemLocal["TELEFONO"].ToString();
+                    lblIdZona.Text = itemLocal["ID_ZONA"].ToString();
                 }
                 tipo = item["CLASE"].ToString();
                 if (tipo == "C" || tipo == "CP")
@@ -366,20 +368,20 @@ namespace TagorManuCRM
         void usuarioDerivar(string idArea)
         {
             
-            string misZonas = string.Empty;
+            string misZonas = lblIdZona.Text;
             string activo = "1";
             string perfil = Session["variableIdPerfil"].ToString();
             string idUsuario = Session["variableIdUsuario"].ToString();
 
-            foreach (DataRow item in dal.getBuscarZonaPorIdUsuario(idUsuario).Tables[0].Rows)
-            {
-                misZonas = item["ID_ZONA"].ToString() + ",";
-            }
+            //foreach (DataRow item in dal.getBuscarZonaPorIdUsuario(idUsuario).Tables[0].Rows)
+            //{
+            //    misZonas += item["ID_ZONA"].ToString() + ",";
+            //}
 
-            if (misZonas != string.Empty)
-            {
-                misZonas = misZonas.TrimEnd(',');
-            }
+            //if (misZonas != string.Empty)
+            //{
+            //    misZonas = misZonas.TrimEnd(',');
+            //}
 
             //ddlDerivar.DataSource = dal.getBuscarUsuarioPorIdArea(idArea);
             ddlDerivar.DataSource= dal.getBuscarUsuarioPorIdZonas(misZonas, activo);

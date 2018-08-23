@@ -102,6 +102,7 @@
                                         <td>
                                             <strong>Cod Local:</strong><br />
                                             <asp:Label ID="lblCodLocal" runat="server"></asp:Label>
+                                            <asp:Label ID="lblIdZona" runat="server" Visible="false"></asp:Label>
                                         </td>
                                         <td>
                                             <strong>Nombre Local:</strong><br />

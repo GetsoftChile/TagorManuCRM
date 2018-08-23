@@ -52,7 +52,7 @@ namespace TagorManuCRM
                     if (perfil == "3")//planificador
                     {
                         ddlSucursal.SelectedValue = idSucursal;
-                        ddlSucursal.Enabled = false;
+                        ddlSucursal.Enabled = true;
                     }
 
                     if (perfil=="4")//cliente
@@ -96,7 +96,6 @@ namespace TagorManuCRM
                     if (estado_ != null)
                     {
                         string _area = Convert.ToString(Request.QueryString["a"]);
-                        
                     }
 
                     if (Session["strTituloBuscadorTicket"] == null)
