@@ -61,16 +61,7 @@
                                         <asp:LinkButton ID="lbtnIdTicket" runat="server" Text='<%# Bind("ID_ATENCION") %>' OnClick="lbtnIdTicket_Click"></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Rut" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblRutCliente" runat="server" Visible="true" Text='<%# Bind("RUT_CLIENTE") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Nombre" Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblNombreCliente" runat="server" Visible="true" Text='<%# Bind("NOMBRE_CLIENTE") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                
                                 <asp:TemplateField HeaderText="U.Creación">
                                     <ItemTemplate>
                                         <asp:Label ID="lblUsuarioCreacion" runat="server" Text='<%# Bind("USUARIO") %>'></asp:Label>
@@ -126,11 +117,6 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Ins." Visible="false">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblInsistencias" runat="server" Text='<%# Bind("INSISTENCIAS") %>'></asp:Label>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
 
                                 <asp:TemplateField HeaderText="Obs">
                                     <ItemTemplate>

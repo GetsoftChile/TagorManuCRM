@@ -661,6 +661,10 @@
     <Content Include="AdminLTE-2.3.0\plugins\datatables\jquery.dataTables.min.js" />
     <Content Include="AdminLTE-2.3.0\plugins\datatables\jquery.dataTables_themeroller.css" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\bootstrap-datepicker.js" />
+    <Content Include="AdminLTE-2.3.0\plugins\datepicker\bootstrap-datetimepicker.css" />
+    <Content Include="AdminLTE-2.3.0\plugins\datepicker\bootstrap-datetimepicker.js" />
+    <Content Include="AdminLTE-2.3.0\plugins\datepicker\bootstrap-datetimepicker.min.css" />
+    <Content Include="AdminLTE-2.3.0\plugins\datepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\datepicker3.css" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datepicker.ar.js" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datepicker.az.js" />
@@ -713,6 +717,7 @@
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datepicker.vi.js" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="AdminLTE-2.3.0\plugins\datepicker\locales\bootstrap-datetimepicker.es.js" />
     <Content Include="AdminLTE-2.3.0\plugins\daterangepicker\daterangepicker-bs3.css" />
     <Content Include="AdminLTE-2.3.0\plugins\daterangepicker\daterangepicker.js" />
     <Content Include="AdminLTE-2.3.0\plugins\daterangepicker\moment.js" />
@@ -8231,6 +8236,7 @@
     <Content Include="assets\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="UploadedFiles\index.html" />
     <Content Include="Usuarios.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

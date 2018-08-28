@@ -103,7 +103,6 @@ namespace TagorManuCRM
         {
             try
             {
-                
                 if (lblEstadoTicket.Text == ddlEstado.SelectedItem.ToString())
                 {
                     //btnGrabarGestion.OnClientClick = "return confirm(' El ticket ya se encuentra en estado " + lblEstadoTicket.Text + ", ¿Está seguro de ingresar el ticket nuevamente con estado " + ddlEstado.SelectedItem.ToString() + "?');";
@@ -112,6 +111,28 @@ namespace TagorManuCRM
                 {
                     btnGrabarGestion.OnClientClick = null;
                 }
+
+                if (ddlEstado.SelectedValue == "4")
+                {
+                    divFechaAgendamiento.Visible = true;
+                    txtFechaAgendamiento.Visible = true;
+                    txtFechaAgendamiento.Enabled = true;
+                    divObservacionCliente.Visible = true;
+                }
+                else if (ddlEstado.SelectedValue == "3")
+                {
+                    divFechaAgendamiento.Visible = false;
+                    txtFechaAgendamiento.Visible = false;
+                    txtFechaAgendamiento.Enabled = false;
+                    divObservacionCliente.Visible = true;
+                }
+                else
+                {
+                    divObservacionCliente.Visible = false;
+                    txtFechaAgendamiento.Text = string.Empty;
+                    txtObservacionCliente.Text = string.Empty;
+                }
+
             }
             catch (Exception ex)
             {
@@ -441,9 +462,21 @@ namespace TagorManuCRM
                 string idUsuarioAsig = ddlDerivar.SelectedValue;
                 string idUsuarioCreacion = hfIdUsuarioCreacion.Value;
                 
-                string correlativo = "";
-                correlativo = dal.setIngresarTicketHistorico(numeroTicket, usuario, idUsuarioAsig, ddlEstado.SelectedValue, txtObservacionGestion.Text, null, null);
-                dal.setEditarTicket(numeroTicket, ddlEstado.SelectedValue, idUsuarioAsig, null, null);
+                string correlativo = string.Empty;
+                string fechaAgendamiento = string.Empty;
+                fechaAgendamiento = txtFechaAgendamiento.Text.Trim();
+                if (fechaAgendamiento==string.Empty)
+                {
+                    fechaAgendamiento = null;
+                }
+                string obsCliente = txtObservacionCliente.Text.Trim();
+                if (string.IsNullOrEmpty(obsCliente))
+                {
+                    obsCliente = null;
+                }
+
+                correlativo = dal.setIngresarTicketHistorico(numeroTicket, usuario, idUsuarioAsig, ddlEstado.SelectedValue, txtObservacionGestion.Text, fechaAgendamiento, obsCliente);
+                dal.setEditarTicket(numeroTicket, ddlEstado.SelectedValue, idUsuarioAsig, fechaAgendamiento, null);
                 dal.setEditarGestionPorId(numeroTicket, txtObservacion.Text);
 
                 if (ddlDerivar.SelectedValue != "0")
@@ -463,112 +496,18 @@ namespace TagorManuCRM
                 if (fuArchivo1.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo1.FileName;
-                    string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo1.FileName;
                     fuArchivo1.SaveAs(Server.MapPath(carpeta));
-                    //System.IO.File.Copy(Server.MapPath(carpetaTemp), Server.MapPath(carpeta));
-                    
-                    //bool fileOK = false;
-                    //String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
-                    //String[] allowedExtensions = { ".jpg", ".gif", ".png" };
-                    //for (int i = 0; i < allowedExtensions.Length; i++)
-                    //{
-                    //    if (fileExtension == allowedExtensions[i])
-                    //    {
-                    //        fileOK = true;
-                    //        if (fileOK == true)
-                    //        {
-                    //            GenerateThumbNail(carpetaTemp, carpeta, 900, 600);
-                                
-                    //        }
-                    //    }
-                    //}
-                    //System.IO.File.Delete(Server.MapPath(carpetaTemp));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), carpeta, "");
-
                 }
 
                 if (fuArchivo2.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo2.FileName;
-                    //string carpetaTemp = "archivosGestion/temp/" + numeroTicket + "_" + fuArchivo2.FileName;
-
                     fuArchivo2.SaveAs(Server.MapPath(carpeta));
-                    //System.IO.File.Copy(Server.MapPath(carpetaTemp), Server.MapPath(carpeta));
-                    //.//System.IO.File.Copy
-
-                    //bool fileOK = false;
-                    //String fileExtension = System.IO.Path.GetExtension(carpetaTemp).ToLower();
-                    //String[] allowedExtensions = { ".jpg", ".gif", ".png" };
-                    //for (int i = 0; i < allowedExtensions.Length; i++)
-                    //{
-                    //    if (fileExtension == allowedExtensions[i])
-                    //    {
-                    //        fileOK = true;
-                    //        if (fileOK == true)
-                    //        {
-                    //            GenerateThumbNail(carpetaTemp, carpeta, 900, 600);
-                    //        }
-                    //    }
-                    //}
-                    //System.IO.File.Delete(Server.MapPath(carpetaTemp));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta);
                 }
 
-                if (ddlEstado.SelectedValue == "3")
-                {
-                    string body = "Estimada(o),   <br>";
-                    body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
-                    body += "<br><br><b>Observación de la solución: " + txtObservacionGestion.Text + "</b>";
-                    body += "<br><br>";
-                    body += "<b><u>Información de la Atención:</u></b>";
-                    body += "<br>N° de OT: " + numeroTicket;
-                    body += "<br>Fecha: " + DateTime.Now.ToString("G");
-                    body += "<br>Observación de la OT: " + txtObservacion.Text;
-
-                    body += "<br><br>";
-                    body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
-                    body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
-
-                    
-                    com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
-                    
-                }
-                else if (ddlEstado.SelectedValue == "1")
-                {
-                    string idEmpleado = ddlDerivar.SelectedValue;
-                    DataTable dtEmpleado = new DataTable();
-                    dtEmpleado = dal.getBuscarUsuarioPorId(idEmpleado).Tables[0];
-
-                    string email = string.Empty;
-                    foreach (DataRow item in dtEmpleado.Rows)
-                    {
-                        email = item["EMAIL"].ToString();
-                    }
-
-                    string bodyResolutor = "Estimado(a) Usuario:";
-                    bodyResolutor += "<br><br>";
-                    bodyResolutor += "Se ha generado la siguiente OT para su gestión:";
-                    bodyResolutor += "<br><br>Comentario: ";
-                    bodyResolutor += "<b>" + txtObservacion.Text + "</b>";
-                    bodyResolutor += "<br><br>";
-                    bodyResolutor += "Le agradecemos revisar a la brevedad";
-                    bodyResolutor += "<br> " + "http://190.96.2.126/eot/SeguimientoOT.aspx?t=" + numeroTicket;
-                    bodyResolutor += "<br><br>";
-                    bodyResolutor += "<br>Muchas gracias!";
-                    bodyResolutor += "<br><b>Equipo de Servicio al Cliente Tagor.</b>";
-                    bodyResolutor += "<br><br>";
-                    bodyResolutor += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
-                    bodyResolutor += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
-
-                    if (idEmpleado != usuario)
-                    {
-                        if (email != string.Empty)
-                        {
-                            com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
-                        }
-                    }
-                }
-
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario);
                 buscarCaso(hfNumeroTicket.Value);
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
@@ -587,7 +526,65 @@ namespace TagorManuCRM
 
         }
 
+        void EnviarEmails(string estado, string numeroTicket,string usuario)
+        {
+            if (estado == "3")
+            {
+                string body = "Estimada(o),   <br>";
+                body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
+                body += "<br><br><b>Observación de la solución: " + txtObservacionGestion.Text + "</b>";
+                body += "<br><br>";
+                body += "<b><u>Información de la Atención:</u></b>";
+                body += "<br>N° de OT: " + numeroTicket;
+                body += "<br>Fecha: " + DateTime.Now.ToString("G");
+                body += "<br>Observación de la OT: " + txtObservacion.Text;
 
+                body += "<br><br>";
+                body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+                com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+            }
+            else if (estado == "1")
+            {
+                string idEmpleado = ddlDerivar.SelectedValue;
+                DataTable dtEmpleado = new DataTable();
+                dtEmpleado = dal.getBuscarUsuarioPorId(idEmpleado).Tables[0];
+
+                string email = string.Empty;
+                foreach (DataRow item in dtEmpleado.Rows)
+                {
+                    email = item["EMAIL"].ToString();
+                }
+
+                string bodyResolutor = "Estimado(a) Usuario:";
+                bodyResolutor += "<br><br>";
+                bodyResolutor += "Se ha generado la siguiente OT para su gestión:";
+                bodyResolutor += "<br><br>Comentario: ";
+                bodyResolutor += "<b>" + txtObservacion.Text + "</b>";
+                bodyResolutor += "<br><br>";
+                bodyResolutor += "Le agradecemos revisar a la brevedad";
+                bodyResolutor += "<br> " + "http://190.96.2.126/eot/SeguimientoOT.aspx?t=" + numeroTicket;
+                bodyResolutor += "<br><br>";
+                bodyResolutor += "<br>Muchas gracias!";
+                bodyResolutor += "<br><b>Equipo de Servicio al Cliente Tagor.</b>";
+                bodyResolutor += "<br><br>";
+                bodyResolutor += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                bodyResolutor += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+                if (idEmpleado != usuario)
+                {
+                    if (email != string.Empty)
+                    {
+                        com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
+                    }
+                }
+            }
+            else if (estado == "4")
+            {
+
+            }
+        }
 
         public void GenerateThumbNail(string sourcefile, string destinationfile, int width, int height)
         {

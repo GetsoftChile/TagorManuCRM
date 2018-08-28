@@ -2271,7 +2271,7 @@ namespace DAL
 
 
         public DataSet getBuscarTicketBuscadorParametros(string idUsuarioCreacion, string usuarioAsig, string fechaDesde, string fechaHasta, 
-            string idEstado, string clase, string idArea, string idSucursal)
+            string idEstado, string clase, string idArea, string idSucursal, string idTicket, string codLocal)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_buscarTicketBuscadorParametros");
 
@@ -2346,7 +2346,24 @@ namespace DAL
                 db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
             }
 
-            
+            if (codLocal == "0")
+            {
+                db.AddInParameter(cmd, "@codLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@codLocal", DbType.String, codLocal);
+            }
+
+            if (codLocal == string.Empty)
+            {
+                db.AddInParameter(cmd, "@idTicket", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idTicket", DbType.String, idTicket);
+            }
+
             try
             {
                 return db.ExecuteDataSet(cmd);

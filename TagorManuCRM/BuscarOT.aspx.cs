@@ -47,6 +47,9 @@ namespace TagorManuCRM
 
                         ddlSucursal.SelectedValue = idSucursal;
                         ddlSucursal.Enabled = false;
+
+                        divBuscador.Visible = false;
+
                     }
 
                     if (perfil == "3")//planificador
@@ -64,6 +67,7 @@ namespace TagorManuCRM
 
                     if (perfil == "5")//supervisor
                     {
+
                         ddlSucursal.SelectedValue = idSucursal;
                         ddlSucursal.Enabled = false;
                     }
@@ -86,7 +90,7 @@ namespace TagorManuCRM
                         ddlArea.SelectedValue = _area;
                         ddlSucursal.SelectedValue = _sucursal;
 
-                        buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue,ddlSucursal.SelectedValue);
+                        buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue, null,null);
 
                         divResumen.Visible = false;
                         divGrilla.Visible = true;
@@ -107,9 +111,10 @@ namespace TagorManuCRM
                         lblTituloBuscadorTicket.Text = Session["strTituloBuscadorTicket"].ToString();
                     }
 
-                    
-
                     Session["strTituloBuscadorTicket"] = null;
+                    buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue,null,null);
+          
+
                 }
             }
             catch (Exception ex)
@@ -161,20 +166,20 @@ namespace TagorManuCRM
                 //dt = dal.getBuscarTicketBuscadorPorIdTicket(txtBuscar.Text.Trim()).Tables[0];
                 //BUSCACR ID USUARIO
 
-                if (verTodos == "1")
-                {
-                    dt = dal.getBuscarTicketBuscadorPorIdTicketUsuario(txtBuscar.Text.Trim(), null).Tables[0];
+                //if (verTodos == "1")
+                //{
+                //    dt = dal.getBuscarTicketBuscadorPorIdTicketUsuario(txtBuscar.Text.Trim(), null).Tables[0];
 
-                }
-                else
-                {
-                    dt = dal.getBuscarTicketBuscadorPorIdTicketUsuario(txtBuscar.Text.Trim(), idUsuario2).Tables[0];
-                }
+                //}
+                //else
+                //{
+                //    dt = dal.getBuscarTicketBuscadorPorIdTicketUsuario(txtBuscar.Text.Trim(), idUsuario2).Tables[0];
+                //}
+                buscarTicket(null, null, null, null, null, txtBuscar.Text.Trim(), null);
 
-
-                Session["sessionDtTicket"] = dt;
-                grvTickets.DataSource = dt;
-                grvTickets.DataBind();
+                //Session["sessionDtTicket"] = dt;
+                //grvTickets.DataSource = dt;
+                //grvTickets.DataBind();
 
                 //buscarGr();
             }
@@ -240,7 +245,6 @@ namespace TagorManuCRM
                 grvTickets.DataSource = dt;
                 grvTickets.DataBind();
 
-
                 //buscarGr();
             }
             catch (Exception ex)
@@ -269,7 +273,7 @@ namespace TagorManuCRM
                 LinkButton lbtn = sender as LinkButton;
                 GridViewRow row = (GridViewRow)lbtn.NamingContainer;
                 Label _lblIdTicket = (Label)grvTickets.Rows[row.RowIndex].FindControl("lblIdTicket");
-                Response.Redirect("SeguimientoOT.aspx?t=" + _lblIdTicket.Text);
+                //Response.Redirect("SeguimientoOT.aspx?t=" + _lblIdTicket.Text);
             }
             catch (Exception ex)
             {
@@ -307,7 +311,7 @@ namespace TagorManuCRM
                 {
                     divResumen.Visible = false;
                     divGrilla.Visible = true;
-                    buscarTicket(ddlEstado.SelectedValue,null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue);
+                    buscarTicket(ddlEstado.SelectedValue,null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue,null,null);
                 }
             }
             catch (Exception ex)
@@ -381,7 +385,7 @@ namespace TagorManuCRM
 
                 divGrilla.Visible = true;
                 divResumen.Visible = false;
-                buscarTicket(_lblIdEstado.Text, null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue);
+                buscarTicket(_lblIdEstado.Text, null,ddlTipo.SelectedValue,ddlArea.SelectedValue,ddlSucursal.SelectedValue, null,null);
             }
             catch (Exception ex)
             {
@@ -1188,7 +1192,7 @@ namespace TagorManuCRM
                 dal.setEliminarOT(_lblIdTicket.Text);
 
 
-                buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue);
+                buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue,null,null);
             }
             catch (Exception ex)
             {
@@ -1199,11 +1203,11 @@ namespace TagorManuCRM
         }
 
 
-        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea, string idSucursal)
+        void buscarTicket(string idEstado, string nivel1, string tipo, string idArea, string idSucursal, string idTicket, string Local)
         {
             DataTable dt = new DataTable();
             dt = dal.getBuscarTicketBuscadorParametros(ddlUsuarioCreacion.SelectedValue, ddlUsuarioAsig.SelectedValue,
-                txtFechaDesde.Text, txtFechaHasta.Text, idEstado, tipo, idArea, idSucursal).Tables[0];
+                txtFechaDesde.Text, txtFechaHasta.Text, idEstado, tipo, idArea, idSucursal, idTicket, Local).Tables[0];
 
             Session["sessionDtTicket"] = dt;
             grvTickets.DataSource = dt;
@@ -1224,6 +1228,28 @@ namespace TagorManuCRM
                 Response.ContentEncoding = Encoding.Unicode;
                 Response.Write(Utilidad.ExportToCSVFile(dt));
                 Response.End();
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Attributes["class"] = "alert alert-danger";
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void btnBuscarPorLocal_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string buscar = txtBuscarPorLocal.Text.Trim();
+                if (buscar.Length < 1)
+                {
+                    lblInfo.Text = "Texto de busqueda debe tener al menos 1 caracteres";
+                    divAlerta.Attributes["class"] = "alert alert-warning";
+                    divAlerta.Visible = true;
+                    return;
+                }
+                buscarTicket(null, null, null, null, null, null, txtBuscarPorLocal.Text.Trim());
             }
             catch (Exception ex)
             {

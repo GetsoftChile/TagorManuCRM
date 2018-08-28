@@ -40,26 +40,33 @@ namespace ConsolaIngresoTicketEmergencia
             client.Connect(hostname, port, useSsl);
             client.Authenticate(email, pass);
             int messageCount = client.GetMessageCount();
-            
+
             //List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>(messageCount);
+            int contadorGeneral = 0;
             for (int i = messageCount; i > 0; i--)
             {
                 try
                 {
                     int cont = i;
                     Console.WriteLine(cont);
+                    
                     //allMessages.Add(client.GetMessage(i));
-              
+
                     OpenPop.Mime.Message oMessage = client.GetMessage(i);
                     string idGmail = oMessage.Headers.MessageId;
-
+                    contadorGeneral++;
+                    if (contadorGeneral == 10)
+                    {
+                        break;
+                    }
                     DataTable dt = new DataTable();
                     dt = dal.getBuscarEmailCasilla(idGmail).Tables[0];
                     if (dt.Rows.Count > 0)
                     {
                         continue;
                     }
-                    
+                  
+
                     string subject = oMessage.Headers.Subject;
                     string from = oMessage.Headers.From.MailAddress.Address;
                     string cc = oMessage.Headers.From.MailAddress.Address;
@@ -237,6 +244,8 @@ namespace ConsolaIngresoTicketEmergencia
                         setQuery(cnnStr, sql);
                     }
                     IngresarOT(tipo, idLocal, idArea, idSucursal, comentario, telefono, solicitadoPor, idZona, archivo1, archivo2);
+
+                   
                 }
                 catch (Exception ex)
                 {

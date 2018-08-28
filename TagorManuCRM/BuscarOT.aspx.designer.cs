@@ -49,6 +49,15 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.Label lblInfo;
         
         /// <summary>
+        /// Control divBuscador.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBuscador;
+        
+        /// <summary>
         /// Control txtBuscar.
         /// </summary>
         /// <remarks>
@@ -137,6 +146,24 @@ namespace TagorManuCRM {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnBuscarEmailCi;
+        
+        /// <summary>
+        /// Control txtBuscarPorLocal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtBuscarPorLocal;
+        
+        /// <summary>
+        /// Control btnBuscarPorLocal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBuscarPorLocal;
         
         /// <summary>
         /// Control txtFechaDesde.
