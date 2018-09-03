@@ -544,6 +544,24 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.TextBox txtObservacionCliente;
         
         /// <summary>
+        /// Control divOT.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divOT;
+        
+        /// <summary>
+        /// Control fuOrdenTrabajo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuOrdenTrabajo;
+        
+        /// <summary>
         /// Control fuArchivo1.
         /// </summary>
         /// <remarks>

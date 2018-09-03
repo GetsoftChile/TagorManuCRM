@@ -163,6 +163,8 @@ namespace TagorManuCRM
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivasPendientes.Text= item["TOTAL_ABIERTOS"].ToString();
+                lbtnOTCorrectivasEnProceso.Text= item["TOTAL_ENPROCESO"].ToString();
+                lbtnOTCorrectivasProgramadas.Text = item["TOTAL_PROGRAMADO"].ToString();
                 lbtnOTCorrectivasCerradas.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
@@ -170,6 +172,8 @@ namespace TagorManuCRM
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTPreventivoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
+                lbtnOTPreventivoEnProceso.Text = item["TOTAL_ENPROCESO"].ToString();
+                lbtnOTPreventivoProgramadas.Text = item["TOTAL_PROGRAMADO"].ToString();
                 lbtnOTPreventivoCerrado.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
@@ -177,6 +181,8 @@ namespace TagorManuCRM
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivoPlanificadoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
+                lbtnOTCorrectivoPlanificadoEnProceso.Text = item["TOTAL_ENPROCESO"].ToString();
+                lbtnOTCorrectivoPlanificadoProgramadas.Text = item["TOTAL_PROGRAMADO"].ToString();
                 lbtnOTCorrectivoPlanificadoCerrado.Text = item["TOTAL_CERRADOS"].ToString();
             }
         }
@@ -391,6 +397,103 @@ namespace TagorManuCRM
         protected void ddlSucursal_DataBound(object sender, EventArgs e)
         {
             ddlSucursal.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        protected void lbtnOTCorrectivasProgramadas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Programadas";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=4&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void lbtnOTCorrectivasEnProceso_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Correctivas En Proceso";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=2&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void lbtnOTCorrectivoPlanificadoProgramadas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Programadas";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=CP&e=4&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void lbtnOTCorrectivoPlanificadoEnProceso_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas En Proceso";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=CP&e=2&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void lbtnOTPreventivoProgramadas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Preventivo Programada";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=P&e=4&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+
+        }
+
+        protected void lbtnOTPreventivoEnProceso_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Session["strTituloBuscadorTicket"] = "SOLPED Preventivo En Proceso";
+                string idArea = ddlArea.SelectedValue;
+                string idSucursal = ddlSucursal.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=P&e=2&a=" + idArea + "&s=" + idSucursal);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
         }
     }
 }

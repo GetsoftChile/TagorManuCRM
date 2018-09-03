@@ -1928,7 +1928,7 @@ namespace DAL
             }
         }
 
-        public void setEditarRutaArchivoAtencionHistorico(int idAtencion, int Correlativo, string ruta1, string ruta2)
+        public void setEditarRutaArchivoAtencionHistorico(int idAtencion, int Correlativo, string ruta1, string ruta2, string rutaOT)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_EditarAtencionHistoricoRutaArchivo");
 
@@ -1936,7 +1936,7 @@ namespace DAL
             db.AddInParameter(cmd, "@correlativo", DbType.Int16, Correlativo);
             db.AddInParameter(cmd, "@ruta", DbType.String, ruta1);
             db.AddInParameter(cmd, "@ruta2", DbType.String, ruta2);
-
+            db.AddInParameter(cmd, "@ruta3", DbType.String, rutaOT);
             try
             {
                 db.ExecuteNonQuery(cmd);
@@ -2976,6 +2976,26 @@ namespace DAL
         }
 
 
+        public void setEditarEmailTicket(string idTicket, string idEmail)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_EditarEmailTicket");
+            db.AddInParameter(cmd, "@idEmail", DbType.String, idEmail);
+            db.AddInParameter(cmd, "@idTicket", DbType.String, idTicket);
+
+            try
+            {
+                db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo editar el ticket, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo editar el ticket, " + ex.Message, ex);
+            }
+        }
+        
         public void setEditarGestionPorId(string idTicket, string idGestion,
             string observacion, string idCampo1, string idCampo2, string idCampo3,
             string idCampo4, string idCampo5)
@@ -3156,6 +3176,32 @@ namespace DAL
             catch (Exception ex)
             {
                 throw new Exception("No se pudo buscar el usuario, " + ex.Message, ex);
+            }
+        }
+
+        
+        public DataSet getBuscarEmailPorTicket(string idTicket)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarEmailPorTicket");
+            if (idTicket == string.Empty)
+            {
+                db.AddInParameter(cmd, "@idTicket", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idTicket", DbType.String, idTicket);
+            }
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el email, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el email, " + ex.Message, ex);
             }
         }
 

@@ -297,7 +297,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F.Creación">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA") %>'></asp:Label>
+                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA") %>' ></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="U.Creación">
@@ -335,6 +335,12 @@
                                 <ItemTemplate>
                                     <asp:Label ID="lblArchivo2" runat="server" Visible="false" Text='<%# Bind("RUTA_ARCHIVO_2") %>'></asp:Label>
                                     <asp:ImageButton ID="ibtnArchivo2" runat="server" ImageUrl="~/assets/img/box.png" Visible="false" OnClick="ibtnArchivo2_Click" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                             <asp:TemplateField HeaderText="OT">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblArchivoOT" runat="server" Visible="false" Text='<%# Bind("RUTA_ARCHIVO_OT") %>'></asp:Label>
+                                    <asp:ImageButton ID="ibtnArchivoOT" runat="server" ImageUrl="~/assets/img/box.png" Visible="false" OnClick="ibtnArchivoOT_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Obs">
@@ -394,6 +400,10 @@
                                 <div class="form-group" id="divObservacionCliente" runat="server" visible="false">
                                     <label for="">Observación Cliente</label>
                                     <asp:TextBox ID="txtObservacionCliente" runat="server" TextMode="MultiLine" Height="100px" CssClass="form-control input-sm" Rows="20"></asp:TextBox>
+                                </div>
+                                <div class="form-group" id="divOT" runat="server" visible="false">
+                                    <label for="">Adjunto OT</label>
+                                    <asp:FileUpload ID="fuOrdenTrabajo" runat="server" CssClass="form-control input-sm"></asp:FileUpload>
                                 </div>
                             </div>
                         </ContentTemplate>

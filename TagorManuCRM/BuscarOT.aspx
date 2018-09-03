@@ -210,7 +210,7 @@
                                 AutoGenerateColumns="false" OnRowDataBound="paginacion_RowDataBound" EmptyDataText="Solped no encontrado"
                                 EmptyDataRowStyle-CssClass="active h4" PageSize="50" AllowPaging="true">
                                 <Columns>
-                                    <asp:TemplateField HeaderText="OT">
+                                    <asp:TemplateField HeaderText="SOLPED">
                                         <ItemTemplate>
                                             <asp:Label ID="lblIdTicket" runat="server" Visible="false" Text='<%# Bind("ID_ATENCION") %>'></asp:Label>
                                             <%--<a  id="aIdTicket" href='<%# "SeguimientoOT.aspx?t="+Eval("ID_ATENCION") %>'><%#Eval("ID_ATENCION")%></a>--%>

@@ -148,6 +148,24 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivasPendientes;
         
         /// <summary>
+        /// Control lbtnOTCorrectivasProgramadas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivasProgramadas;
+        
+        /// <summary>
+        /// Control lbtnOTCorrectivasEnProceso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivasEnProceso;
+        
+        /// <summary>
         /// Control lbtnOTCorrectivasCerradas.
         /// </summary>
         /// <remarks>
@@ -166,6 +184,24 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivoPlanificadoPendiente;
         
         /// <summary>
+        /// Control lbtnOTCorrectivoPlanificadoProgramadas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivoPlanificadoProgramadas;
+        
+        /// <summary>
+        /// Control lbtnOTCorrectivoPlanificadoEnProceso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTCorrectivoPlanificadoEnProceso;
+        
+        /// <summary>
         /// Control lbtnOTCorrectivoPlanificadoCerrado.
         /// </summary>
         /// <remarks>
@@ -182,6 +218,24 @@ namespace TagorManuCRM {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbtnOTPreventivoPendiente;
+        
+        /// <summary>
+        /// Control lbtnOTPreventivoProgramadas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTPreventivoProgramadas;
+        
+        /// <summary>
+        /// Control lbtnOTPreventivoEnProceso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnOTPreventivoEnProceso;
         
         /// <summary>
         /// Control lbtnOTPreventivoCerrado.

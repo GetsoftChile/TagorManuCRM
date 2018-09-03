@@ -78,6 +78,15 @@ namespace TagorManuCRM
                             divIngresoGestion.Visible = false;
                         }
                     }
+
+                    if (ddlEstado.SelectedValue == "4")
+                    {
+                        divFechaAgendamiento.Visible = true;
+                        txtFechaAgendamiento.Visible = true;
+                        txtFechaAgendamiento.Enabled = true;
+                        divObservacionCliente.Visible = true;
+                        txtObservacionCliente.Visible = true;
+                    }
                     //esto es para inicializar con esta regla, ya que siempre el estado es igual al ultimo ingreso
                     //entonces si llega a tener un cambio de estado hay que verlo en el evento del drpdownlist donde cambia estado
                     //entonces si cambia de estado  el atributo del boton btnGrabarGestion cambia a nulo
@@ -118,6 +127,7 @@ namespace TagorManuCRM
                     txtFechaAgendamiento.Visible = true;
                     txtFechaAgendamiento.Enabled = true;
                     divObservacionCliente.Visible = true;
+                    divOT.Visible = false;
                 }
                 else if (ddlEstado.SelectedValue == "3")
                 {
@@ -125,12 +135,17 @@ namespace TagorManuCRM
                     txtFechaAgendamiento.Visible = false;
                     txtFechaAgendamiento.Enabled = false;
                     divObservacionCliente.Visible = true;
+                    divOT.Visible = true;
                 }
                 else
                 {
                     divObservacionCliente.Visible = false;
+                    divFechaAgendamiento.Visible = false;
+                    txtFechaAgendamiento.Visible = false;
+                    txtFechaAgendamiento.Enabled = false;
                     txtFechaAgendamiento.Text = string.Empty;
                     txtObservacionCliente.Text = string.Empty;
+                    divOT.Visible = false;
                 }
 
             }
@@ -296,9 +311,11 @@ namespace TagorManuCRM
             {
                 Label _lblArchivo1 = (Label)e.Row.FindControl("lblArchivo1");
                 Label _lblArchivo2 = (Label)e.Row.FindControl("lblArchivo2");
+                Label _lblArchivoOT = (Label)e.Row.FindControl("lblArchivoOT");
 
                 ImageButton _ibtnArchivo1 = (ImageButton)e.Row.FindControl("ibtnArchivo1");
                 ImageButton _ibtnArchivo2 = (ImageButton)e.Row.FindControl("ibtnArchivo2");
+                ImageButton _ibtnArchivoOT = (ImageButton)e.Row.FindControl("ibtnArchivoOT");
 
                 if (string.IsNullOrEmpty(_lblArchivo1.Text) == true)
                 {
@@ -318,6 +335,15 @@ namespace TagorManuCRM
                     _ibtnArchivo2.Visible = true;
                 }
 
+                if (string.IsNullOrEmpty(_lblArchivoOT.Text) == true)
+                {
+                    _ibtnArchivoOT.Visible = false;
+                }
+                else
+                {
+                    _ibtnArchivoOT.Visible = true;
+                }
+
                 Label _lblEstado = (Label)e.Row.FindControl("lblEstado");
 
                 if (_lblEstado.Text == "PENDIENTE")
@@ -327,6 +353,14 @@ namespace TagorManuCRM
                 else if (_lblEstado.Text == "CERRADO")
                 {
                     _lblEstado.CssClass = "label label-success";
+                }
+                else if (_lblEstado.Text == "PROGRAMADO")
+                {
+                    _lblEstado.CssClass = "label label-warning";
+                }
+                else if (_lblEstado.Text == "EN PROCESO")
+                {
+                    _lblEstado.CssClass = "label label-info";
                 }
             }
         }
@@ -439,12 +473,50 @@ namespace TagorManuCRM
                     divAlerta.Visible = true;
                     return;
                 }
-
+                
                 if (lblIdEstadoTicket.Text == "3")
                 {
                     if (ddlEstado.SelectedValue=="3")
                     {
-                        lblInfo.Text = "La OT ya se encuentra en estado CERRADO, no puede volver a cerrarla";
+                        lblInfo.Text = "La SOLPED ya se encuentra en estado CERRADO, no puede volver a cerrarla";
+                        divAlerta.Attributes["class"] = "alert alert-warning";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+                }
+
+                if (ddlEstado.SelectedValue == "4")
+                {
+                    if (txtFechaAgendamiento.Text == string.Empty)
+                    {
+                        lblInfo.Text = "";
+                        divAlerta.Attributes["class"] = "alert alert-warning";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+                }
+
+                if (ddlEstado.SelectedValue=="3")
+                {
+                    if (lblIdEstadoTicket.Text != "2")
+                    {
+                        lblInfo.Text = "La SOLPED no se puede cerrar si no hay una gestion EN PROCESO.";
+                        divAlerta.Attributes["class"] = "alert alert-warning";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+
+                    if (!fuOrdenTrabajo.HasFile)
+                    {
+                        lblInfo.Text = "Favor ingresar la fotografia de la OT";
+                        divAlerta.Attributes["class"] = "alert alert-warning";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(txtObservacionCliente.Text))
+                    {
+                        lblInfo.Text = "Favor ingresar la observacion al cliente.";
                         divAlerta.Attributes["class"] = "alert alert-warning";
                         divAlerta.Visible = true;
                         return;
@@ -497,17 +569,24 @@ namespace TagorManuCRM
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo1.FileName;
                     fuArchivo1.SaveAs(Server.MapPath(carpeta));
-                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), carpeta, "");
+                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), carpeta, "","");
                 }
 
                 if (fuArchivo2.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_" + fuArchivo2.FileName;
                     fuArchivo2.SaveAs(Server.MapPath(carpeta));
-                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta);
+                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta,"");
                 }
-
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario);
+                
+                if (fuOrdenTrabajo.HasFile)
+                {
+                    string carpeta = "archivosGestion/" + numeroTicket + "_OT_" + fuOrdenTrabajo.FileName;
+                    fuOrdenTrabajo.SaveAs(Server.MapPath(carpeta));
+                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
+                }
+                
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text);
                 buscarCaso(hfNumeroTicket.Value);
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
@@ -526,11 +605,12 @@ namespace TagorManuCRM
 
         }
 
-        void EnviarEmails(string estado, string numeroTicket,string usuario)
+        void EnviarEmails(string estado, string numeroTicket,string usuario, string fechaAgendamiento, string tipoOT)
         {
-            if (estado == "3")
+            string resultado = string.Empty;
+            if (estado == "3") //estado cerrado
             {
-                string body = "Estimada(o),   <br>";
+                string body = "Estimado,   <br>";
                 body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
                 body += "<br><br><b>Observación de la solución: " + txtObservacionGestion.Text + "</b>";
                 body += "<br><br>";
@@ -540,12 +620,44 @@ namespace TagorManuCRM
                 body += "<br>Observación de la OT: " + txtObservacion.Text;
 
                 body += "<br><br>";
-                body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                resultado = com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+
+                if (tipoOT== "Correctiva")
+                {
+                    body = string.Empty;
+                    body += "Estimado,   <br>";
+                    body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
+                    body += "<br><br><b>Observación de la solución: " + txtObservacionCliente.Text + "</b>";
+                    body += "<br><br>";
+                    body += "<b><u>Información de la Atención:</u></b>";
+                    body += "<br>N° de OT: " + numeroTicket;
+                    body += "<br>Fecha: " + DateTime.Now.ToString("G");
+                    body += "<br>Observación de la OT: " + txtObservacion.Text;
+
+                    body += "<br><br>";
+                    body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
+                    body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+                    DataTable dt = new DataTable();
+                    dt = dal.getBuscarEmailPorTicket(numeroTicket).Tables[0];
+                    string emails = string.Empty;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        emails = item["EMAIL_ORIGEN"].ToString();
+                        break;
+                    }
+
+                    if (emails.Trim() != string.Empty)
+                    {
+                        com.EnviarEmail(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolucion OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                    }
+                }
+                
             }
-            else if (estado == "1")
+            else if (estado == "1") //estado pendiente
             {
                 string idEmpleado = ddlDerivar.SelectedValue;
                 DataTable dtEmpleado = new DataTable();
@@ -576,13 +688,61 @@ namespace TagorManuCRM
                 {
                     if (email != string.Empty)
                     {
-                        com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
+                        resultado = com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
                     }
                 }
             }
             else if (estado == "4")
             {
+                string body = "Estimado,   <br>";
+                body += "Te informamos que la OT N° " + numeroTicket + " ha sido programada para su gestion:";
+                body += "<br><br><b>Fecha de Programacion: </b>" + fechaAgendamiento;
+                body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionGestion.Text;
+                body += "<br><br>";
+                body += "<b><u>Información de la Atención:</u></b>";
+                body += "<br>N° de OT: " + numeroTicket;
+                body += "<br>Fecha: " + DateTime.Now.ToString("G");
+                body += "<br>Observación de la OT: " + txtObservacion.Text;
 
+                body += "<br><br>";
+                body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+                resultado = com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+
+                if (tipoOT == "Correctiva")
+                {
+                    body = string.Empty;
+                    body = "Estimado,   <br>";
+                    body += "Te informamos que la OT N° " + numeroTicket + " ha sido programada para su gestion:";
+                    body += "<br><br><b>Fecha de Programación: </b>" + fechaAgendamiento;
+                    body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionCliente.Text;
+                    body += "<br><br>";
+                    body += "<b><u>Información de la Atención:</u></b>";
+                    body += "<br>N° de OT: " + numeroTicket;
+                    body += "<br>Fecha: " + DateTime.Now.ToString("G");
+                    body += "<br>Observación de la OT: " + txtObservacion.Text;
+
+                    body += "<br><br>";
+                    body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                    body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+
+                    DataTable dt = new DataTable();
+                    dt = dal.getBuscarEmailPorTicket(numeroTicket).Tables[0];
+                    string emails = string.Empty;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        emails = item["EMAIL_ORIGEN"].ToString();
+                        break;
+                    }
+                    if (emails.Trim() != string.Empty)
+                    {
+                        com.EnviarEmail(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                    }
+                    
+                }
+                
             }
         }
 
@@ -1056,6 +1216,23 @@ namespace TagorManuCRM
             string ruta = "pdfOT/" + nombreArchivoPdf; ;
             return ruta;
 
+        }
+
+        protected void ibtnArchivoOT_Click(object sender, ImageClickEventArgs e)
+        {
+            try
+            {
+                ImageButton img = (ImageButton)sender;
+                GridViewRow row = (GridViewRow)img.NamingContainer;
+                Label _lblArchivoOT = (Label)grvGestiones.Rows[row.RowIndex].FindControl("lblArchivoOT");
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), UniqueID, "window.open('" + _lblArchivoOT.Text + "','_blank');", true);
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
         }
 
 

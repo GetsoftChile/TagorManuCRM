@@ -165,11 +165,11 @@ namespace TagorManuCRM
         }
         
 
-        public void EnviarEmail(string email, string body, string sub)
+        public string EnviarEmail(string email, string body, string sub)
         {
             System.Net.Mail.MailMessage correo = new System.Net.Mail.MailMessage();
 
-            correo.From = new MailAddress("<notificaciones@getsoft.cl>");
+            correo.From = new MailAddress("<notificaciones@tagor.cl>");
             string bodyEmail = body;
 
             String[] AMailto = email.Split(';');
@@ -184,11 +184,25 @@ namespace TagorManuCRM
 
             //port = "25" userName = "notificaciones@getsoft.cl" password = "nuevaetica123!"
             SmtpClient client = new SmtpClient();
-            client.Host = "mail.getsoft.cl";
-            client.Port = 25;
-            client.Credentials = new System.Net.NetworkCredential("notificaciones@getsoft.cl", "nuevaetica123!");
+            client.Credentials = new System.Net.NetworkCredential("notificaciones@tagor.cl", "notificaciones123**");
+            client.Host = "mail.tagor.cl";
+            client.Port = 3535;
+            
+            string resultado = string.Empty;
+            
+            try
+            {
+                client.Send(correo);
+                resultado = "ENVIADO";
+            }
+            catch (SmtpException ex)
+            {
+                resultado = "ERROR ENVIO CORREO: " + ex.InnerException.Message;
+            }
+            
 
-            client.Send(correo);
+            return resultado;
+            
         }
 
         

@@ -115,7 +115,7 @@
                                                         <div class="col-lg-12 col-xs-12">
 
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-maroon"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <span class="info-box-icon bg-red"><i class="ion ion-android-alert"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED PENDIENTES</span>
                                                                     <span class="info-box-number">
@@ -128,8 +128,38 @@
 
                                                         </div>
                                                         <div class="col-lg-12 col-xs-12">
+
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-aqua"><i class="ion ion-checkmark-circled"></i></span>
+                                                                <span class="info-box-icon bg-yellow"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED PROGRAMADAS</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTCorrectivasProgramadas" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTCorrectivasProgramadas_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
+
+                                                            <div class="info-box">
+                                                                <span class="info-box-icon bg-blue"><i class="ion ion-android-person"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED EN PROCESO</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTCorrectivasEnProceso" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTCorrectivasEnProceso_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
+                                                            <div class="info-box">
+                                                                <span class="info-box-icon bg-green"><i class="ion ion-checkmark-circled"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED CERRADAS</span>
                                                                     <span class="info-box-number">
@@ -165,10 +195,8 @@
                                                 <div class="box-body">
                                                     <div class="row">
                                                         <div class="col-lg-12 col-xs-12">
-
-
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-maroon"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <span class="info-box-icon bg-red"><i class="ion ion-android-alert"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED PENDIENTES</span>
                                                                     <span class="info-box-number">
@@ -180,10 +208,36 @@
                                                             <!-- /.info-box -->
                                                         </div>
                                                         <div class="col-lg-12 col-xs-12">
+                                                            <div class="info-box">
+                                                                <span class="info-box-icon bg-yellow"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED PROGRAMADAS</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTCorrectivoPlanificadoProgramadas" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTCorrectivoPlanificadoProgramadas_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
+                                                            <div class="info-box">
+                                                               <span class="info-box-icon bg-blue"><i class="ion ion-android-person"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED EN PROCESO</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTCorrectivoPlanificadoEnProceso" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTCorrectivoPlanificadoEnProceso_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
                                                             <!-- small box -->
 
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-aqua"><i class="ion ion-checkmark-circled"></i></span>
+                                                                <span class="info-box-icon bg-green"><i class="ion ion-checkmark-circled"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED CERRADAS</span>
                                                                     <span class="info-box-number">
@@ -220,7 +274,7 @@
                                                         <div class="col-lg-12 col-xs-12">
                                                             <!-- small box -->
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-maroon"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <span class="info-box-icon bg-red"><i class="ion ion-android-alert"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED PENDIENTES</span>
                                                                     <span class="info-box-number">
@@ -233,9 +287,37 @@
                                                         </div>
                                                         <div class="col-lg-12 col-xs-12">
                                                             <!-- small box -->
+                                                            <div class="info-box">
+                                                                <span class="info-box-icon bg-yellow"><i class="ion ion-android-alarm-clock"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED PROGRAMADAS</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTPreventivoProgramadas" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTPreventivoProgramadas_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
+                                                            <!-- small box -->
+                                                            <div class="info-box">
+                                                                <span class="info-box-icon bg-blue"><i class="ion ion-android-person"></i></span>
+                                                                <div class="info-box-content">
+                                                                    <span class="info-box-text">SOLPED EN PROCESO</span>
+                                                                    <span class="info-box-number">
+                                                                        <asp:LinkButton ID="lbtnOTPreventivoEnProceso" runat="server" CssClass="text-bold text-black" Font-Size="XX-Large" OnClick="lbtnOTPreventivoEnProceso_Click" Text="90"></asp:LinkButton>
+                                                                    </span>
+                                                                </div>
+                                                                <!-- /.info-box-content -->
+                                                            </div>
+                                                            <!-- /.info-box -->
+                                                        </div>
+                                                        <div class="col-lg-12 col-xs-12">
+                                                            <!-- small box -->
 
                                                             <div class="info-box">
-                                                                <span class="info-box-icon bg-aqua"><i class="ion ion-checkmark-circled"></i></span>
+                                                                <span class="info-box-icon bg-green"><i class="ion ion-checkmark-circled"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED CERRADAS</span>
                                                                     <span class="info-box-number">

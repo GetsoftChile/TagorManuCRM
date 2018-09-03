@@ -55,7 +55,7 @@ namespace ConsolaIngresoTicketEmergencia
                     OpenPop.Mime.Message oMessage = client.GetMessage(i);
                     string idGmail = oMessage.Headers.MessageId;
                     contadorGeneral++;
-                    if (contadorGeneral == 10)
+                    if (contadorGeneral == 40)
                     {
                         break;
                     }
@@ -243,7 +243,8 @@ namespace ConsolaIngresoTicketEmergencia
                         string sql = "stp_IngresarAdjuntoEmail '" + idGmail + "','" + fileName + "','" + fileName + "'";
                         setQuery(cnnStr, sql);
                     }
-                    IngresarOT(tipo, idLocal, idArea, idSucursal, comentario, telefono, solicitadoPor, idZona, archivo1, archivo2);
+                    
+                    IngresarOT(idGmail, tipo, idLocal, idArea, idSucursal, comentario, telefono, solicitadoPor, idZona, archivo1, archivo2);
 
                    
                 }
@@ -258,7 +259,7 @@ namespace ConsolaIngresoTicketEmergencia
 
         }
 
-        static void IngresarOT(string tipo, string idLocal, string idArea, string idSucursal, string comentario, string telefono, string solicitadoPor,
+        static void IngresarOT(string idEmail, string tipo, string idLocal, string idArea, string idSucursal, string comentario, string telefono, string solicitadoPor,
             string idZona, string archivo1, string archivo2)
         {
             Datos dal = new Datos();
@@ -338,9 +339,10 @@ namespace ConsolaIngresoTicketEmergencia
                 "D", "EMERGENCIA", "1", tipo, idLocal, telefono,
                 solicitadoPor, idZona, idArea, null, idSucursal);
             //FIN ingreso
+            
 
-            dal.setIngresarTicketHistorico(ticket, idUsuario, idUsuarioAsignado, "1",
-                comentario, null);
+            dal.setIngresarTicketHistorico(ticket, idUsuario, idUsuarioAsignado, "1", comentario, null);
+            dal.setEditarEmailTicket(ticket, idEmail);
 
             if (archivo1 != string.Empty)
             {
@@ -367,6 +369,9 @@ namespace ConsolaIngresoTicketEmergencia
 
             TagorManuCRM.Comun com = new TagorManuCRM.Comun();
             com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
+
+            
+            
         }
 
         private static string HtmlToPlainText(string html)

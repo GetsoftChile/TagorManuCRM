@@ -273,7 +273,7 @@
                 $(".alert").fadeTo(1500, 0).slideUp(400, function () {
                     $(this).remove();
                 });
-            }, 5000);
+            }, 7000);
         }
 
     //-->

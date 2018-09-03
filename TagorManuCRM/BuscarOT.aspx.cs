@@ -592,6 +592,14 @@ namespace TagorManuCRM
                 {
                     _lblEstado.CssClass = "label label-success";
                 }
+                else if (_lblEstado.Text == "PROGRAMADO")
+                {
+                    _lblEstado.CssClass = "label label-warning";
+                }
+                else if (_lblEstado.Text == "EN PROCESO")
+                {
+                    _lblEstado.CssClass = "label label-info";
+                }
 
                 if (string.IsNullOrEmpty(_lblArchivo.Text) == true)
                 {
