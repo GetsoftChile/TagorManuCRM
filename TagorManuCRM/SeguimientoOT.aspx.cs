@@ -586,7 +586,7 @@ namespace TagorManuCRM
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
                 }
                 
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text);
+                //EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text);
                 buscarCaso(hfNumeroTicket.Value);
 
                 lblInfo.Text = "Gestión histórica creada correctamete";

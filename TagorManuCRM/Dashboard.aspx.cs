@@ -24,6 +24,14 @@ namespace TagorManuCRM
                     Perfil();
                     com.FillArea(ddlArea);
                     Buscar();
+
+                    DataTable dt = new DataTable();
+                    dt = dal.getBuscarMensaje("1").Tables[0];
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        lblMensaje.Text = item["MENSAJE"].ToString().Replace("\r\n", "<br>");
+                    }
+
                 }
             }
             catch (Exception ex)

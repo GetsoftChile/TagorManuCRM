@@ -55,6 +55,27 @@ namespace DAL
             }
         }
 
+
+        public DataSet getBuscarMensaje(string idMensaje)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarMensaje");
+
+            db.AddInParameter(cmd, "@idMensaje", DbType.String, idMensaje);
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el mensaje, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el mensaje, " + ex.Message, ex);
+            }
+        }
+
         public DataSet getBuscarComuna(string nombre)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_BuscarComuna");
@@ -3797,7 +3818,29 @@ namespace DAL
             }
         }
 
-        
+
+
+        public void setIngresarMensaje(string idMensaje, string mensaje, string activo)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_IngresarMensaje");
+            db.AddInParameter(cmd, "@idMensaje", DbType.String, idMensaje);
+            db.AddInParameter(cmd, "@mensaje", DbType.String, mensaje);
+            db.AddInParameter(cmd, "@activo", DbType.String, activo);
+            try
+            {
+                db.ExecuteNonQuery(cmd);
+                //string val = db.ExecuteScalar(cmd).ToString();
+                //return val;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al ingresar, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al ingresar, " + ex.Message, ex);
+            }
+        }
 
         public void setIngresarMantencion(string idEmpresa, string nivel1, string nivel2, 
             string nivel3 ,string nivel4, string clase, string idArea)

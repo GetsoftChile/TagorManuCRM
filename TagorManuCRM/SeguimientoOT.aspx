@@ -18,7 +18,6 @@
                 alert("Select a file to upload");
                 return false;
             }
-
         }
 
         function progress() {

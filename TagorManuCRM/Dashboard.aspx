@@ -36,14 +36,15 @@
                             <div class="small-box bg-red">
                                 <div class="inner">
                                     <h2>
-                                        <%--   <asp:Label ID="lblTotalCasosAbiertos" runat="server" Text="EMERGENCIAS" />--%>
-                                        <asp:LinkButton ID="lbtnEmergencias" runat="server" CssClass="label" OnClick="lbtnEmergencias_Click">EMERGENCIAS</asp:LinkButton>
+                                           <asp:Label ID="lblMensaje" runat="server" CssClass="label" Text="" />
+                                       <%-- <asp:LinkButton ID="lbtnEmergencias" runat="server" CssClass="label" OnClick="lbtnEmergencias_Click">EMERGENCIAS</asp:LinkButton>--%>
+
                                     </h2>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-alert-circled"></i>
                                 </div>
-                                <asp:LinkButton ID="lbtnVerNumeros" runat="server" CssClass="small-box-footer" OnClick="lbtnVerNumeros_Click"><i class="fa fa-arrow-circle-right"></i> Mas Info</asp:LinkButton>
+                                <%--<asp:LinkButton ID="lbtnVerNumeros" runat="server" CssClass="small-box-footer" OnClick="lbtnVerNumeros_Click"><i class="fa fa-arrow-circle-right"></i> Mas Info</asp:LinkButton>--%>
                                 <%--<a href="#" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i>
                          </a>--%>
                             </div>

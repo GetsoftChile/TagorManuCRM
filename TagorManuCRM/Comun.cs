@@ -200,13 +200,9 @@ namespace TagorManuCRM
                 resultado = "ERROR ENVIO CORREO: " + ex.InnerException.Message;
             }
             
-
             return resultado;
-            
         }
-
         
-
         public bool validarRut(string rut)
         {
             bool validacion = false;

@@ -1571,6 +1571,7 @@
     <Content Include="Firma.aspx" />
     <Content Include="IngresoOT.aspx" />
     <Content Include="Mantenciones.aspx" />
+    <Content Include="Mensaje.aspx" />
     <Content Include="pdfOT\index.html" />
     <Content Include="ReporteSolped.aspx" />
     <Content Include="SeguimientoOT.aspx" />
@@ -8309,6 +8310,13 @@
     </Compile>
     <Compile Include="Mantenciones.aspx.designer.cs">
       <DependentUpon>Mantenciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Mensaje.aspx.cs">
+      <DependentUpon>Mensaje.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mensaje.aspx.designer.cs">
+      <DependentUpon>Mensaje.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReporteSolped.aspx.cs">

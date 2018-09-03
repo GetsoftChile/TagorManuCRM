@@ -12,7 +12,6 @@
             display: block;
             z-index: 1;
         }
-
         .example-modal .modal {
             background: transparent !important;
         }
@@ -20,7 +19,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder3" runat="server">
     <!-- Content Header (Page header) -->
-
     <section class="content-header">
         <h1>
             <asp:Label ID="lblTituloBuscadorTicket" runat="server"></asp:Label>
@@ -57,9 +55,7 @@
                                                     Text="Buscar" OnClick="btnBuscar_Click" />
                                             </span>
                                         </div>
-
                                     </div>
-
                                     <div class="col-xs-3" runat="server" visible="false">
                                         <asp:TextBox ID="txtBuscarPorRut" runat="server" CssClass="form-control input-sm" placeholder="Buscar por Rut"></asp:TextBox>
                                     </div>
@@ -74,7 +70,6 @@
                                         <asp:Button ID="btnBuscarPorCliente" runat="server" CssClass="btn btn-sm btn-primary"
                                             Text="Buscar" OnClick="btnBuscarPorCliente_Click" />
                                     </div>
-
                                     <div class="col-xs-3" runat="server" visible="false">
                                         <asp:TextBox ID="txtBuscarPorRutCi" runat="server" CssClass="form-control input-sm" placeholder="Buscar por Rut CI"></asp:TextBox>
                                     </div>
@@ -82,7 +77,6 @@
                                         <asp:Button ID="btnBuscarPorRutCi" runat="server" CssClass="btn btn-sm btn-primary"
                                             Text="Buscar" OnClick="btnBuscarPorRutCi_Click" />
                                     </div>
-
                                     <div class="col-xs-3" runat="server" visible="false">
                                         <asp:TextBox ID="txtBuscarEmailCi" runat="server" CssClass="form-control input-sm" placeholder="Buscar por Email CI"></asp:TextBox>
                                     </div>
@@ -90,7 +84,6 @@
                                         <asp:Button ID="btnBuscarEmailCi" runat="server" CssClass="btn btn-sm btn-primary"
                                             Text="Buscar" OnClick="btnBuscarEmailCi_Click" />
                                     </div>
-
                                     <div class="col-xs-4" runat="server" visible="true">
                                         <div class="input-group input-group-sm">
                                             <asp:TextBox ID="txtBuscarPorLocal" runat="server" CssClass="form-control input-sm" placeholder="Buscar por Local"></asp:TextBox>
@@ -99,9 +92,7 @@
                                                     Text="Buscar" OnClick="btnBuscarPorLocal_Click" />
                                             </span>
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                             <!-- /.box-body -->
