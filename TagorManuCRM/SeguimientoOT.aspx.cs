@@ -40,11 +40,9 @@ namespace TagorManuCRM
                     if (perfil == "1")
                     {
                         txtObservacion.Enabled = true;
-                        //ddlArea.Enabled = true;
                     }
                     else
                     {
-                        //ddlArea.Enabled = false;
                         txtObservacion.Enabled = false;
                     }
 
@@ -99,14 +97,7 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
             }
         }
-
-        //void area()
-        //{
-        //    ddlArea.DataSource = dal.getBuscarArea();
-        //    ddlArea.DataValueField = "ID_AREA";
-        //    ddlArea.DataTextField = "AREA";
-        //    ddlArea.DataBind();
-        //}
+        
 
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -169,12 +160,7 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
             }
         }
-
-        //protected void ddlArea_DataBound(object sender, EventArgs e)
-        //{
-        //    ddlArea.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Seleccione", "0"));
-        //}
-
+        
 
         void buscarCaso(string numeroTicket)
         {
@@ -190,7 +176,6 @@ namespace TagorManuCRM
                 lblIdTicket.Text = "SOLPED: " + item["ID_ATENCION"].ToString();
                 idTicket = item["ID_ATENCION"].ToString();
                 
-                //lblRutCliente.Text = rutCliente;
                 txtObservacion.Text = item["OBSERVACION"].ToString();
                 lblNombreCliente.Text = item["SOLICITADO_POR"].ToString();
                 lblTelefonoCliente.Text = item["TELEFONO_ASOCIADO"].ToString();
@@ -623,8 +608,8 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                resultado = com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
-
+                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                
                 if (tipoOT== "Correctiva")
                 {
                     body = string.Empty;
@@ -652,7 +637,8 @@ namespace TagorManuCRM
 
                     if (emails.Trim() != string.Empty)
                     {
-                        com.EnviarEmail(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolucion OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        com.EnviarEmailSSLImplicito(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolución OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        //com.EnviarEmail(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolucion OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
                     }
                 }
                 
@@ -688,14 +674,15 @@ namespace TagorManuCRM
                 {
                     if (email != string.Empty)
                     {
-                        resultado = com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
+                        //resultado = com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
+                        com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), " SOLPED N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
                     }
                 }
             }
             else if (estado == "4")
             {
                 string body = "Estimado,   <br>";
-                body += "Te informamos que la OT N° " + numeroTicket + " ha sido programada para su gestion:";
+                body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido programada para su gestión:";
                 body += "<br><br><b>Fecha de Programacion: </b>" + fechaAgendamiento;
                 body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionGestion.Text;
                 body += "<br><br>";
@@ -708,13 +695,13 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                resultado = com.EnviarEmail(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
-
+                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                
                 if (tipoOT == "Correctiva")
                 {
                     body = string.Empty;
                     body = "Estimado,   <br>";
-                    body += "Te informamos que la OT N° " + numeroTicket + " ha sido programada para su gestion:";
+                    body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido programada para su gestión:";
                     body += "<br><br><b>Fecha de Programación: </b>" + fechaAgendamiento;
                     body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionCliente.Text;
                     body += "<br><br>";
@@ -738,9 +725,10 @@ namespace TagorManuCRM
                     }
                     if (emails.Trim() != string.Empty)
                     {
-                        com.EnviarEmail(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        com.EnviarEmailSSLImplicito(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                       
                     }
-                    
+
                 }
                 
             }
@@ -975,14 +963,7 @@ namespace TagorManuCRM
             tableDatosDeudor.HorizontalAlignment = Element.ALIGN_LEFT;
             tableDatosDeudor.WidthPercentage = 100.0f;
 
-
-            //foreach (PdfPCell celda in tableDatosDeudor.Rows[0].GetCells())
-            //{
-            //    celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-            //    celda.HorizontalAlignment = 1;
-            //    celda.Padding = 2;
-            //}
-
+            
             doc.Add(tableDatosDeudor);
 
             doc.Add(new Paragraph(" ", times));
@@ -1234,656 +1215,6 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
             }
         }
-
-
-        //public string generaPdf(string idTicket)
-        //{
-        //    DataTable dt = new DataTable();
-        //    dt = dal.getBuscarTicket(idTicket).Tables[0];
-
-        //    string observacion = string.Empty;
-        //    string usuarioAsignado = string.Empty;
-        //    string usuarioCreacionTicket = string.Empty;
-        //    string usuarioNombreAsignado = string.Empty;
-        //    string usuarioNombreCreacionTicket = string.Empty;
-        //    string nombreSolicitante = string.Empty;
-        //    string telefonoSolicitante = string.Empty;
-        //    string emailSolicitante = string.Empty;
-        //    string estadoTicket = string.Empty;
-        //    string tipo = string.Empty;
-        //    string area = string.Empty;
-        //    string idZona = string.Empty;
-        //    string local = string.Empty;
-
-        //    string nivel1 = string.Empty;
-        //    string nivel2 = string.Empty;
-        //    string nivel3 = string.Empty;
-        //    string nivel4 = string.Empty;
-
-
-        //    string fechaTicket = string.Empty;
-
-        //    foreach (DataRow item in dt.Rows)
-        //    {
-        //        observacion = item["OBSERVACION"].ToString();
-        //        tipo = item["CLASE"].ToString();
-        //        idZona = item["ID_ZONA"].ToString();
-        //        usuarioNombreAsignado = item["NOMBRE_ASIGNADO"].ToString();
-        //        usuarioAsignado = item["USUARIO_ASIGNADO"].ToString();
-        //        usuarioCreacionTicket = item["USUARIO_CREACION"].ToString();
-        //        usuarioNombreCreacionTicket = item["NOMBRE_CREACION"].ToString();
-        //        estadoTicket = item["ESTADO_ATENCION"].ToString();
-        //        area = item["AREA"].ToString();
-        //        fechaTicket = item["FECHA"].ToString();
-        //        nivel1 = item["NIVEL_1"].ToString();
-        //        nivel2 = item["NIVEL_2"].ToString();
-        //        nivel3 = item["NIVEL_3"].ToString();
-        //        nivel4 = item["NIVEL_4"].ToString();
-        //        nombreSolicitante = item["SOLICITADO_POR"].ToString();
-        //        telefonoSolicitante = item["TELEFONO_ASOCIADO"].ToString();
-        //        emailSolicitante = item["EMAIL_SOLICITANTE"].ToString();
-        //    }
-
-
-        //    DataTable dtHistorico = new DataTable();
-        //    dtHistorico = dal.getBuscarTicketHistorico(idTicket).Tables[0];
-        //    string correlativo = string.Empty;
-        //    string fecha = string.Empty;
-        //    string usuarioCreacion = string.Empty;
-        //    string usuarioAsig = string.Empty;
-        //    string estado = string.Empty;
-        //    string motivoCierre = string.Empty;
-        //    string obs = string.Empty;
-        //    string obsCli = string.Empty;
-
-        //    //AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-        //    string titulo = "SOLPED";
-        //    string nombreArchivoPdf = "SOLPED_" + idTicket + ".pdf";
-        //    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
-
-        //    Font times = new Font(bfTimes, 7, Font.NORMAL);
-        //    Font timesRojo = new Font(bfTimes, 9, Font.BOLD, BaseColor.RED);
-        //    Font timesCorrelativo = new Font(bfTimes, 9, Font.BOLD);
-        //    Font fontCabecera = new Font(bfTimes, 8, Font.BOLD);
-        //    Font fontFirma = new Font(bfTimes, 8, Font.BOLD);
-
-        //    Document doc = new Document(PageSize.A4, 25, 25, 30, 30);
-        //    PdfWriter writePdf = PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("pdfOT/" + nombreArchivoPdf), FileMode.Create));
-        //    doc.Open();
-
-        //    iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(Server.MapPath("assets/img/logo-tagor.png"));
-        //    jpg.ScaleToFit(80, 80);
-        //    jpg.Alignment = iTextSharp.text.Image.ALIGN_LEFT;
-        //    doc.Add(jpg);
-
-        //    PdfPTable tableNumeroComprobante = new PdfPTable(2);
-        //    PdfPCell celdaNumeroComprobante = new PdfPCell(new Paragraph("Nro.SOLPED :", fontCabecera));
-        //    //celdaNumeroComprobante.HorizontalAlignment = 2;
-        //    PdfPCell celdaNumeroComprobanteFecha = new PdfPCell(new Paragraph("Fecha SOLPED :", fontCabecera));
-        //    //celdaNumeroComprobanteFecha.HorizontalAlignment = 2;
-        //    tableNumeroComprobante.AddCell(celdaNumeroComprobante);
-        //    tableNumeroComprobante.AddCell(new Paragraph(idTicket, times));
-
-        //    tableNumeroComprobante.AddCell(celdaNumeroComprobanteFecha);
-        //    tableNumeroComprobante.AddCell(new Paragraph(fechaTicket, times));
-
-        //    tableNumeroComprobante.DefaultCell.Border = Rectangle.NO_BORDER;
-
-        //    tableNumeroComprobante.HorizontalAlignment = Element.ALIGN_RIGHT;
-        //    tableNumeroComprobante.WidthPercentage = 25.0f;
-
-        //    foreach (PdfPCell celda in tableNumeroComprobante.Rows[0].GetCells())
-        //    {
-        //        celda.Border = Rectangle.NO_BORDER;
-        //    }
-
-        //    foreach (PdfPCell celda in tableNumeroComprobante.Rows[1].GetCells())
-        //    {
-        //        celda.Border = Rectangle.NO_BORDER;
-        //        //celda.HorizontalAlignment = 2;
-        //    }
-
-        //    doc.Add(tableNumeroComprobante);
-
-
-        //    Chunk tituloTipoExamen = new Chunk(titulo, FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.BOLD));
-        //    tituloTipoExamen.SetUnderline(0.1f, -2f);
-
-        //    Paragraph par = new Paragraph(tituloTipoExamen);
-        //    par.Alignment = Element.ALIGN_CENTER;
-        //    doc.Add(par);
-
-        //    //doc.Add(tituloTipoExamen);
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosDeudor = new Chunk("Datos Solicitante", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosDeudor.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosDeudor);
-
-        //    PdfPTable tableDatosDeudor = new PdfPTable(8);
-
-        //    float[] widthsDatosDeudor = new float[] { 50f, 40f, 50f, 70f, 35f, 35f, 25f, 50f };
-        //    tableDatosDeudor.SetWidths(widthsDatosDeudor);
-
-        //    PdfPCell cellUsuarioSolicitante = new PdfPCell(new Paragraph("Usuario Solicitante:", fontCabecera));
-        //    cellUsuarioSolicitante.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellUsuarioSolicitante);
-        //    tableDatosDeudor.AddCell(new Paragraph(usuarioCreacionTicket, times));
-        //    PdfPCell cellNombreSolicitante = new PdfPCell(new Paragraph("Nombre Solicitante:", fontCabecera));
-        //    cellNombreSolicitante.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellNombreSolicitante);
-        //    tableDatosDeudor.AddCell(new Paragraph(usuarioNombreCreacionTicket, times));
-
-        //    PdfPCell cellTelefono = new PdfPCell(new Paragraph("Teléfono:", fontCabecera));
-        //    cellTelefono.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellTelefono);
-        //    tableDatosDeudor.AddCell(new Paragraph(telefonoSolicitante, times));
-        //    PdfPCell cellEmail = new PdfPCell(new Paragraph("Email:", fontCabecera));
-        //    cellEmail.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellEmail);
-        //    tableDatosDeudor.AddCell(new Paragraph(emailSolicitante, times));
-
-        //    PdfPCell cellUsuarioAsignado = new PdfPCell(new Paragraph("Usuario Asignado :", fontCabecera));
-        //    cellUsuarioAsignado.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellUsuarioAsignado);
-        //    tableDatosDeudor.AddCell(new Paragraph(usuarioAsignado, times));
-        //    PdfPCell cellNombreAsignado = new PdfPCell(new Paragraph("Nombre Usuario Asignado :", fontCabecera));
-        //    cellNombreAsignado.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellNombreAsignado);
-        //    tableDatosDeudor.AddCell(new Paragraph(usuarioNombreAsignado, times));
-
-        //    PdfPCell cellEstado = new PdfPCell(new Paragraph("Estado :", fontCabecera));
-        //    cellEstado.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellEstado);
-
-        //    tableDatosDeudor.AddCell(new Paragraph(estadoTicket, times));
-
-        //    PdfPCell cellVacio = new PdfPCell(new Paragraph(" ", fontCabecera));
-        //    cellVacio.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    tableDatosDeudor.AddCell(cellVacio);
-
-        //    tableDatosDeudor.AddCell(new Paragraph(" ", times));
-
-        //    tableDatosDeudor.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDatosDeudor.WidthPercentage = 100.0f;
-
-
-        //    //foreach (PdfPCell celda in tableDatosDeudor.Rows[0].GetCells())
-        //    //{
-        //    //    celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //    //    celda.HorizontalAlignment = 1;
-        //    //    celda.Padding = 2;
-        //    //}
-
-        //    doc.Add(tableDatosDeudor);
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosTipificacion = new Chunk("Mantención", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosTipificacion.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosTipificacion);
-
-
-        //    PdfPTable tableDatosTipificacion = new PdfPTable(4);
-        //    float[] widthsDatosTipificacion = new float[] { 25f, 45f, 55f, 55f };
-        //    tableDatosTipificacion.SetWidths(widthsDatosTipificacion);
-
-        //    tableDatosTipificacion.AddCell(new Paragraph("Tipo :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph("Area :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph(" ", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph(" ", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph(tipo, times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(area, times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(" ", times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(" ", times));
-
-        //    if (tipo == "C")
-        //    {
-        //        tableDatosTipificacion.AddCell(new Paragraph("Area :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Equipo que presenta falla :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Componente :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Falla :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel1, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel2, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel3, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel4, times));
-        //    }
-        //    else if (tipo == "CP")
-        //    {
-        //        tableDatosTipificacion.AddCell(new Paragraph("Area :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Equipo que presenta falla :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Componente :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Falla :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel1, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel2, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel3, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel4, times));
-        //    }
-        //    else if (tipo == "P")
-        //    {
-        //        tableDatosTipificacion.AddCell(new Paragraph("Area :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Equipo a trabajar :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Tipo de inspección :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph("Frecuencia :", fontCabecera));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel1, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel2, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel3, times));
-        //        tableDatosTipificacion.AddCell(new Paragraph(nivel4, times));
-        //    }
-
-        //    tableDatosTipificacion.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDatosTipificacion.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableDatosTipificacion.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 0;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableDatosTipificacion);
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosObservacionTicket = new Chunk("Descripción general de la SOLPED", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosObservacionTicket.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosObservacionTicket);
-
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    PdfPTable tableObs = new PdfPTable(1);
-        //    tableObs.AddCell(new Paragraph("Observacion", fontCabecera));
-        //    tableObs.AddCell(new Paragraph(observacion, times));
-
-        //    tableObs.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableObs.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableObs.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 0;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableObs);
-
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosHistorico = new Chunk("Histórico de la SOLPED", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosHistorico.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosHistorico);
-
-
-        //    PdfPTable tableDetalle = new PdfPTable(6);
-        //    tableDetalle.AddCell(new Paragraph("Correlativo", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Fecha", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Usuario Creación", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Usuario Asig", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Estado", fontCabecera));
-
-        //    tableDetalle.AddCell(new Paragraph("Obs", fontCabecera));
-
-        //    foreach (DataRow item in dtHistorico.Rows)
-        //    {
-        //        tableDetalle.AddCell(new Paragraph(item["CORRELATIVO"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["FECHA"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["USUARIO"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["USUARIO_ASIG"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["ESTADO_ATENCION"].ToString(), times));
-
-        //        tableDetalle.AddCell(new Paragraph(item["OBSERVACION"].ToString(), times));
-        //    }
-
-        //    float[] widthsDatosDetalle = new float[] { 25f, 30f, 40f, 40f, 40f, 80f };
-        //    tableDetalle.SetWidths(widthsDatosDetalle);
-
-        //    tableDetalle.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDetalle.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableDetalle.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 1;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableDetalle);
-
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Close();
-
-        //    string ruta = "pdfOT/" + nombreArchivoPdf; ;
-        //    return ruta;
-
-        //}
-
-        //public string generaPdf(string idTicket)
-        //{
-        //    DataTable dt = new DataTable();
-        //    dt = dal.getBuscarTicket(idTicket).Tables[0];
-        //    string rutCliente = "";
-        //    //string idGestion = "";
-        //    string observacion = string.Empty;
-        //    string usuarioAsignado = string.Empty;
-        //    string estadoTicket = string.Empty;
-        //    string nivel1 = string.Empty;
-        //    string nivel2 = string.Empty;
-        //    string nivel3 = string.Empty;
-        //    string nivel4 = string.Empty;
-        //    string telefono = string.Empty;
-        //    string email = string.Empty;
-        //    string nombreCliente = string.Empty;
-        //    string fechaTicket = string.Empty;
-
-        //    foreach (DataRow item in dt.Rows)
-        //    {
-        //        rutCliente = item["RUT_CLIENTE"].ToString();
-        //        observacion = item["OBSERVACION"].ToString();
-        //        //idEmpleado = item["ID_EMPLEADO"].ToString();
-        //        //txtFechaAlarma.Text = item["FECHA_AGEND"].ToString();
-
-        //        usuarioAsignado = item["USUARIO_ASIGNADO"].ToString();
-        //        estadoTicket = item["ESTADO_ATENCION"].ToString();
-        //        lblIdEstadoTicket.Text = item["ID_ESTADO_ATENCION"].ToString();
-        //        hfIdTipificacion.Value = item["ID_TIPIFICACION"].ToString();
-        //        //idGestion = item["ID_GESTION"].ToString();
-        //        fechaTicket = item["FECHA"].ToString();
-
-        //        nivel1 = item["NIVEL_1"].ToString();
-        //        nivel2 = item["NIVEL_2"].ToString();
-        //        nivel3 = item["NIVEL_3"].ToString();
-        //        nivel4 = item["NIVEL_4"].ToString();
-
-        //    }
-
-
-
-        //    string nombres, paterno, materno, segmentoCliente, fechaCompra, sernac, msj, celular, fijo, local;
-        //    int? codError;
-        //    string dv = string.Empty;
-
-        //    if (!string.IsNullOrEmpty(rutCliente.Trim()))
-        //    {
-
-        //        rutCliente = com.formatearRutSinPuntos(rutCliente);
-        //    }
-
-        //    String[] arRut = rutCliente.Split('-');
-        //    for (int i = 0; i < arRut.Length; i++)
-        //    {
-        //        rutCliente = arRut[0];
-        //        if (arRut.Length > 0)
-        //        {
-        //            dv = arRut[1];
-        //        }
-        //    }
-
-        //    //datos.getBuscarCliente(1, Convert.ToInt32(rutCliente), dv, "CRM", out nombres, out paterno, out materno, out segmentoCliente, out email, out celular, out fijo, out fechaCompra, out local, out sernac, out codError, out msj);
-        //    //if (nombres == "null")
-        //    //{
-        //    //    nombres = string.Empty;
-        //    //}
-        //    //if (paterno == "null")
-        //    //{
-        //    //    paterno = string.Empty;
-        //    //}
-        //    //if (materno == "null")
-        //    //{
-        //    //    materno = string.Empty;
-        //    //}
-        //    //if (segmentoCliente == "null")
-        //    //{
-        //    //    segmentoCliente = string.Empty;
-        //    //}
-        //    //if (email == "null")
-        //    //{
-        //    //    email = string.Empty;
-        //    //}
-        //    //if (fechaCompra == "null")
-        //    //{
-        //    //    fechaCompra = string.Empty;
-        //    //}
-        //    //if (sernac == "null")
-        //    //{
-        //    //    sernac = string.Empty;
-        //    //}
-        //    //if (celular == "null")
-        //    //{
-        //    //    celular = string.Empty;
-        //    //}
-        //    //if (fijo == "null")
-        //    //{
-        //    //    fijo = string.Empty;
-        //    //}
-        //    //if (local == "null")
-        //    //{
-        //    //    local = string.Empty;
-        //    //}
-
-        //    //nombreCliente = nombres + " " + paterno + " " + materno;
-        //    //telefono = celular;
-        //    rutCliente = rutCliente + "-" + dv;
-
-        //    DataTable dtHistorico = new DataTable();
-        //    dtHistorico = dal.getBuscarTicketHistorico(idTicket).Tables[0];
-        //    string correlativo = string.Empty;
-        //    string fecha = string.Empty;
-        //    string usuarioCreacion = string.Empty;
-        //    string usuarioAsig = string.Empty;
-        //    string estado = string.Empty;
-        //    string motivoCierre = string.Empty;
-        //    string obs = string.Empty;
-        //    string obsCli = string.Empty;
-
-
-        //    //AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-        //    string titulo = "TICKET";
-        //    string nombreArchivoPdf = "ticket_" + idTicket + ".pdf";
-        //    BaseFont bfTimes = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
-
-        //    Font times = new Font(bfTimes, 7, Font.NORMAL);
-        //    Font timesRojo = new Font(bfTimes, 9, Font.BOLD, BaseColor.RED);
-        //    Font timesCorrelativo = new Font(bfTimes, 9, Font.BOLD);
-        //    Font fontCabecera = new Font(bfTimes, 8, Font.BOLD);
-        //    Font fontFirma = new Font(bfTimes, 8, Font.BOLD);
-
-
-        //    Document doc = new Document(PageSize.A4, 25, 25, 30, 30);
-        //    PdfWriter writePdf = PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("pdfTicket/" + nombreArchivoPdf), FileMode.Create));
-        //    doc.Open();
-
-        //    iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(Server.MapPath("img/logo_salcobrand.png"));
-        //    jpg.ScaleToFit(80, 80);
-        //    jpg.Alignment = iTextSharp.text.Image.ALIGN_LEFT;
-        //    doc.Add(jpg);
-
-        //    PdfPTable tableNumeroComprobante = new PdfPTable(2);
-        //    PdfPCell celdaNumeroComprobante = new PdfPCell(new Paragraph("Nro.Ticket :", fontCabecera));
-        //    //celdaNumeroComprobante.HorizontalAlignment = 2;
-        //    PdfPCell celdaNumeroComprobanteFecha = new PdfPCell(new Paragraph("Fecha Ticket :", fontCabecera));
-        //    //celdaNumeroComprobanteFecha.HorizontalAlignment = 2;
-        //    tableNumeroComprobante.AddCell(celdaNumeroComprobante);
-        //    tableNumeroComprobante.AddCell(new Paragraph(idTicket, times));
-
-        //    tableNumeroComprobante.AddCell(celdaNumeroComprobanteFecha);
-        //    tableNumeroComprobante.AddCell(new Paragraph(fechaTicket, times));
-
-        //    tableNumeroComprobante.DefaultCell.Border = Rectangle.NO_BORDER;
-
-        //    tableNumeroComprobante.HorizontalAlignment = Element.ALIGN_RIGHT;
-        //    tableNumeroComprobante.WidthPercentage = 25.0f;
-
-        //    foreach (PdfPCell celda in tableNumeroComprobante.Rows[0].GetCells())
-        //    {
-        //        celda.Border = Rectangle.NO_BORDER;
-        //    }
-
-        //    foreach (PdfPCell celda in tableNumeroComprobante.Rows[1].GetCells())
-        //    {
-        //        celda.Border = Rectangle.NO_BORDER;
-        //        //celda.HorizontalAlignment = 2;
-        //    }
-
-        //    doc.Add(tableNumeroComprobante);
-
-
-        //    Chunk tituloTipoExamen = new Chunk(titulo, FontFactory.GetFont("ARIAL", 12, iTextSharp.text.Font.BOLD));
-        //    tituloTipoExamen.SetUnderline(0.1f, -2f);
-
-        //    Paragraph par = new Paragraph(tituloTipoExamen);
-        //    par.Alignment = Element.ALIGN_CENTER;
-        //    doc.Add(par);
-
-        //    //doc.Add(tituloTipoExamen);
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosDeudor = new Chunk("Datos Cliente", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosDeudor.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosDeudor);
-
-        //    PdfPTable tableDatosDeudor = new PdfPTable(6);
-
-        //    float[] widthsDatosDeudor = new float[] { 35f, 85f, 50f, 55f, 35f, 35f };
-        //    tableDatosDeudor.SetWidths(widthsDatosDeudor);
-
-        //    tableDatosDeudor.AddCell(new Paragraph("Rut Cliente :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(rutCliente, times));
-        //    tableDatosDeudor.AddCell(new Paragraph("Nombre :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(nombreCliente, times));
-
-        //    tableDatosDeudor.AddCell(new Paragraph("Teléfono :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(telefono, times));
-        //    tableDatosDeudor.AddCell(new Paragraph("Email :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(email, times));
-
-        //    tableDatosDeudor.AddCell(new Paragraph("Usuario Asignado :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(usuarioAsignado, times));
-        //    tableDatosDeudor.AddCell(new Paragraph("Estado :", fontCabecera));
-        //    tableDatosDeudor.AddCell(new Paragraph(estadoTicket, times));
-
-        //    tableDatosDeudor.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDatosDeudor.WidthPercentage = 100.0f;
-
-        //    doc.Add(tableDatosDeudor);
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosTipificacion = new Chunk("Tipificación", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosTipificacion.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosTipificacion);
-
-
-        //    PdfPTable tableDatosTipificacion = new PdfPTable(4);
-        //    float[] widthsDatosTipificacion = new float[] { 25f, 45f, 55f, 55f };
-        //    tableDatosTipificacion.SetWidths(widthsDatosTipificacion);
-
-        //    tableDatosTipificacion.AddCell(new Paragraph("Tipo :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph("Gestión :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph("Categoría de la gestión :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph("Detalle de la categoría :", fontCabecera));
-        //    tableDatosTipificacion.AddCell(new Paragraph(nivel1, times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(nivel2, times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(nivel3, times));
-        //    tableDatosTipificacion.AddCell(new Paragraph(nivel4, times));
-
-        //    tableDatosTipificacion.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDatosTipificacion.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableDatosTipificacion.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 0;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableDatosTipificacion);
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosObservacionTicket = new Chunk("Descripción general del Ticket", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosObservacionTicket.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosObservacionTicket);
-
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    PdfPTable tableObs = new PdfPTable(1);
-        //    tableObs.AddCell(new Paragraph("Observacion", fontCabecera));
-        //    tableObs.AddCell(new Paragraph(observacion, times));
-
-        //    tableObs.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableObs.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableObs.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 0;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableObs);
-
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Add(new Paragraph(" ", times));
-
-        //    Chunk datosHistorico = new Chunk("Histórico del Ticket", FontFactory.GetFont("ARIAL", 9, iTextSharp.text.Font.BOLD));
-        //    datosHistorico.SetUnderline(0.1f, -2f);
-        //    doc.Add(datosHistorico);
-
-
-        //    PdfPTable tableDetalle = new PdfPTable(7);
-        //    tableDetalle.AddCell(new Paragraph("Correlativo", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Fecha", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Usuario Creación", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Usuario Asig", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Estado", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Motivo Cierre", fontCabecera));
-        //    tableDetalle.AddCell(new Paragraph("Obs", fontCabecera));
-
-        //    foreach (DataRow item in dtHistorico.Rows)
-        //    {
-        //        tableDetalle.AddCell(new Paragraph(item["CORRELATIVO"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["FECHA"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["USUARIO"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["USUARIO_ASIG"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["ESTADO_ATENCION"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["NOM_MOTIVO_CIERRE"].ToString(), times));
-        //        tableDetalle.AddCell(new Paragraph(item["OBSERVACION"].ToString(), times));
-        //    }
-
-        //    float[] widthsDatosDetalle = new float[] { 25f, 50f, 50f, 50f, 50f, 20f, 60f };
-        //    tableDetalle.SetWidths(widthsDatosDetalle);
-
-        //    tableDetalle.HorizontalAlignment = Element.ALIGN_LEFT;
-        //    tableDetalle.WidthPercentage = 100.0f;
-
-        //    foreach (PdfPCell celda in tableDetalle.Rows[0].GetCells())
-        //    {
-        //        celda.BackgroundColor = BaseColor.LIGHT_GRAY;
-        //        celda.HorizontalAlignment = 1;
-        //        celda.Padding = 2;
-        //    }
-
-        //    doc.Add(tableDetalle);
-
-        //    //foreach (DataRow item in dtHistorico.Rows)
-        //    //{
-        //    //    correlativo = item["CORRELATIVO"].ToString();
-        //    //    fecha = item["FECHA"].ToString();
-        //    //    usuarioCreacion = item["USUARIO"].ToString();
-        //    //    usuarioAsig = item["USUARIO_ASIG"].ToString();
-        //    //    estado = item["ESTADO_ATENCION"].ToString();
-        //    //    motivoCierre = item["NOM_MOTIVO_CIERRE"].ToString();
-        //    //    obs = item["OBSERVACION"].ToString();
-        //    //    obsCli = item["OBSERVACION_CLIENTE"].ToString();
-        //    //}
-        //    doc.Add(new Paragraph(" ", times));
-        //    doc.Close();
-
-        //    string ruta = "pdfTicket/" + nombreArchivoPdf; ;
-        //    return ruta;
-
-        //}
-
+        
     }
 }

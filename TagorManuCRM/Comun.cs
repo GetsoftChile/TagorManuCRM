@@ -11,6 +11,8 @@ using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
 using System.Web.UI;
+using AegisImplicitMail;
+using System.ComponentModel;
 
 namespace TagorManuCRM
 {
@@ -163,13 +165,67 @@ namespace TagorManuCRM
                 return false;
             }
         }
+
+        
+        public void EnviarEmailSSLImplicito(string email, string body, string sub)
+        {
+            var from = "notificaciones@tagor.cl";
+            var host = "mail.tagor.cl";
+            var user = "notificaciones@tagor.cl";
+            var pass = "notificaciones123**";
+
+            //Generate Message 
+            var mymessage = new MimeMailMessage();
+            mymessage.From = new MimeMailAddress(from);
+
+            String[] AMailto = email.Split(';');
+            foreach (String mail in AMailto)
+            {
+                mymessage.To.Add(new MailAddress(mail));
+            }
+            
+            mymessage.Subject = sub;
+            mymessage.Body = body;
+            mymessage.SubjectEncoding= System.Text.Encoding.UTF8;
+            mymessage.HeadersEncoding = System.Text.Encoding.UTF8;
+            mymessage.IsBodyHtml = true;
+            mymessage.Priority= MailPriority.High;
+
+            //Create Smtp Client
+            var mailer = new MimeMailer(host, 465);
+            mailer.User = user;
+            mailer.Password = pass;
+            mailer.SslType = SslMode.Ssl;
+            mailer.AuthenticationMode = AuthenticationType.Base64;
+            
+
+            //Set a delegate function for call back
+            mailer.SendCompleted += compEvent;
+            mailer.SendMailAsync(mymessage);
+        }
+
+        //Call back function
+        private void compEvent(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.UserState != null)
+                Console.Out.WriteLine(e.UserState.ToString());
+
+            Console.Out.WriteLine("is it canceled? " + e.Cancelled);
+
+            if (e.Error != null)
+                Console.Out.WriteLine("Error : " + e.Error.Message);
+        }
         
 
-        public string EnviarEmail(string email, string body, string sub)
-        {
-            System.Net.Mail.MailMessage correo = new System.Net.Mail.MailMessage();
 
-            correo.From = new MailAddress("<notificaciones@tagor.cl>");
+        public string EnviarEmail2(string email, string body, string sub)
+        {
+            
+
+            MailMessage correo = new MailMessage();
+
+            correo.From = new MailAddress("notificaciones@tagor.cl");
+            
             string bodyEmail = body;
 
             String[] AMailto = email.Split(';');
@@ -181,13 +237,16 @@ namespace TagorManuCRM
             correo.Subject = sub;
             correo.IsBodyHtml = true;
             correo.Body = bodyEmail;
+            correo.Priority = MailPriority.High;
 
             //port = "25" userName = "notificaciones@getsoft.cl" password = "nuevaetica123!"
             SmtpClient client = new SmtpClient();
             client.Credentials = new System.Net.NetworkCredential("notificaciones@tagor.cl", "notificaciones123**");
+            client.Port = 465;
             client.Host = "mail.tagor.cl";
-            client.Port = 3535;
-            
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+
             string resultado = string.Empty;
             
             try

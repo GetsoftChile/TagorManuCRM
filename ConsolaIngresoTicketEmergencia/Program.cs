@@ -303,25 +303,14 @@ namespace ConsolaIngresoTicketEmergencia
                     email = item["EMAIL"].ToString();
                     break;
                 }
-
-                //if (string.IsNullOrEmpty(txtFechaAgendamiento.Text))
-                //{
-                //    lblInfo.Text = "La fecha de agendamiento es obligatoria cuando es de tipo Correctiva Planificada";
-                //    divAlerta.Visible = true;
-                //    return;
-                //}
+                
             }
 
             /////////////////////////////////////////////////
 
             //ingreso OT
 
-
-            //if (ddlTipoOT.SelectedValue == "C")
-            //{
-            //    txtFechaAgendamiento.Text = string.Empty;
-            //}
-
+            
             //AQUI
             string idTipificacion = string.Empty;
             if (idArea=="1")
@@ -368,8 +357,8 @@ namespace ConsolaIngresoTicketEmergencia
             bodyResolutor += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
             TagorManuCRM.Comun com = new TagorManuCRM.Comun();
-            com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
-
+            //com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
+            com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
             
             
         }
