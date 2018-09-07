@@ -54,7 +54,26 @@ namespace DAL
                 throw new Exception("No se pudo buscar la casilla, " + ex.Message, ex);
             }
         }
+        
+        public DataSet getBuscarCategoriaServicio(string activo)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarCategoriaServicio");
 
+            db.AddInParameter(cmd, "@activo", DbType.String, activo);
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar la categoria servicio, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar la categoria servicio, " + ex.Message, ex);
+            }
+        }
 
         public DataSet getBuscarMensaje(string idMensaje)
         {
@@ -951,7 +970,7 @@ namespace DAL
         }
 
 
-        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil ,string idSucursal)
+        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil ,string idSucursal, string idCategoriaServicio)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_GenerarDashboard");
 
@@ -968,7 +987,11 @@ namespace DAL
             db.AddInParameter(cmd, "@tipo", DbType.String, tipo);
             db.AddInParameter(cmd, "@idPerfil", DbType.String, idPerfil);
             db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+
+            db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, idCategoriaServicio);
             
+
+
             try
             {
                 return db.ExecuteDataSet(cmd);
@@ -2285,14 +2308,9 @@ namespace DAL
                 throw new Exception("No se pudo buscar el ticket, " + ex.Message, ex);
             }
         }
-
-
-
-
-
-
+        
         public DataSet getBuscarTicketBuscadorParametros(string idUsuarioCreacion, string usuarioAsig, string fechaDesde, string fechaHasta, 
-            string idEstado, string clase, string idArea, string idSucursal, string idTicket, string codLocal)
+            string idEstado, string clase, string idArea, string idSucursal, string idTicket, string codLocal, string idCategoriaServicio)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_buscarTicketBuscadorParametros");
 
@@ -2375,14 +2393,23 @@ namespace DAL
             {
                 db.AddInParameter(cmd, "@codLocal", DbType.String, codLocal);
             }
-
-            if (codLocal == string.Empty)
+            
+            if (idTicket == string.Empty)
             {
                 db.AddInParameter(cmd, "@idTicket", DbType.String, null);
             }
             else
             {
                 db.AddInParameter(cmd, "@idTicket", DbType.String, idTicket);
+            }
+
+            if (idCategoriaServicio == "0")
+            {
+                db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, idCategoriaServicio);
             }
 
             try
@@ -2398,10 +2425,7 @@ namespace DAL
                 throw new Exception("No se pudo buscar el ticket, " + ex.Message, ex);
             }
         }
-
-
-
-
+        
         //        (@idGestion varchar(10),@rutCliente varchar(20),@nombreCliente varchar(100),
         //@fechaDesde varchar(10),@fechaHasta varchar(10),@idEmpresa varchar(10),@idCanal varchar(10))
 
@@ -3676,7 +3700,7 @@ namespace DAL
         public string setIngresarOT(string idTipificacion, string idUsuarioCreacion, string idUsuarioAsignado,
             string idEstadoAtencion, string observacion, string tipo, string nivel1, string idEmpresa, string clase,
             string local, string telefonoAsociado, string solicitadoPor, 
-            string idZona, string idArea,string fechaAgendamiento, string idSucursal)
+            string idZona, string idArea,string fechaAgendamiento, string idSucursal, string idCategoriaServicio)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_IngresarOT");
             db.AddInParameter(cmd, "@idTipificacion", DbType.String, idTipificacion);
@@ -3703,8 +3727,16 @@ namespace DAL
             db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
             db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
             db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
-            
 
+            if (idCategoriaServicio=="0")
+            {
+                db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, idCategoriaServicio);
+            }
+            
 
             try
             {

@@ -23,15 +23,15 @@ namespace TagorManuCRM
                     Sucursal();
                     Perfil();
                     com.FillArea(ddlArea);
+                    com.FillCategoriaServicio(ddlCategoriaServicio);
                     Buscar();
-
+                    
                     DataTable dt = new DataTable();
                     dt = dal.getBuscarMensaje("1").Tables[0];
                     foreach (DataRow item in dt.Rows)
                     {
                         lblMensaje.Text = item["MENSAJE"].ToString().Replace("\r\n", "<br>");
                     }
-
                 }
             }
             catch (Exception ex)
@@ -143,7 +143,6 @@ namespace TagorManuCRM
             {
                 divContador.Visible = false;
             }
-
         }
 
         void Buscar()
@@ -165,9 +164,15 @@ namespace TagorManuCRM
             {
                 idArea = null;
             }
+
+            string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+            if (idCategoriaServicio=="0")
+            {
+                idCategoriaServicio = null;
+            }
             
             DataTable dt = new DataTable();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "C", idPerfil, idSucursal).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "C", idPerfil, idSucursal, idCategoriaServicio).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivasPendientes.Text= item["TOTAL_ABIERTOS"].ToString();
@@ -176,7 +181,7 @@ namespace TagorManuCRM
                 lbtnOTCorrectivasCerradas.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "P", idPerfil, idSucursal).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "P", idPerfil, idSucursal, idCategoriaServicio).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTPreventivoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
@@ -185,7 +190,7 @@ namespace TagorManuCRM
                 lbtnOTPreventivoCerrado.Text = item["TOTAL_CERRADOS"].ToString();
             }
             dt.Clear();
-            dt = dal.getGenerarDashboard(idUsuario, idArea, "CP", idPerfil, idSucursal).Tables[0];
+            dt = dal.getGenerarDashboard(idUsuario, idArea, "CP", idPerfil, idSucursal, idCategoriaServicio).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 lbtnOTCorrectivoPlanificadoPendiente.Text = item["TOTAL_ABIERTOS"].ToString();
@@ -286,7 +291,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Pendientes";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=C&e=1&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=1&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -301,8 +307,9 @@ namespace TagorManuCRM
             {
                 string idSucursal = ddlSucursal.SelectedValue;
                 string idArea = ddlArea.SelectedValue;
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=C&e=3&a=" + idArea + "&s=" + idSucursal);
+                Response.Redirect("BuscarOT.aspx?t=C&e=3&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -316,8 +323,9 @@ namespace TagorManuCRM
             try
             {
                 string idSucursal = ddlSucursal.SelectedValue;
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Pendientes";
-                Response.Redirect("BuscarOT.aspx?t=CP&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
+                Response.Redirect("BuscarOT.aspx?t=CP&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal + "&cs="+ idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -331,8 +339,9 @@ namespace TagorManuCRM
             try
             {
                 string idSucursal = ddlSucursal.SelectedValue;
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=CP&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
+                Response.Redirect("BuscarOT.aspx?t=CP&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -346,8 +355,9 @@ namespace TagorManuCRM
             try
             {
                 string idSucursal = ddlSucursal.SelectedValue;
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivas Pendientes";
-                Response.Redirect("BuscarOT.aspx?t=P&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
+                Response.Redirect("BuscarOT.aspx?t=P&e=1&a=" + ddlArea.SelectedValue + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -361,8 +371,9 @@ namespace TagorManuCRM
             try
             {
                 string idSucursal = ddlSucursal.SelectedValue;
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivas Cerradas";
-                Response.Redirect("BuscarOT.aspx?t=P&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal);
+                Response.Redirect("BuscarOT.aspx?t=P&e=3&a=" + ddlArea.SelectedValue + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -414,7 +425,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Programadas";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=C&e=4&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=4&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -430,7 +442,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas En Proceso";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=C&e=2&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=C&e=2&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -446,7 +459,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas Programadas";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=CP&e=4&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=CP&e=4&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -462,7 +476,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Correctivas Planificadas En Proceso";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=CP&e=2&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=CP&e=2&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -478,7 +493,8 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivo Programada";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=P&e=4&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=P&e=4&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
             }
             catch (Exception ex)
             {
@@ -495,7 +511,27 @@ namespace TagorManuCRM
                 Session["strTituloBuscadorTicket"] = "SOLPED Preventivo En Proceso";
                 string idArea = ddlArea.SelectedValue;
                 string idSucursal = ddlSucursal.SelectedValue;
-                Response.Redirect("BuscarOT.aspx?t=P&e=2&a=" + idArea + "&s=" + idSucursal);
+                string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                Response.Redirect("BuscarOT.aspx?t=P&e=2&a=" + idArea + "&s=" + idSucursal + "&cs=" + idCategoriaServicio);
+            }
+            catch (Exception ex)
+            {
+                divAlerta.Visible = true;
+                lblInfo.Text = ex.Message;
+            }
+        }
+
+        protected void ddlCategoriaServicio_DataBound(object sender, EventArgs e)
+        {
+
+            ddlCategoriaServicio.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
+        }
+
+        protected void ddlCategoriaServicio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Buscar();
             }
             catch (Exception ex)
             {

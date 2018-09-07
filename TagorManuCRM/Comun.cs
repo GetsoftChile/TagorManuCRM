@@ -245,6 +245,22 @@ namespace TagorManuCRM
             ddlArea.DataBind();
         }
 
+        public void FillCategoriaServicio(DropDownList ddlCategoriaServicio)
+        {
+            ddlCategoriaServicio.DataSource = dal.getBuscarCategoriaServicio("1");
+            ddlCategoriaServicio.DataValueField = "ID_CATEGORIA_SERVICIO";
+            ddlCategoriaServicio.DataTextField = "NOMBRE_CATEGORIA_SERVICIO";
+            ddlCategoriaServicio.DataBind();
+        }
+
+        public void FillSucursal(DropDownList ddlSucursal)
+        {
+            ddlSucursal.DataSource = dal.getBuscarSucursal("1");
+            ddlSucursal.DataValueField = "ID_SUCURSAL";
+            ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
+            ddlSucursal.DataBind();
+        }
+
         public bool ValidarPaginaPerfil(string idPerfil, string pagina)
         {
             bool validacion = false;

@@ -166,6 +166,11 @@
                                         <asp:DropDownList ID="ddlSucursal" runat="server" OnDataBound="ddlSucursal_DataBound" CssClass="form-control input-sm">
                                         </asp:DropDownList>
                                     </div>
+                                    <div class="col-xs-12 col-lg-2">
+                                        <label for="ddlCategoriaServicio">Categoría Servicio</label>
+                                        <asp:DropDownList ID="ddlCategoriaServicio" runat="server" OnDataBound="ddlCategoriaServicio_DataBound" CssClass="form-control input-sm">
+                                        </asp:DropDownList>
+                                    </div>
                                     <div class="col-xs-12 col-lg-1">
                                         <label for="btnBuscarTicket"></label>
                                         <asp:Button ID="btnBuscarTicket" runat="server" CssClass="btn btn-sm btn-block btn-primary"
@@ -226,7 +231,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="F.Creación">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="U.Asignado">
@@ -248,7 +253,7 @@
 
                                     <asp:TemplateField HeaderText="F.Agendamiento">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 

@@ -69,7 +69,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="F.Creación">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA") %>'></asp:Label>
+                                        <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="U.Asignado">
@@ -196,6 +196,13 @@
                     <strong>Ingreso</strong>
                 </div>
                <div class="panel-body">
+                   <div class="row">
+                       <div class="col-lg-5 col-xs-12">
+                           <strong>Categoría Servicio</strong>
+                           <asp:DropDownList ID="ddlCategoriaServicio" runat="server" CssClass="form-control input-sm" OnDataBound="ddlCategoriaServicio_DataBound">
+                           </asp:DropDownList>
+                       </div>
+                   </div>
                    <div class="row">
                        <div class="col-lg-2 col-xs-12">
                            <strong>Zona</strong>

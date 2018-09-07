@@ -15,13 +15,9 @@
         </ol>
     </section>
     <!--  -->
-
     <section class="content">
-
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
-
-
                 <!-- Alertas -->
                 <div id="divAlerta" runat="server" visible="false" class="alert alert-danger">
                     <strong>¡Atención!: </strong>
@@ -36,15 +32,14 @@
                             <div class="small-box bg-red">
                                 <div class="inner">
                                     <h2>
-                                           <asp:Label ID="lblMensaje" runat="server" CssClass="label" Text="" />
-                                       <%-- <asp:LinkButton ID="lbtnEmergencias" runat="server" CssClass="label" OnClick="lbtnEmergencias_Click">EMERGENCIAS</asp:LinkButton>--%>
-
+                                        <asp:Label ID="lblMensaje" runat="server" CssClass="label" Text="" />
+                                        <%-- <asp:LinkButton ID="lbtnEmergencias" runat="server" CssClass="label" OnClick="lbtnEmergencias_Click">EMERGENCIAS</asp:LinkButton>--%>
                                     </h2>
                                 </div>
                                 <div class="icon">
                                     <i class="ion ion-alert-circled"></i>
                                 </div>
-                                <%--<asp:LinkButton ID="lbtnVerNumeros" runat="server" CssClass="small-box-footer" OnClick="lbtnVerNumeros_Click"><i class="fa fa-arrow-circle-right"></i> Mas Info</asp:LinkButton>--%>
+                                <asp:LinkButton ID="lbtnVerNumeros" runat="server" CssClass="small-box-footer"><i class="fa fa-arrow-circle-right"></i> </asp:LinkButton>
                                 <%--<a href="#" class="small-box-footer">Más info <i class="fa fa-arrow-circle-right"></i>
                          </a>--%>
                             </div>
@@ -89,10 +84,21 @@
                         <div class="col-lg-12">
                             <div class="box box-primary">
                                 <div class="box-header with-border box-solid">
-                                    <h3 class="box-title">AREA</h3>
-                                    <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control" Width="33%" AutoPostBack="true" OnSelectedIndexChanged="ddlArea_SelectedIndexChanged" OnDataBound="ddlArea_DataBound"></asp:DropDownList>
-                                    <h3 class="box-title">SUCURSAL</h3>
-                                    <asp:DropDownList ID="ddlSucursal" runat="server" CssClass="form-control" Width="33%" AutoPostBack="true" OnSelectedIndexChanged="ddlSucursal_SelectedIndexChanged" OnDataBound="ddlSucursal_DataBound"></asp:DropDownList>
+                                    <div class="row">
+                                        <div class="col-md-4 col-xs-12">
+                                            <h3 class="box-title">CATEGORIA SERVICIO</h3>
+                                            <asp:DropDownList ID="ddlCategoriaServicio" runat="server" CssClass="form-control"  OnDataBound="ddlCategoriaServicio_DataBound" AutoPostBack="true" OnSelectedIndexChanged="ddlCategoriaServicio_SelectedIndexChanged"></asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <h3 class="box-title">AREA</h3>
+                                            <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control"  AutoPostBack="true" OnSelectedIndexChanged="ddlArea_SelectedIndexChanged" OnDataBound="ddlArea_DataBound"></asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12" >
+                                            <h3 class="box-title">SUCURSAL</h3>
+                                            <asp:DropDownList ID="ddlSucursal" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlSucursal_SelectedIndexChanged" OnDataBound="ddlSucursal_DataBound"></asp:DropDownList>
+                                        </div>
+                                    </div>
+
                                     <div class="box-tools pull-right">
                                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                         <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -223,7 +229,7 @@
                                                         </div>
                                                         <div class="col-lg-12 col-xs-12">
                                                             <div class="info-box">
-                                                               <span class="info-box-icon bg-blue"><i class="ion ion-android-person"></i></span>
+                                                                <span class="info-box-icon bg-blue"><i class="ion ion-android-person"></i></span>
                                                                 <div class="info-box-content">
                                                                     <span class="info-box-text">SOLPED EN PROCESO</span>
                                                                     <span class="info-box-number">

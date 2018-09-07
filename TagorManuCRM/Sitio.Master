@@ -199,9 +199,9 @@
                               <ul class="treeview-menu">
                                   <li id="liUsuarios" runat="server"><a href="Usuarios.aspx"><i class="fa fa-circle-o"></i>Usuarios</a></li>
                                   <li id="liMantenciones" runat="server"><a href="Mantenciones.aspx"><i class="fa fa-circle-o"></i>Mantenciones</a></li>
+                                  <li id="liMensaje" runat="server"><a href="Mensaje.aspx"><i class="fa fa-circle-o"></i>Mensaje Principal</a></li>
                                   <%--<li id="liParametros" runat="server"><a href="Parametros.aspx"><i class="fa fa-circle-o"></i>Parametros</a></li>
                                   <li id="liConfiguracion" runat="server"><a href="Configuracion.aspx"><i class="fa fa-circle-o"></i>Escalamiento</a></li>--%>
-                                 
                               </ul>
                           </li>
                           <li runat="server" id="liAyuda" visible="false"><a href="Ayuda.aspx"><i class="fa fa-book"></i><span>Ayuda</span></a></li>

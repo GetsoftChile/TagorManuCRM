@@ -58,6 +58,15 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.Label lblMensaje;
         
         /// <summary>
+        /// Control lbtnVerNumeros.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnVerNumeros;
+        
+        /// <summary>
         /// Control divSolicitudOT.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,15 @@ namespace TagorManuCRM {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContador;
+        
+        /// <summary>
+        /// Control ddlCategoriaServicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategoriaServicio;
         
         /// <summary>
         /// Control ddlArea.

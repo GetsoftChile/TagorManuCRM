@@ -337,7 +337,7 @@ namespace ConsolaIngresoTicketEmergencia
 
             string ticket = dal.setIngresarOT(idTipificacion, idUsuario, idUsuarioAsignado, "1", comentario,
                 "D", "EMERGENCIA", "1", tipo, idLocal, telefono,
-                solicitadoPor, idZona, idArea, null, idSucursal);
+                solicitadoPor, idZona, idArea, null, idSucursal,"1");
             //FIN ingreso
             
 

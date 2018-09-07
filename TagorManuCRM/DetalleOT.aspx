@@ -52,7 +52,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="F.Creación">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="U.Asignado">
@@ -74,7 +74,7 @@
 
                                     <asp:TemplateField HeaderText="F.Agendamiento">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 

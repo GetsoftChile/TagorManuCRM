@@ -296,7 +296,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F.Creación">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA") %>' ></asp:Label>
+                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>' ></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="U.Creación">
@@ -316,7 +316,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F.Agend">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFechaAgendamiento" runat="server" Visible="true" Text='<%# Bind("FECHA_AGEND") %>'></asp:Label>
+                                    <asp:Label ID="lblFechaAgendamiento" runat="server" Visible="true" Text='<%# Bind("FECHA_AGEND","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Motivo Cierre" Visible="false">
@@ -380,7 +380,7 @@
                                 </div>
                                 <div class="form-group" id="divFechaAgendamiento" runat="server" visible="false">
                                     <label for="txtFechaAgendamiento">Fecha y Hora de Agendamiento</label>
-                                    <asp:TextBox ID="txtFechaAgendamiento" ClientIDMode="Static" runat="server" Visible="true" CssClass="form-control input-sm"></asp:TextBox>
+                                    <asp:TextBox ID="txtFechaAgendamiento" ClientIDMode="Static" runat="server" Visible="true" CssClass="form-control input-sm" AutoCompleteType="Disabled"></asp:TextBox>
                                 </div>
 
 
