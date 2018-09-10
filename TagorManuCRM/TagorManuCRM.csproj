@@ -1572,6 +1572,7 @@
     <Content Include="Default.aspx" />
     <Content Include="DetalleOT.aspx" />
     <Content Include="Firma.aspx" />
+    <Content Include="GeneraFactura.aspx" />
     <Content Include="IngresoOT.aspx" />
     <Content Include="Mantenciones.aspx" />
     <Content Include="Mensaje.aspx" />
@@ -8289,6 +8290,13 @@
     </Compile>
     <Compile Include="Firma.aspx.designer.cs">
       <DependentUpon>Firma.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneraFactura.aspx.cs">
+      <DependentUpon>GeneraFactura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GeneraFactura.aspx.designer.cs">
+      <DependentUpon>GeneraFactura.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

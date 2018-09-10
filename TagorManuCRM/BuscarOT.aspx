@@ -231,7 +231,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="F.Creación">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaCreacion" runat="server" Text='<%# Bind("FECHA","{0:dd/MM/yyyy HH:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="U.Asignado">
