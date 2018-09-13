@@ -20,7 +20,6 @@
 </html>--%>
 
 
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -188,6 +187,16 @@
                               </a>
                               <ul class="treeview-menu">
                                   <li runat="server" id="liReporteTickets"><a href="ReporteSolped.aspx"><i class="fa fa-circle-o"></i>Reporte de SOLPED</a></li>
+                              </ul>
+                          </li>
+
+                          <li class="treeview" id="liFacturacion" runat="server" visible="false">
+                              <a href="#">
+                                  <i class="fa fa-edit"></i><span>Facturación</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liGeneraFacturacion" runat="server"><a href="GeneraFactura.aspx"><i class="fa fa-circle-o"></i>Genera Facturación</a></li>
                               </ul>
                           </li>
 

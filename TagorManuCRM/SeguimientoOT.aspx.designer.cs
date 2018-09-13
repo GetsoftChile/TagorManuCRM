@@ -139,6 +139,15 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.WebControls.Label lblEmailCliente;
         
         /// <summary>
+        /// Control lblIdLocal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblIdLocal;
+        
+        /// <summary>
         /// Control lblCodLocal.
         /// </summary>
         /// <remarks>
@@ -209,6 +218,15 @@ namespace TagorManuCRM {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTipo;
+        
+        /// <summary>
+        /// Control lblIdArea.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblIdArea;
         
         /// <summary>
         /// Control lblArea.

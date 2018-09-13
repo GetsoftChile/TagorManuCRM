@@ -131,6 +131,7 @@
                                     <tr class="active">
                                         <td>
                                             <strong>Cod Local:</strong><br />
+                                            <asp:Label ID="lblIdLocal" runat="server" Visible="false"></asp:Label>
                                             <asp:Label ID="lblCodLocal" runat="server"></asp:Label>
                                             <asp:Label ID="lblIdZona" runat="server" Visible="false"></asp:Label>
                                         </td>
@@ -187,6 +188,7 @@
                             <div class="col-md-3">
                                 <strong>Especialidad</strong>
                                 <br />
+                                <asp:Label ID="lblIdArea" runat="server" Visible="false" CssClass="label label-primary"></asp:Label>
                                 <asp:Label ID="lblArea" runat="server" CssClass="label label-primary"></asp:Label>
                             </div>
                             <div class="col-md-3">
@@ -296,7 +298,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F.Creación">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA","{0:dd/MM/yyyy hh:mm}") %>' ></asp:Label>
+                                    <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA","{0:dd/MM/yyyy HH:mm}") %>' ></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="U.Creación">
@@ -316,7 +318,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F.Agend">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFechaAgendamiento" runat="server" Visible="true" Text='<%# Bind("FECHA_AGEND","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
+                                    <asp:Label ID="lblFechaAgendamiento" runat="server" Visible="true" Text='<%# Bind("FECHA_AGEND","{0:dd/MM/yyyy HH:mm}") %>'></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Motivo Cierre" Visible="false">

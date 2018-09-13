@@ -1571,6 +1571,10 @@
     <Content Include="Dashboard.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleOT.aspx" />
+    <Content Include="Facturacion\Facturas\index.html" />
+    <Content Include="Facturacion\index.html" />
+    <Content Include="Facturacion\Informes\index.html" />
+    <Content Include="Facturacion\temp\index.html" />
     <Content Include="Firma.aspx" />
     <Content Include="GeneraFactura.aspx" />
     <Content Include="IngresoOT.aspx" />

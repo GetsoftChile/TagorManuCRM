@@ -253,7 +253,7 @@
 
                                     <asp:TemplateField HeaderText="F.Agendamiento">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO","{0:dd/MM/yyyy hh:mm}") %>'></asp:Label>
+                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Text='<%# Bind("FECHA_AGENDAMIENTO","{0:dd/MM/yyyy HH:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 

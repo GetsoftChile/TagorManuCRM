@@ -58,6 +58,8 @@ namespace TagorManuCRM
             if (idPerfil == "1")
             {
                 lblEmpresa.Text = "Tagor";
+
+                liFacturacion.Visible = true;
             }
 
             if (idPerfil == "2")
@@ -74,9 +76,9 @@ namespace TagorManuCRM
             {
                 liAdministracion.Visible = true;
                 liUsuarios.Visible = false;
-
+               
                 liMantenciones.Visible = true;
-
+                liFacturacion.Visible = true;
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
 
@@ -97,7 +99,7 @@ namespace TagorManuCRM
                 liUsuarios.Visible = false;
                 liReporteTickets.Visible = true;
                 liMantenciones.Visible = false;
-
+                liGeneraFacturacion.Visible = true;
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
 
@@ -107,7 +109,7 @@ namespace TagorManuCRM
                 liUsuarios.Visible = false;
                 liReporteTickets.Visible = true;
                 liMantenciones.Visible = true;
-
+                liGeneraFacturacion.Visible = true;
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
             

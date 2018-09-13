@@ -176,6 +176,8 @@ namespace TagorManuCRM
                 lblIdTicket.Text = "SOLPED: " + item["ID_ATENCION"].ToString();
                 idTicket = item["ID_ATENCION"].ToString();
                 
+                idArea = item["ID_AREA"].ToString();
+                lblIdArea.Text = idArea;
                 txtObservacion.Text = item["OBSERVACION"].ToString();
                 lblNombreCliente.Text = item["SOLICITADO_POR"].ToString();
                 lblTelefonoCliente.Text = item["TELEFONO_ASOCIADO"].ToString();
@@ -194,12 +196,15 @@ namespace TagorManuCRM
                 lblIdEstadoTicket.Text = item["ID_ESTADO_ATENCION"].ToString();
                 hfIdTipificacion.Value = item["ID_TIPIFICACION"].ToString();
                 idLocal= item["LOCAL"].ToString();
+                lblIdLocal.Text = idLocal;
                 DataTable dtLocal = new DataTable();
                 dtLocal = dal.getBuscarLocalPorId(idLocal).Tables[0];
                 string idZona = string.Empty;
                 foreach (DataRow itemLocal in dtLocal.Rows)
                 {
+
                     lblCodLocal.Text = itemLocal["COD_LOCAL"].ToString();
+                    
                     lblNombreLocal.Text = itemLocal["NOMBRE_LOCAL"].ToString();
                     lblComunaLocal.Text = itemLocal["COMUNA"].ToString();
                     lblRegionLocal.Text = itemLocal["REGION"].ToString();
@@ -571,7 +576,9 @@ namespace TagorManuCRM
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
                 }
                 
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text);
+
+
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text);
                 buscarCaso(hfNumeroTicket.Value);
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
@@ -590,13 +597,13 @@ namespace TagorManuCRM
 
         }
 
-        void EnviarEmails(string estado, string numeroTicket,string usuario, string fechaAgendamiento, string tipoOT)
+        void EnviarEmails(string estado, string numeroTicket,string usuario, string fechaAgendamiento, string tipoOT, string local, string idArea)
         {
             string resultado = string.Empty;
             if (estado == "3") //estado cerrado
             {
                 string body = "Estimado,   <br>";
-                body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
+                body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
                 body += "<br><br><b>Observación de la solución: " + txtObservacionGestion.Text + "</b>";
                 body += "<br><br>";
                 body += "<b><u>Información de la Atención:</u></b>";
@@ -608,13 +615,27 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
-                
+
+                string idUsuarioAsignado = string.Empty;
+                string email = string.Empty;
+                DataTable dtUsuarios = new DataTable();
+                dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(local, "5", idArea).Tables[0];
+                foreach (DataRow item in dtUsuarios.Rows)
+                {
+                    idUsuarioAsignado = item["ID_USUARIO"].ToString();
+                    email = item["EMAIL"].ToString();
+                    break;
+                }
+
+                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "Respuesta SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
+
+
                 if (tipoOT== "Correctiva")
                 {
                     body = string.Empty;
                     body += "Estimado,   <br>";
-                    body += "Te informamos que la OT N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
+                    body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido resuelto con la siguiente solución:";
                     body += "<br><br><b>Observación de la solución: " + txtObservacionCliente.Text + "</b>";
                     body += "<br><br>";
                     body += "<b><u>Información de la Atención:</u></b>";
@@ -657,7 +678,7 @@ namespace TagorManuCRM
 
                 string bodyResolutor = "Estimado(a) Usuario:";
                 bodyResolutor += "<br><br>";
-                bodyResolutor += "Se ha generado la siguiente OT para su gestión:";
+                bodyResolutor += "Se ha generado la siguiente SOLPED para su gestión:";
                 bodyResolutor += "<br><br>Comentario: ";
                 bodyResolutor += "<b>" + txtObservacion.Text + "</b>";
                 bodyResolutor += "<br><br>";
@@ -681,10 +702,20 @@ namespace TagorManuCRM
             }
             else if (estado == "4")
             {
+                string idEmpleado = ddlDerivar.SelectedValue;
+                DataTable dtEmpleado = new DataTable();
+                dtEmpleado = dal.getBuscarUsuarioPorId(idEmpleado).Tables[0];
+
+                string email = string.Empty;
+                foreach (DataRow item in dtEmpleado.Rows)
+                {
+                    email = item["EMAIL"].ToString();
+                }
+
                 string body = "Estimado,   <br>";
-                body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido programada para su gestión:";
-                body += "<br><br><b>Fecha de Programacion: </b>" + fechaAgendamiento;
-                body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionGestion.Text;
+                body += "Te informamos que la SOLPED N " + numeroTicket + " ha sido programada para su gestión:";
+                body += "<br><br><b>Fecha de Programación: </b>" + fechaAgendamiento;
+                body += "<br><br><b>Observación de la gestión: </b>" + txtObservacionGestion.Text;
                 body += "<br><br>";
                 body += "<b><u>Información de la Atención:</u></b>";
                 body += "<br>N° de OT: " + numeroTicket;
@@ -695,7 +726,7 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
                 
                 if (tipoOT == "Correctiva")
                 {
@@ -703,7 +734,7 @@ namespace TagorManuCRM
                     body = "Estimado,   <br>";
                     body += "Te informamos que la SOLPED N° " + numeroTicket + " ha sido programada para su gestión:";
                     body += "<br><br><b>Fecha de Programación: </b>" + fechaAgendamiento;
-                    body += "<br><br><b>Observación de la gestion: </b>" + txtObservacionCliente.Text;
+                    body += "<br><br><b>Observación de la gestión: </b>" + txtObservacionCliente.Text;
                     body += "<br><br>";
                     body += "<b><u>Información de la Atención:</u></b>";
                     body += "<br>N° de OT: " + numeroTicket;
@@ -726,11 +757,45 @@ namespace TagorManuCRM
                     if (emails.Trim() != string.Empty)
                     {
                         com.EnviarEmailSSLImplicito(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
-                       
                     }
-
                 }
-                
+            }
+            else if(estado == "2")
+            {
+                string idUsuarioAsignado = string.Empty;
+                string email = string.Empty;
+                DataTable dtUsuarios = new DataTable();
+                dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(local, "5", idArea).Tables[0];
+
+                if (dtUsuarios.Rows.Count == 0)
+                {
+                    lblInfo.Text = "No se puede ingresar la SOLPED. <br> Razon: No hay un supervisor asignado al local seleccionado";
+                    divAlerta.Visible = true;
+                    return;
+                }
+
+                foreach (DataRow item in dtUsuarios.Rows)
+                {
+                    idUsuarioAsignado = item["ID_USUARIO"].ToString();
+                    email = item["EMAIL"].ToString();
+                    break;
+                }
+
+                string body = "Estimado,   <br>";
+                body += "Te informamos que la SOLPED N° " + numeroTicket + " se encuentran <b>EN PROCESO</b>:";
+                body += "<br>Fecha de Ejecución: " + DateTime.Now.ToString("G");
+                body += "<br><br><b>Observación de la gestión: </b>" + txtObservacionGestion.Text.Replace("\r\n", "<br>");
+                body += "<br><br>";
+                body += "<b><u>Información de la Atención:</u></b>";
+                body += "<br>N° de OT: " + numeroTicket;
+                body += "<br>Fecha : " + DateTime.Now.ToString("G");
+                body += "<br>Observación de la OT: " + txtObservacion.Text;
+
+                body += "<br><br>";
+                body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
+                body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
+
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "SOLPED EN PROCESO  N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
             }
         }
 

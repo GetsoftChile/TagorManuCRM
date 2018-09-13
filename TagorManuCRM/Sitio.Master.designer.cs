@@ -121,6 +121,24 @@ namespace TagorManuCRM {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liReporteTickets;
         
         /// <summary>
+        /// Control liFacturacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liFacturacion;
+        
+        /// <summary>
+        /// Control liGeneraFacturacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liGeneraFacturacion;
+        
+        /// <summary>
         /// Control liAdministracion.
         /// </summary>
         /// <remarks>
