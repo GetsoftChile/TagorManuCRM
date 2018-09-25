@@ -85,17 +85,46 @@
                             <div class="box box-primary">
                                 <div class="box-header with-border box-solid">
                                     <div class="row">
-                                        <div class="col-md-4 col-xs-12">
+                                        <div class="col-md-3 col-xs-12">
                                             <h3 class="box-title">CATEGORIA SERVICIO</h3>
-                                            <asp:DropDownList ID="ddlCategoriaServicio" runat="server" CssClass="form-control"  OnDataBound="ddlCategoriaServicio_DataBound" AutoPostBack="true" OnSelectedIndexChanged="ddlCategoriaServicio_SelectedIndexChanged"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlCategoriaServicio" runat="server" CssClass="form-control" OnDataBound="ddlCategoriaServicio_DataBound" AutoPostBack="true" OnSelectedIndexChanged="ddlCategoriaServicio_SelectedIndexChanged"></asp:DropDownList>
                                         </div>
-                                        <div class="col-md-4 col-xs-12">
+                                        <div class="col-md-2 col-xs-12">
                                             <h3 class="box-title">AREA</h3>
-                                            <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control"  AutoPostBack="true" OnSelectedIndexChanged="ddlArea_SelectedIndexChanged" OnDataBound="ddlArea_DataBound"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlArea_SelectedIndexChanged" OnDataBound="ddlArea_DataBound"></asp:DropDownList>
                                         </div>
-                                        <div class="col-md-4 col-xs-12" >
+                                        <div class="col-md-3 col-xs-12">
                                             <h3 class="box-title">SUCURSAL</h3>
                                             <asp:DropDownList ID="ddlSucursal" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlSucursal_SelectedIndexChanged" OnDataBound="ddlSucursal_DataBound"></asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-2 col-xs-12">
+                                            <h3 class="box-title">MES</h3>
+                                            <asp:DropDownList ID="ddlMes" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlMes_SelectedIndexChanged">
+                                                <asp:ListItem Text="Todos" Value="0"></asp:ListItem>
+                                                <asp:ListItem Text="Enero" Value="1"></asp:ListItem>
+                                                <asp:ListItem Text="Febrero" Value="2"></asp:ListItem>
+                                                <asp:ListItem Text="Marzo" Value="3"></asp:ListItem>
+                                                <asp:ListItem Text="Abril" Value="4"></asp:ListItem>
+                                                <asp:ListItem Text="Mayo" Value="5"></asp:ListItem>
+                                                <asp:ListItem Text="Junio" Value="6"></asp:ListItem>
+                                                <asp:ListItem Text="Julio" Value="7"></asp:ListItem>
+                                                <asp:ListItem Text="Agosto" Value="8"></asp:ListItem>
+                                                <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
+                                                <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
+                                                <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
+                                                <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-2 col-xs-12">
+                                            <h3 class="box-title">AÑO</h3>
+                                            <asp:DropDownList ID="ddlAno" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlAno_SelectedIndexChanged">
+                                                <asp:ListItem Text="Todos" Value="0"></asp:ListItem>
+                                                <asp:ListItem Text="2018" Value="2018"></asp:ListItem>
+                                                <asp:ListItem Text="2019" Value="2019"></asp:ListItem>
+                                                <asp:ListItem Text="2020" Value="2020"></asp:ListItem>
+                                                <asp:ListItem Text="2021" Value="2021"></asp:ListItem>
+                                                <asp:ListItem Text="2022" Value="2022"></asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
                                     </div>
 

@@ -86,12 +86,44 @@ namespace TagorManuCRM
                         string _area = Convert.ToString(Request.QueryString["a"]);
                         string _sucursal = Convert.ToString(Request.QueryString["s"]);
                         string _idCategoriaServicio = Convert.ToString(Request.QueryString["cs"]);
+                        int _mes = Convert.ToInt32(Request.QueryString["mes"]);
+                        int _ano = Convert.ToInt32(Request.QueryString["ano"]);
 
                         ddlEstado.SelectedValue = _estado;
                         ddlTipo.SelectedValue = _tipo;
                         ddlArea.SelectedValue = _area;
                         ddlSucursal.SelectedValue = _sucursal;
                         ddlCategoriaServicio.SelectedValue = _idCategoriaServicio;
+
+                        //DateTime fechatemp = new DateTime(2014, 12, 31);
+                        string strFechaDesde = string.Empty;
+                        string strFechaHasta = string.Empty;
+                        try
+                        {
+                            DateTime fechaDesde = new DateTime(_ano, _mes, 1);
+                            DateTime fechaHasta;
+
+                            if (_mes + 1 < 13)
+                            {
+                                fechaHasta = new DateTime(_ano, _mes + 1, 1).AddDays(-1);
+                            }
+                            else
+                            {
+                                fechaHasta = new DateTime(_ano + 1, 1, 1).AddDays(-1);
+                            }
+
+                             strFechaDesde = fechaDesde.ToShortDateString().Replace("/", "-");
+                             strFechaHasta = fechaHasta.ToShortDateString().Replace("/", "-");
+
+                        }
+                        catch (Exception)
+                        {
+                            strFechaDesde = string.Empty;
+                            strFechaHasta = string.Empty;
+                        }
+                        
+                        txtFechaDesde.Text = strFechaDesde;
+                        txtFechaHasta.Text = strFechaHasta;
 
                         buscarTicket(ddlEstado.SelectedValue, null, ddlTipo.SelectedValue, ddlArea.SelectedValue, ddlSucursal.SelectedValue, null,null, ddlCategoriaServicio.SelectedValue);
 

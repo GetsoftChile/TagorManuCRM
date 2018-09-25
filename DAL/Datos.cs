@@ -970,7 +970,7 @@ namespace DAL
         }
 
 
-        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil ,string idSucursal, string idCategoriaServicio)
+        public DataSet getGenerarDashboard(string idUsuario, string idArea, string tipo, string idPerfil ,string idSucursal, string idCategoriaServicio, string mes, string ano)
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_GenerarDashboard");
 
@@ -989,8 +989,8 @@ namespace DAL
             db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
 
             db.AddInParameter(cmd, "@idCategoriaServicio", DbType.String, idCategoriaServicio);
-            
-
+            db.AddInParameter(cmd, "@mes", DbType.String, mes);
+            db.AddInParameter(cmd, "@ano", DbType.String, ano);
 
             try
             {

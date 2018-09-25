@@ -24,17 +24,17 @@ namespace TagorManuCRM
         {
             try
             {
-                //ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
-                //scriptManager.RegisterPostBackControl(this.btnGrabarGestion);
+                ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+                scriptManager.RegisterPostBackControl(this.btnGrabarGestion);
+                btnGrabarGestion.Attributes.Add("OnClick", string.Format("this.disabled = true; {0};", ClientScript.GetPostBackEventReference(btnGrabarGestion, null)));
+                
                 divAlerta.Visible = false;
                 lblInfo.Text = "";
 
                 if (!this.Page.IsPostBack)
                 {
                     buscarEstado();
-
                     //area();
-
                     string perfil = Session["variableIdPerfil"].ToString();
 
                     if (perfil == "1")
@@ -575,17 +575,17 @@ namespace TagorManuCRM
                     fuOrdenTrabajo.SaveAs(Server.MapPath(carpeta));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
                 }
-                
 
 
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text);
                 buscarCaso(hfNumeroTicket.Value);
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text);
+                
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
                 divAlerta.Attributes["class"] = "alert alert-success";
                 divAlerta.Visible = true;
 
-                Response.AddHeader("REFRESH", "3;URL=SeguimientoOT.aspx?t=" + numeroTicket);
+                //Response.AddHeader("REFRESH", "3;URL=SeguimientoOT.aspx?t=" + numeroTicket);
                 // Response.Redirect("SeguimientoTicket.aspx?t=" + numeroTicket);
                 //divAlerta.Attributes.Add("class", "alert alert-success");
             }
@@ -627,8 +627,8 @@ namespace TagorManuCRM
                     break;
                 }
 
-                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "Respuesta SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
-                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "Respuesta SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
 
 
                 if (tipoOT== "Correctiva")
@@ -658,7 +658,7 @@ namespace TagorManuCRM
 
                     if (emails.Trim() != string.Empty)
                     {
-                        com.EnviarEmailSSLImplicito(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolución OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        com.EnviarEmailSSLImplicito(emails.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
                         //com.EnviarEmail(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolucion OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
                     }
                 }
