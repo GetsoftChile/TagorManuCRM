@@ -133,7 +133,7 @@
                             <label for="txtEmail">Email:</label>
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="ddlPerfil">Perfil:</label>
                             <asp:DropDownList ID="ddlPerfil" runat="server" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlPerfil_SelectedIndexChanged">
@@ -157,7 +157,7 @@
                             </asp:DropDownList>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-2" id="divImagenUsuario" runat="server" visible="false">
                         <div class="form-group">
                             <label style="text-align: center">Fotografia Perfil:</label>

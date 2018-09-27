@@ -980,9 +980,14 @@
     <Content Include="Global.asax" />
     <Content Include="IngresoSC.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Material.aspx" />
+    <Content Include="NewMaterial.aspx" />
+    <Content Include="NewSolpedCompra.aspx" />
     <Content Include="OrdenesCompra.aspx" />
     <Content Include="Proveedores.aspx" />
     <Content Include="Proyecto.aspx" />
+    <Content Include="ProyectoNew.aspx" />
+    <Content Include="Solicitudes.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1011,6 +1016,27 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Material.aspx.cs">
+      <DependentUpon>Material.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Material.aspx.designer.cs">
+      <DependentUpon>Material.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NewMaterial.aspx.cs">
+      <DependentUpon>NewMaterial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewMaterial.aspx.designer.cs">
+      <DependentUpon>NewMaterial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NewSolpedCompra.aspx.cs">
+      <DependentUpon>NewSolpedCompra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewSolpedCompra.aspx.designer.cs">
+      <DependentUpon>NewSolpedCompra.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrdenesCompra.aspx.cs">
       <DependentUpon>OrdenesCompra.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1033,12 +1059,26 @@
     <Compile Include="Proyecto.aspx.designer.cs">
       <DependentUpon>Proyecto.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ProyectoNew.aspx.cs">
+      <DependentUpon>ProyectoNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ProyectoNew.aspx.designer.cs">
+      <DependentUpon>ProyectoNew.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sitio.Master.cs">
       <DependentUpon>Sitio.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Sitio.Master.designer.cs">
       <DependentUpon>Sitio.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Solicitudes.aspx.cs">
+      <DependentUpon>Solicitudes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Solicitudes.aspx.designer.cs">
+      <DependentUpon>Solicitudes.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -1175,6 +1215,10 @@
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{4ad4b76f-b348-49a6-82a3-4ed7de4a0839}</Project>
       <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TagorManuCRM\TagorManuCRM.csproj">
+      <Project>{6705d57b-5e99-4605-90f0-20cb50e4c14c}</Project>
+      <Name>TagorManuCRM</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -319,7 +319,13 @@ namespace TagorManuCRM
             ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
             ddlSucursal.DataBind();
         }
-
+        public void FillProyecto(DropDownList ddlProyecto)
+        {
+            ddlProyecto.DataSource = dal.getBuscarProyecto("1");
+            ddlProyecto.DataValueField = "CodObra";
+            ddlProyecto.DataTextField = "NombreObra";
+            ddlProyecto.DataBind();
+        }
         public bool ValidarPaginaPerfil(string idPerfil, string pagina)
         {
             bool validacion = false;

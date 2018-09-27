@@ -1586,6 +1586,7 @@
     <Content Include="SeguimientoOT2.aspx" />
     <Content Include="Sitio.Master" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="SiteModCompras.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -8354,6 +8355,13 @@
     </Compile>
     <Compile Include="SeguimientoOT2.aspx.designer.cs">
       <DependentUpon>SeguimientoOT2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SiteModCompras.Master.cs">
+      <DependentUpon>SiteModCompras.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteModCompras.Master.designer.cs">
+      <DependentUpon>SiteModCompras.Master</DependentUpon>
     </Compile>
     <Compile Include="Sitio.Master.cs">
       <DependentUpon>Sitio.Master</DependentUpon>

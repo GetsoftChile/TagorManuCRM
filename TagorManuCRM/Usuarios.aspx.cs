@@ -375,7 +375,6 @@ namespace TagorManuCRM
                 divAlerta.Attributes["class"] = "alert alert-danger";
                 divAlerta.Visible = true;
             }
-
         }
 
         protected void ddlEmpresa_DataBound(object sender, EventArgs e)

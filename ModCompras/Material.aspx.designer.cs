@@ -10,7 +10,7 @@
 namespace ModCompras {
     
     
-    public partial class IngresoSC {
+    public partial class Material {
         
         /// <summary>
         /// Control divAlerta.
@@ -31,39 +31,39 @@ namespace ModCompras {
         protected global::System.Web.UI.WebControls.Label lblInfo;
         
         /// <summary>
-        /// Control hfId.
+        /// Control divUsuarios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfId;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUsuarios;
         
         /// <summary>
-        /// Control ddlProyecto.
+        /// Control bntNuevo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProyecto;
+        protected global::System.Web.UI.WebControls.LinkButton bntNuevo;
         
         /// <summary>
-        /// Control ddlSucursal.
+        /// Control btnExportar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSucursal;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportar;
         
         /// <summary>
-        /// Control btnGuardar.
+        /// Control grvMateriales.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGuardar;
+        protected global::System.Web.UI.WebControls.GridView grvMateriales;
     }
 }

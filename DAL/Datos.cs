@@ -3695,7 +3695,25 @@ namespace DAL
                 throw new Exception("No se pudo buscar las sucursales, " + ex.Message, ex);
             }
         }
-        
+
+        public DataSet getBuscarProyecto(string activo)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_BuscarProyecto");
+            db.AddInParameter(cmd, "@activo", DbType.String, activo);
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar los proyectos, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar los proyectos, " + ex.Message, ex);
+            }
+        }
+
 
         public string setIngresarOT(string idTipificacion, string idUsuarioCreacion, string idUsuarioAsignado,
             string idEstadoAtencion, string observacion, string tipo, string nivel1, string idEmpresa, string clase,

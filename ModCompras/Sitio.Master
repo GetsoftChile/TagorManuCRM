@@ -169,7 +169,7 @@
 <%--                                  <li runat="server" id="liBuscarTipificacion"><a href="BuscarTipificaciones.aspx"><i class="fa fa-circle-o"></i>Buscador de Tipificaciones</a></li>--%>
                               </ul>
                           </li>
-                           <li runat="server" id="liProveedores" visible="true"><a href="pr"><i class="fa fa-dashboard"></i><span>Proveedores</span></a></li>
+                          <li runat="server" id="liProveedores" visible="true"><a href="pr"><i class="fa fa-dashboard"></i><span>Proveedores</span></a></li>
                           <li class="treeview" id="liAdministracion" runat="server">
                               <a href="#">
                                   <i class="fa fa-edit"></i><span>Administración</span>
@@ -177,7 +177,7 @@
                               </a>
                               <ul class="treeview-menu">
                                   <li id="liProyectos" runat="server"><a href="Proyecto.aspx"><i class="fa fa-circle-o"></i>Proyectos</a></li>
-                                  
+                                  <li id="liMateriales" runat="server"><a href="Material.aspx"><i class="fa fa-circle-o"></i>Materiales</a></li>
                               </ul>
                           </li>
                           <li runat="server" id="liAyuda" visible="false"><a href="Ayuda.aspx"><i class="fa fa-book"></i><span>Ayuda</span></a></li>
