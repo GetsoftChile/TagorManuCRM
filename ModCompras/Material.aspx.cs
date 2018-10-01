@@ -38,7 +38,7 @@ namespace ModCompras
 
         void Buscar()
         {
-            grvMateriales.DataSource = dalCom.getBuscarMaterial(null);
+            grvMateriales.DataSource = dalCom.GetBuscarMaterial(null);
             grvMateriales.DataBind();
             grvMateriales.HeaderRow.TableSection = TableRowSection.TableHeader;
         }
@@ -70,7 +70,7 @@ namespace ModCompras
                 GridViewRow row = (GridViewRow)btn.NamingContainer;
 
                 Label _lblIdMaterial = (Label)grvMateriales.Rows[row.RowIndex].FindControl("lblIdMaterial");
-                dalCom.setEliminarMaterial(_lblIdMaterial.Text);
+                dalCom.SetEliminarMaterial(_lblIdMaterial.Text);
 
                 Buscar();
 

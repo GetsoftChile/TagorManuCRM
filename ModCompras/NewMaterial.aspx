@@ -35,9 +35,6 @@
                         <div class="form-group">
                             <label for="ddlTipo">Tipo:</label>
                             <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control input-sm">
-                                <asp:ListItem Value="0" Text="Seleccionar"></asp:ListItem>
-                                <asp:ListItem Value="Material" Text="Material"></asp:ListItem>
-                                <asp:ListItem Value="Herramienta" Text="Herramienta"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
                         <div class="form-group">

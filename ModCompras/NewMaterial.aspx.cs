@@ -27,6 +27,7 @@ namespace ModCompras
                 {
                     string _Id = Convert.ToString(Request.QueryString["Id"]);
                     hfId.Value = _Id;
+                    TipoMaterial();
                     Buscar();
                 }
 
@@ -42,7 +43,7 @@ namespace ModCompras
         void Buscar()
         {
             DataTable dt = new DataTable();
-            dt = dalCom.getBuscarMaterial(hfId.Value).Tables[0];
+            dt = dalCom.GetBuscarMaterial(hfId.Value).Tables[0];
             foreach (DataRow item in dt.Rows)
             {
                 txtMaterial.Text = item["Nombre"].ToString();
@@ -50,13 +51,21 @@ namespace ModCompras
                 ddlTipo.SelectedValue = item["Tipo"].ToString();
             }
         }
+        void TipoMaterial()
+        {
+            ddlTipo.DataSource = dalCom.GetBuscarTipoMaterial(null);
+            ddlTipo.DataValueField = "IdTipo";
+            ddlTipo.DataTextField = "NombreTipo";
+            ddlTipo.DataBind();
+            
 
+        }
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
                 string idUsuario = Session["variableIdUsuario"].ToString();
-                dalCom.setInUpMaterial(hfId.Value, txtMaterial.Text.Trim(), ddlTipo.SelectedValue, txtUnidad.Text.Trim(), idUsuario, idUsuario);
+                dalCom.SetInUpMaterial(hfId.Value, txtMaterial.Text.Trim(), ddlTipo.SelectedValue, txtUnidad.Text.Trim(), idUsuario, idUsuario);
                 Buscar();
  
                 lblInfo.Text = "Material guardado correctamente";

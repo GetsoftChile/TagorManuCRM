@@ -44,7 +44,8 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Tipo">
                             <ItemTemplate>
-                                <asp:Label ID="lblTipo" runat="server" Text='<%# Bind("Tipo") %>'></asp:Label>
+                                <asp:Label ID="lblTipo" runat="server" Text='<%# Bind("NombreTipo") %>'></asp:Label>
+                                <asp:Label ID="lblIdTipo" Visible="false" runat="server" Text='<%# Bind("IdTipo") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="U.Medida">
