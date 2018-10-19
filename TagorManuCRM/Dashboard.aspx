@@ -97,6 +97,7 @@
                                             <h3 class="box-title">SUCURSAL</h3>
                                             <asp:DropDownList ID="ddlSucursal" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlSucursal_SelectedIndexChanged" OnDataBound="ddlSucursal_DataBound"></asp:DropDownList>
                                         </div>
+                                        
                                         <div class="col-md-2 col-xs-12">
                                             <h3 class="box-title">MES</h3>
                                             <asp:DropDownList ID="ddlMes" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="ddlMes_SelectedIndexChanged">

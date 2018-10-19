@@ -15,29 +15,30 @@
             <li class="active">Ingreso SOLCOMP</li>
         </ol>
     </section>
-    <section class="invoice">
-        <!-- Alertas -->
-        <div id="divAlerta" runat="server" visible="false" class="alert alert-danger">
-            <strong>Atención!: </strong>
-            <asp:Label Text="" ID="lblInfo" runat="server" />
-        </div>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <section class="invoice">
+                <!-- Alertas -->
+                <div id="divAlerta" runat="server" visible="false" class="alert alert-danger">
+                    <strong>Atención!: </strong>
+                    <asp:Label Text="" ID="lblInfo" runat="server" />
+                </div>
 
-        <!-- title row -->
-        <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    <i class="fa fa-pencil"></i>SOLCOMP Nº
+                <!-- title row -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2 class="page-header">
+                            <i class="fa fa-pencil"></i>SOLCOMP Nº
                    
                     <asp:Label ID="lblNumeroSolicitud" runat="server" Font-Bold="true"></asp:Label>
-                    <small class="pull-right">Fecha:
+                            <small class="pull-right">Fecha:
                         <asp:Label ID="lblFechaHoy" runat="server" Font-Bold="true"></asp:Label></small>
-                </h2>
-            </div>
-            <!-- /.col -->
-        </div>
+                        </h2>
+                    </div>
+                    <!-- /.col -->
+                </div>
 
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-            <ContentTemplate>
+
 
                 <div class="box box-danger">
                     <div class="box-header">
@@ -138,15 +139,8 @@
                                 <br />
                                 <asp:LinkButton ID="lbtnGrabarMaterial" OnClick="lbtnGrabarMaterial_Click" CssClass="btn btn-danger btn-sm" runat="server"><i aria-hidden="true" class="glyphicon  glyphicon-floppy-disk"></i> Grabar Material</asp:LinkButton>
                             </div>
-
-
                         </div>
-
                     </div>
-
-
-
-
                 </div>
 
                 <div class="box box-danger">
@@ -202,20 +196,19 @@
                         </div>
                     </div>
 
-                    <div class="box-footer">
-                        <asp:Button ID="btnGuardar" Text="Guardar" CssClass="btn btn-success" OnClick="btnGuardar_Click" runat="server" />
-                    </div>
+
                 </div>
 
-
-
-                <div class="box box-warning" runat="server" id="divPanelHistoricoCaso" visible="false">
+                <div class="box box-warning" runat="server" id="divPanelHistoricoCaso" visible="true">
                     <div class="box-header">
-                        <h3 class="box-title">Histórico del SOLPED</h3>
+                        <h3 class="box-title">Gestiones SolCom</h3>
+                        <h3 class="box-title pull-right">
+                            <asp:LinkButton ID="lbtnNuevaGestion" OnClick="lbtnNuevaGestion_Click" CssClass="btn btn-success btn-sm" runat="server"><i aria-hidden="true" class="glyphicon glyphicon-plus"></i> Nueva Gestión</asp:LinkButton>
+                        </h3>
                     </div>
                     <div class="box-body">
                         <div style="width: 100%; overflow-y: scroll;">
-                            <asp:GridView ID="grvGestiones" runat="server" CssClass="table table-responsive table-bordered table-hover table-condensed small" HeaderStyle-CssClass="active" AutoGenerateColumns="false" OnRowDataBound="paginacion_RowDataBound">
+                            <asp:GridView ID="grvGestiones" runat="server" CssClass="table table-responsive table-bordered table-hover table-condensed small" HeaderStyle-CssClass="active" AutoGenerateColumns="false">
                                 <Columns>
                                     <asp:TemplateField HeaderText="Id">
                                         <ItemTemplate>
@@ -242,32 +235,55 @@
                                             <asp:Label ID="lblEstado" runat="server" Text='<%# Bind("ESTADO_ATENCION") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="F.Agend">
+
+
+                                    <asp:TemplateField HeaderText="Obs">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFechaAgendamiento" runat="server" Visible="true" Text='<%# Bind("FECHA_AGEND","{0:dd/MM/yyyy HH:mm}") %>'></asp:Label>
+                                            <asp:Label ID="lblObservacion" runat="server" Text='<%# Bind("OBSERVACION") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Motivo Cierre" Visible="false">
+
+                                </Columns>
+                            </asp:GridView>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="box box-warning" runat="server" id="divOC" visible="true">
+                    <div class="box-header">
+                        <h3 class="box-title">Ordenes de Compra</h3>
+                        <h3 class="box-title pull-right">
+                            <asp:LinkButton ID="lbtnNuevaOrdenCompra" OnClick="lbtnNuevaOrdenCompra_Click" CssClass="btn btn-success btn-sm" runat="server"><i aria-hidden="true" class="glyphicon glyphicon-plus"></i> Crear Orden de Compra</asp:LinkButton>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div style="width: 100%; overflow-y: scroll;">
+                            <asp:GridView ID="GridView1" runat="server" CssClass="table table-responsive table-bordered table-hover table-condensed small" HeaderStyle-CssClass="active" AutoGenerateColumns="false">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Id">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblNombreMotivoCierre" runat="server" Text='<%# Bind("NOM_MOTIVO_CIERRE") %>'></asp:Label>
+                                            <asp:Label ID="lblCorrelativo" runat="server" Text='<%# Bind("CORRELATIVO") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Archivo1">
+                                    <asp:TemplateField HeaderText="F.Creación">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblArchivo1" runat="server" Visible="false" Text='<%# Bind("RUTA_ARCHIVO_1") %>'></asp:Label>
-                                            <asp:ImageButton ID="ibtnArchivo1" runat="server" ImageUrl="~/assets/img/box.png" Visible="false" OnClick="ibtnArchivo1_Click" />
+                                            <asp:Label ID="lblFecha" runat="server" Visible="true" Text='<%# Bind("FECHA","{0:dd/MM/yyyy HH:mm}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Archivo2">
+                                    <asp:TemplateField HeaderText="U.Creación">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblArchivo2" runat="server" Visible="false" Text='<%# Bind("RUTA_ARCHIVO_2") %>'></asp:Label>
-                                            <asp:ImageButton ID="ibtnArchivo2" runat="server" ImageUrl="~/assets/img/box.png" Visible="false" OnClick="ibtnArchivo2_Click" />
+                                            <asp:Label ID="lblUsuarioCreacion" runat="server" Text='<%# Bind("USUARIO") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="OT">
+                                    <asp:TemplateField HeaderText="U.Asignado">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblArchivoOT" runat="server" Visible="false" Text='<%# Bind("RUTA_ARCHIVO_OT") %>'></asp:Label>
-                                            <asp:ImageButton ID="ibtnArchivoOT" runat="server" ImageUrl="~/assets/img/box.png" Visible="false" OnClick="ibtnArchivoOT_Click" />
+                                            <asp:Label ID="lblUsuarioAsignado" runat="server" Text='<%# Bind("USUARIO_ASIG") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Estado">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEstado" runat="server" Text='<%# Bind("ESTADO_ATENCION") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Obs">
@@ -275,22 +291,95 @@
                                             <asp:Label ID="lblObservacion" runat="server" Text='<%# Bind("OBSERVACION") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Obs Cli" Visible="false">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblObservacionCli" runat="server" Text='<%# Bind("OBSERVACION_CLIENTE") %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+
                                 </Columns>
                             </asp:GridView>
                         </div>
                     </div>
+                    <div class="box-footer">
+                        <asp:Button ID="btnGuardar" Text="Guardar" CssClass="btn btn-success" OnClick="btnGuardar_Click" runat="server" />
+                    </div>
                 </div>
 
+                <%--NUEVA GESTION--%>
+                <%--MODALPOPUP CON BOOTSTRAP--%>
+                <asp:Button ID="btnMDLNuevaGestion" runat="server" Style="display: none" />
+                <ajaxToolkit:ModalPopupExtender ID="mdlNuevaGestion" BackgroundCssClass="modalBackground" runat="server" PopupControlID="pnlNuevaGestion" TargetControlID="btnMDLNuevaGestion">
+                </ajaxToolkit:ModalPopupExtender>
+                <asp:Panel ID="pnlNuevaGestion" runat="server" CssClass="panel" Style="display: none; background: white; width: 65%; height: auto; overflow: auto">
+                    <%--MODALPOPUP CON BOOTSTRAP--%>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <button class="close" data-dismiss="modal">
+                                ×
+                            </button>
+                            <strong>Modulo Gestión - Ingreso de Gestión SOLCOM</strong>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table small">
+                                <tr>
+                                    <td class="active">
+                                        <strong>Nº</strong>
+                                        <asp:Label ID="lblNumeroSolCom" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <h4>Nueva Gestión</h4>
 
 
-            </ContentTemplate>
-        </asp:UpdatePanel>
-    </section>
+
+                            <table class="table small">
+                                <tr class="active">
+                                    <td>
+                                        <label for="ddlNivel1">Categoria:</label>
+                                        <asp:DropDownList ID="ddlNivel1" runat="server" CssClass="form-control input-sm" ClientIDMode="Static" OnDataBound="ddlNivel1_DataBound" AutoPostBack="true" OnSelectedIndexChanged="ddlNivel1_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td>
+                                        <label for="ddlNivel2">Sub Categoria:</label>
+                                        <asp:DropDownList ID="ddlNivel2" runat="server" CssClass="form-control input-sm" ClientIDMode="Static" OnDataBound="ddlNivel2_DataBound" AutoPostBack="true" OnSelectedIndexChanged="ddlNivel2_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr class="active">
+                                    <td>
+                                        <label for="fuCotizacion">Cotización:</label>
+                                        <asp:FileUpload ID="fuCotizacion" runat="server" />
+                                    </td>
+                                    <td>
+                                        <label for="fuCotizacion">Valor total cotización:</label>
+                                        <asp:TextBox ID="txtValorTotalCotizacion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr class="active">
+                                    <td>
+                                        <label for="fuCuadroComparativo">Cuadro Comparativo:</label>
+                                        <asp:FileUpload ID="fuCuadroComparativo" runat="server" />
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr class="active">
+                                    <td>
+                                        <strong>Observaciones</strong>
+                                        <asp:TextBox ID="txtObservaciones" TextMode="MultiLine" runat="server" CssClass="form-control input-sm" Height="100px"></asp:TextBox>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <div class="panel-footer">
+                            <asp:Button ID="btnGrabarGestion" runat="server" Text="Ingresar" CssClass="btn btn-sm btn-danger" OnClick="btnGrabarGestion_Click" />
+                        </div>
+                        <%--MODALPOPUP CON BOOTSTRAP--%>
+                    </div>
+                </asp:Panel>
+
+
+            </section>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="footer" runat="server">
 </asp:Content>

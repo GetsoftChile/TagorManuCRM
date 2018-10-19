@@ -463,7 +463,19 @@ namespace TagorManuCRM
                     divAlerta.Visible = true;
                     return;
                 }
-                
+
+
+                if (idPerfil==2)
+                {
+                    if (ddlEstado.SelectedValue=="4")
+                    {
+                        lblInfo.Text = "Estimado, solo los supervisores pueden programar una mantención, favor proceder a seleccionar el estado EN PROCESO";
+                        divAlerta.Attributes["class"] = "alert alert-warning";
+                        divAlerta.Visible = true;
+                        return;
+                    }
+                }
+
                 if (lblIdEstadoTicket.Text == "3")
                 {
                     if (ddlEstado.SelectedValue=="3")
@@ -474,6 +486,9 @@ namespace TagorManuCRM
                         return;
                     }
                 }
+
+                
+
 
                 if (ddlEstado.SelectedValue == "4")
                 {

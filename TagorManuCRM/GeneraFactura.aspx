@@ -35,12 +35,18 @@
                             <asp:DropDownList ID="ddlCategoriaServicio" runat="server" CssClass="form-control input-sm" OnDataBound="ddlCategoriaServicio_DataBound">
                             </asp:DropDownList>
                         </div>
-                        <div class="col-lg-3 col-xs-12">
+                        <div class="col-lg-2 col-xs-12">
+                            <strong>Area</strong>
+                            <asp:DropDownList ID="ddlArea" runat="server" OnDataBound="ddlArea_DataBound1" CssClass="form-control input-sm">
+                            </asp:DropDownList>
+                        </div>
+                        <div class="col-lg-2 col-xs-12">
                             <strong>Local</strong>
                             <asp:DropDownList ID="ddlLocal" runat="server" CssClass="form-control input-sm" OnDataBound="ddlLocal_DataBound">
                             </asp:DropDownList>
                         </div>
-                        <div class="col-lg-3 col-xs-12">
+
+                        <div class="col-lg-2 col-xs-12">
                             <strong>Mes</strong>
                             <asp:DropDownList ID="ddlMes" runat="server" CssClass="form-control input-sm">
                                 <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
@@ -59,7 +65,7 @@
                             </asp:DropDownList>
                         </div>
                         <div class="col-lg-1 col-xs-12">
-                            <strong>Ano</strong>
+                            <strong>Año</strong>
                             <asp:DropDownList ID="ddlAno" runat="server" CssClass="form-control input-sm">
                                 <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
                                 <asp:ListItem Text="2018" Value="2018"></asp:ListItem>
@@ -69,7 +75,7 @@
                                 <asp:ListItem Text="2022" Value="2022"></asp:ListItem>
                             </asp:DropDownList>
                         </div>
-                        <div class="col-lg-2 col-xs-12">
+                        <div class="col-lg-1 col-xs-12">
                             <br />
                             <asp:LinkButton ID="lbtnBuscar" CssClass="btn btn-primary btn-sm btn-block" runat="server"
                                 OnClick="lbtnBuscar_Click"><i aria-hidden="true" class="glyphicon glyphicon-search"></i></asp:LinkButton>

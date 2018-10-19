@@ -28,7 +28,7 @@ namespace TagorManuCRM
                     int mes = Hoy.Month;
 
                     ddlAno.SelectedValue = ano.ToString();
-                    ddlMes.SelectedValue = mes.ToString();
+                    //ddlMes.SelectedValue = mes.ToString();
 
                     com.FillArea(ddlArea);
                     com.FillCategoriaServicio(ddlCategoriaServicio);
@@ -55,6 +55,15 @@ namespace TagorManuCRM
             ddlSucursal.DataTextField = "NOMBRE_SUCURSAL";
             ddlSucursal.DataBind();
         }
+        //void Local()
+        //{
+        //    ddlLocal.DataSource = dal.getBuscarLocalPorZona(null, null);
+        //    ddlLocal.DataValueField = "ID_SUCURSAL";
+        //    ddlLocal.DataTextField = "NOMBRE_SUCURSAL";
+        //    ddlLocal.DataBind();
+        //}
+        
+
         void Perfil()
         {
             string idUsuario = Session["variableIdUsuario"].ToString();
@@ -96,7 +105,7 @@ namespace TagorManuCRM
 
             if (idPerfil == "5")
             {
-                ddlArea.Enabled = false;
+                ddlArea.Enabled = true;
                 if (String.IsNullOrEmpty(idAreaUsuario))
                 {
                     lblInfo.Text = "No tiene asignada el area, favor de comunicarse con el administrador.";
@@ -105,7 +114,7 @@ namespace TagorManuCRM
                 }
                 else
                 {
-                    ddlArea.SelectedValue = idAreaUsuario;
+                    //ddlArea.SelectedValue = idAreaUsuario;
                 }
                 ddlSucursal.Enabled = false;
                 if (String.IsNullOrEmpty(idSucursal))

@@ -1223,7 +1223,7 @@
     <Content Include="Login.aspx" />
     <Content Include="Material.aspx" />
     <Content Include="NewMaterial.aspx" />
-    <Content Include="NewSolpedCompra.aspx" />
+    <Content Include="NewOrdenCompra.aspx" />
     <Content Include="OrdenesCompra.aspx" />
     <Content Include="Proveedores.aspx" />
     <Content Include="Proyecto.aspx" />
@@ -1541,7 +1541,9 @@
     <Content Include="Scripts\AjaxControlToolkit\Release\UpdatePanelAnimation.js" />
     <Content Include="Scripts\AjaxControlToolkit\Release\ValidatorCallout.js" />
     <Content Include="Solicitudes.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -1583,12 +1585,12 @@
     <Compile Include="NewMaterial.aspx.designer.cs">
       <DependentUpon>NewMaterial.aspx</DependentUpon>
     </Compile>
-    <Compile Include="NewSolpedCompra.aspx.cs">
-      <DependentUpon>NewSolpedCompra.aspx</DependentUpon>
+    <Compile Include="NewOrdenCompra.aspx.cs">
+      <DependentUpon>NewOrdenCompra.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="NewSolpedCompra.aspx.designer.cs">
-      <DependentUpon>NewSolpedCompra.aspx</DependentUpon>
+    <Compile Include="NewOrdenCompra.aspx.designer.cs">
+      <DependentUpon>NewOrdenCompra.aspx</DependentUpon>
     </Compile>
     <Compile Include="OrdenesCompra.aspx.cs">
       <DependentUpon>OrdenesCompra.aspx</DependentUpon>

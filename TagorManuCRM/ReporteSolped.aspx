@@ -26,6 +26,87 @@
 
         }
     </script>
+    
+    <script type="text/javascript">
+        function ejemplo2() {
+            var chart = new CanvasJS.Chart("chartContainer2",
+                {
+                    theme: "theme2",
+                    exportEnabled: true,
+                    title: {
+                        text: "Timeline Diario Solped"
+                    },
+                    animationEnabled: true,
+                    axisY: {
+                        title: "Cantidad"
+                        //includeZero: true,
+                        //suffix: " Q",
+                        //valueFormatString: "#,,.",
+                        //suffix: " mm"
+                        //valueFormatString:  "#.##0,##"
+                    },
+                    axisX: {
+                        title: "Fecha"
+                        // valueFormatString:  "#.##0,##",   // move comma to change formatting  
+                        //prefix: "Fecha"
+                    },
+                    toolTip: {
+                        shared: "true"
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            showInLegend: true,
+                            name: "Correctivo",
+                            color: "Red",
+                            // markerSize: 0,        
+                            // color: "rgba(54,158,173,.6)",
+                            dataPoints:
+                    <%=correctivasStr %> 
+        //[{label: '21', y: parseInt('2')},{label: '22', y: parseInt('1')}] 
+                    },{
+                            type: "spline",
+                            showInLegend: true,
+                            name: "Correctivo Planificado",
+                            // markerSize: 0,        
+                            // color: "rgba(54,158,173,.6)",
+                            color: "Gold",
+                            dataPoints:
+                    <%=correctivasProgramadasStr %> 
+        //[{label: '21', y: parseInt('2')},{label: '22', y: parseInt('1')}] 
+                    },
+                    {
+                        type: "spline",
+                        showInLegend: true,
+                        // markerSize: 0,
+                        name: "Preventivo",
+                        color: "Black",
+                        dataPoints:
+          <%=preventivasStr %> 
+        //[{label: '21', y: parseInt('0')},{label: '22', y: parseInt('0')}] 
+          }
+
+                    ],
+                    legend: {
+                        cursor: "pointer",
+                        itemclick: function (e) {
+                            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                                e.dataSeries.visible = false;
+                            }
+                            else {
+                                e.dataSeries.visible = true;
+                            }
+                            chart.render();
+                        }
+
+                    },
+                });
+
+            chart.render();
+
+        }
+    </script>
+
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -184,7 +265,22 @@
                 </div>
             </div>
         </div>
-
+         <div class="box box-danger">
+            <div class="box-header with-border">
+                <h3 class="box-title">Gráfico Mantenciones</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body " style="width: 100%; overflow-y: scroll;">
+                <div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+            </div>
+        </div>
         <div class="box box-danger">
             <div class="box-header with-border">
                 <h3 class="box-title">Gráfico Mantenciones</h3>
@@ -201,6 +297,7 @@
             <div class="box-footer">
             </div>
         </div>
+        
 
         <!-- /.box -->
 

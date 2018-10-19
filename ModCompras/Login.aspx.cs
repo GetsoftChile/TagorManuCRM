@@ -66,8 +66,7 @@ namespace ModCompras
                 idSucursal = item["ID_SUCURSAL"].ToString();
                 email = item["EMAIL"].ToString();
             }
-
-
+            
 
             if (valor == "1")
             {

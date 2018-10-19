@@ -14,8 +14,11 @@ namespace TagorManuCRM
     public partial class ReporteSolped : System.Web.UI.Page
     {
         public string consultaStr;
+        public string correctivasStr;
+        public string correctivasProgramadasStr;
+        public string preventivasStr;
         Datos dal = new Datos();
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -36,6 +39,13 @@ namespace TagorManuCRM
                     //    fila.Selected = true;
                     //}
                     usuarioAsig();
+
+                    DateTime Hoy = DateTime.Today;
+                    string fechaActual = Hoy.ToString("dd-MM-yyyy");
+
+                    txtFechaDesde.Text = Hoy.AddDays(-15).ToString("dd-MM-yyyy");
+                    txtFechaHasta.Text = fechaActual;
+
                     buscar();
                     grafico();
                 }
@@ -227,6 +237,59 @@ namespace TagorManuCRM
             string script3;
             script3 = "<script type=text/javascript>ejemplo();</script>";
             ScriptManager.RegisterStartupScript(this, typeof(Page), "ejemplo", script3, false);
+
+            
+            DataTable dtReporte = new DataTable();
+            dtReporte = dal.getReporteDiarioMantenciones(ddlUsuario.SelectedValue, txtFechaDesde.Text.Trim(), txtFechaHasta.Text.Trim(),
+                ddlArea.SelectedValue, ddlSucursal.SelectedValue, ddlZonas.SelectedValue, ddlLocal.SelectedValue, ddlEstado.SelectedValue).Tables[0];
+            if (dtReporte.Rows.Count == 0)
+            {
+                return;
+            }
+
+            StringBuilder sbCorrectivas = new StringBuilder();
+            StringBuilder sbCorrectivasProgramadas = new StringBuilder();
+            StringBuilder sbPreventivas = new StringBuilder();
+
+            foreach (DataRow item in dtReporte.Rows)
+            {
+                string correctivos = item["CORRECTIVOS"].ToString();
+                string correctivosPlanificadas = item["CORRECTIVAS_PLANIFICADAS"].ToString();
+                string preventivos = item["PREVENTIVOS"].ToString();
+
+                sbCorrectivas.Append("{label: '" + item["FECHA"].ToString() + "', y: parseInt('" + correctivos + "')},");
+                sbCorrectivasProgramadas.Append("{label: '" + item["FECHA"].ToString() + "', y: parseInt('" + correctivosPlanificadas + "')},");
+                sbPreventivas.Append("{label: '" + item["FECHA"].ToString() + "', y: parseInt('" + preventivos + "')},");
+            }
+
+            //inicializa los valores en vacio para el grafico
+            string strCorrectivos = "[{label: '0', y: parseInt('0')}]";
+            string strCorrectivosPlanificadas = "[{label: '0', y: parseInt('0')}]";
+            string strPreventivos = "[{label: '0', y: parseInt('0')}]";
+
+            if (sbCorrectivas.ToString() != "")
+            {
+                strCorrectivos = "[" + sbCorrectivas.ToString().Remove(sbCorrectivas.ToString().Length - 1) + "]";
+            }
+
+            if (sbCorrectivasProgramadas.ToString() != "")
+            {
+                strCorrectivosPlanificadas = "[" + sbCorrectivasProgramadas.ToString().Remove(sbCorrectivasProgramadas.ToString().Length - 1) + "]";
+            }
+
+            if (sbPreventivas.ToString() != "")
+            {
+                strPreventivos = "[" + sbPreventivas.ToString().Remove(sbPreventivas.ToString().Length - 1) + "]";
+            }
+
+            correctivasStr= strCorrectivos;
+            correctivasProgramadasStr=strCorrectivosPlanificadas;
+            preventivasStr=strPreventivos;
+            
+            string script4;
+            script4 = "<script type=text/javascript>ejemplo2();</script>";
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ejemplo2", script4, false);
+
         }
 
         protected void ddlArea_DataBound(object sender, EventArgs e)

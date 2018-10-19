@@ -266,21 +266,33 @@ namespace ConsolaIngresoTicketEmergencia
             //MUY IMPORTANTE
             string email = string.Empty;
             string idUsuarioAsignado = string.Empty;
-            if (tipo == "C")//si es correctivo se le asigna al supervisor
+            if (tipo == "C")//si es correctivo se le asigna al supervisor que esta en la tabla local
             {
-                DataTable dtUsuarios = new DataTable();
-                dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(idLocal, "5", idArea).Tables[0];
+                //DataTable dtUsuarios = new DataTable();
+                //dtUsuarios = dal.getBuscarUsuarioAsignadoPorIdLocalIdPerfil(idLocal, "5", idArea).Tables[0];
 
-                if (dtUsuarios.Rows.Count == 0)
+                DataTable dtLocales = new DataTable();
+                dtLocales=dal.getBuscarLocalPorId(idLocal).Tables[0];
+
+                if (dtLocales.Rows.Count == 0)
                 {
-                    //lblInfo.Text = "No se puede ingresar la SOLPED. <br> Razon: No hay un supervisor asignado al local seleccionado";
-                    //divAlerta.Visible = true;
                     return;
                 }
+                foreach (DataRow item in dtLocales.Rows)
+                {
+                    idUsuarioAsignado = item["ID_SUPERVISOR"].ToString();
+                    break;
+                }
 
+                DataTable dtUsuarios = dal.getBuscarUsuarioPorId(idUsuarioAsignado).Tables[0];
+                if (dtUsuarios.Rows.Count == 0)
+                {
+                    return;
+                }
+                
                 foreach (DataRow item in dtUsuarios.Rows)
                 {
-                    idUsuarioAsignado = item["ID_USUARIO"].ToString();
+                    //idUsuarioAsignado = item["ID_USUARIO"].ToString();
                     email = item["EMAIL"].ToString();
                     break;
                 }

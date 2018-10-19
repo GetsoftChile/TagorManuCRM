@@ -186,6 +186,34 @@ namespace DAL
             }
         }
 
+        public string SetInOC(string idEmpresa, string idProveedor, string IdUsuarioCreacion,
+            string idEstado, string Observacion, string IdSolicitudMateriales, string IdSucursal)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_InOC");
+
+            db.AddInParameter(cmd, "@IdEmpresa", DbType.String, idEmpresa);
+            db.AddInParameter(cmd, "@IdProveedor", DbType.String, idProveedor);
+            db.AddInParameter(cmd, "@IdUsuarioCreacion", DbType.String, IdUsuarioCreacion);
+            db.AddInParameter(cmd, "@IdEstado", DbType.String, idEstado);
+            db.AddInParameter(cmd, "@Observacion", DbType.String, Observacion);
+            db.AddInParameter(cmd, "@IdSolicitudMateriales", DbType.String, IdSolicitudMateriales);
+            db.AddInParameter(cmd, "@IdSucursal", DbType.String, IdSucursal);
+
+            try
+            {
+                string val = db.ExecuteScalar(cmd).ToString();
+                return val;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo ingresar la OC, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo ingresar la OC, " + ex.Message, ex);
+            }
+        }
+
 
         public void SetUpSolicitudCompra(string idSolicitudMateriales, string idSucursal, string codObra, string idEstado)
         {
@@ -230,6 +258,30 @@ namespace DAL
                 throw new Exception("No se pudo ingresar el material, " + ex.Message, ex);
             }
         }
+
+        public void SetInProductoOC(string IdOC, string IdProducto, string Cantidad,decimal ValorNeto,decimal ValorUnitario)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_InProductoOc");
+
+            db.AddInParameter(cmd, "@IdOC", DbType.String, IdOC);
+            db.AddInParameter(cmd, "@IdProducto", DbType.String, IdProducto);
+            db.AddInParameter(cmd, "@Cantidad", DbType.String, Cantidad);
+            db.AddInParameter(cmd, "@ValorNeto", DbType.String, ValorNeto);
+            db.AddInParameter(cmd, "@ValorUnitario", DbType.String, ValorUnitario);
+            try
+            {
+                db.ExecuteNonQuery(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo ingresar el material, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo ingresar el material, " + ex.Message, ex);
+            }
+        }
+        
         public void SetDelMaterialSolicitud(string IdSolicitudMateriales, string correlativo)
         {
             DbCommand cmd = db.GetStoredProcCommand("Com_stp_EliminarMaterialSolicitud");
@@ -248,6 +300,85 @@ namespace DAL
             catch (Exception ex)
             {
                 throw new Exception("No se pudo eliminar el material, " + ex.Message, ex);
+            }
+        }
+
+        public DataSet GetBuscarNivel1(int? idTipificacion)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_BuscarNivel1");
+
+            db.AddInParameter(cmd, "@idTipificacion", DbType.String, idTipificacion);
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el nivel 1, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar  el nivel 1, " + ex.Message, ex);
+            }
+        }
+
+
+        public DataSet GetBuscarNivel2(string nivel1)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_BuscarNivel2");
+
+            db.AddInParameter(cmd, "@nivel1", DbType.String, nivel1);
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el nivel 2, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el nivel 2, " + ex.Message, ex);
+            }
+        }
+
+        public DataSet GetBuscarTipificacion(string nivel1, string nivel2)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_BuscarTipificacion");
+
+            db.AddInParameter(cmd, "@nivel1", DbType.String, nivel1);
+            db.AddInParameter(cmd, "@nivel2", DbType.String, nivel2);
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el nivel 2, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el nivel 2, " + ex.Message, ex);
+            }
+        }
+        public DataSet GetBuscarProveedorPorRut(string rut)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("Com_stp_BuscarProveedorPorRut");
+
+            db.AddInParameter(cmd, "@rut", DbType.String, rut);
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo buscar el proveedor, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo buscar el proveedor, " + ex.Message, ex);
             }
         }
         

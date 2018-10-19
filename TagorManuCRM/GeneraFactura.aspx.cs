@@ -34,6 +34,7 @@ namespace TagorManuCRM
                     ddlAno.SelectedValue = ano.ToString();
                     ddlMes.SelectedValue = mes.ToString();
                     com.FillCategoriaServicio(ddlCategoriaServicio);
+                    com.FillArea(ddlArea);
                     Local();
                 }
             }
@@ -73,13 +74,13 @@ namespace TagorManuCRM
                     divAlerta.Visible = true;
                     return;
                 }
-                if (!fuInforme.HasFile)
-                {
-                    lblInfo.Text = "Favor ingresar un archivo PDF de informe!";
-                    divAlerta.Attributes["class"] = "alert alert-danger";
-                    divAlerta.Visible = true;
-                    return;
-                }
+                //if (!fuInforme.HasFile)
+                //{
+                //    lblInfo.Text = "Favor ingresar un archivo PDF de informe!";
+                //    divAlerta.Attributes["class"] = "alert alert-danger";
+                //    divAlerta.Visible = true;
+                //    return;
+                //}
 
                 if (fuOC.HasFile)
                 {
@@ -134,8 +135,8 @@ namespace TagorManuCRM
                 MergePDFs(Server.MapPath("Facturacion/"+ nombreArchivo), 
                     Server.MapPath("Facturacion/temp/" + idFacturacion + "_FAC_" + fuFacturas.FileName), 
                     Server.MapPath("Facturacion/temp/" + idFacturacion + "_OC_" + fuOC.FileName),
-                    Server.MapPath(ruta),
-                    Server.MapPath("Facturacion/temp/" + idFacturacion + "_INF_" + fuInforme.FileName)
+                    Server.MapPath(ruta)/*,
+                    Server.MapPath("Facturacion/temp/" + idFacturacion + "_INF_" + fuInforme.FileName)*/
                     );
 
                 FileInfo fi = new FileInfo(Server.MapPath("Facturacion/" + nombreArchivo));
@@ -154,6 +155,12 @@ namespace TagorManuCRM
                 divAlerta.Visible = true;
 
             }
+        }
+
+
+        protected void ddlArea_DataBound1(object sender, EventArgs e)
+        {
+            ddlArea.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
         }
 
         public string generaPdf(string idFacturacion)
@@ -247,6 +254,7 @@ namespace TagorManuCRM
                 int ano = Convert.ToInt32(ddlAno.SelectedValue);
                 string local = ddlLocal.SelectedValue;
                 string idCategoriaServicio = ddlCategoriaServicio.SelectedValue;
+                string idArea = ddlArea.SelectedValue;
                 
                 DateTime fecha1;
                 DateTime fecha2;
@@ -257,7 +265,7 @@ namespace TagorManuCRM
                 string fechaDesde = fecha1.ToShortDateString().Replace("/", "-");
                 string fechaHasta = fecha2.ToShortDateString().Replace("/", "-");
                 
-                BuscarTicket(fechaDesde, fechaHasta, local, idCategoriaServicio);
+                BuscarTicket(fechaDesde, fechaHasta, local, idCategoriaServicio, idArea);
             }
             catch (Exception ex)
             {
@@ -267,11 +275,11 @@ namespace TagorManuCRM
         }
 
 
-        void BuscarTicket(string fechaDesde, string fechaHasta, string codLocal, string idCategoriaServicio)
+        void BuscarTicket(string fechaDesde, string fechaHasta, string codLocal, string idCategoriaServicio, string idArea)
         {
             DataTable dt = new DataTable();
-            dt = dal.getBuscarTicketBuscadorParametros(null, null, fechaDesde, fechaHasta, "3", "P", null, null, null, codLocal, idCategoriaServicio).Tables[0];
-            
+            dt = dal.getBuscarTicketBuscadorParametros(null, null, fechaDesde, fechaHasta, "3", "P",idArea, null, null, codLocal, idCategoriaServicio).Tables[0];
+        
             grvTickets.DataSource = dt;
             grvTickets.DataBind();
 

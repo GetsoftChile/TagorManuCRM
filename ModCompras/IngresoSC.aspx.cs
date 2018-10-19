@@ -53,7 +53,6 @@ namespace ModCompras
             lblNombreUsuario.Text = Session["variableNomUsuario"].ToString() + " " + Session["variableApeUsuario"].ToString();
             lblEmailUsuario.Text = Session["variableEmail"].ToString();
 
-
             DataTable dt = new DataTable();
             dt = dalCom.GetBuscarSolicitudCompraPorId(IdSolicitud).Tables[0];
             foreach (DataRow item in dt.Rows)
@@ -97,7 +96,6 @@ namespace ModCompras
             ddlTipoAgregar.DataValueField = "IdTipo";
             ddlTipoAgregar.DataTextField = "NombreTipo";
             ddlTipoAgregar.DataBind();
-            
         }
 
         protected void ddlProyecto_DataBound(object sender, EventArgs e)
@@ -119,7 +117,7 @@ namespace ModCompras
         {
             try
             {
-
+                
             }
             catch (Exception ex)
             {
@@ -244,6 +242,107 @@ namespace ModCompras
             {
                 LimpiarMaterial();
                 DivAgregarMaterial.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void btnGrabarGestion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mdlNuevaGestion.Hide();
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void lbtnNuevaGestion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mdlNuevaGestion.Show();
+
+                lblNumeroSolCom.Text = hfId.Value;
+
+                BuscarNivel1();
+                BuscarNivel2();
+
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
+        }
+
+        void BuscarNivel1()
+        {
+            ddlNivel1.DataSource = dalCom.GetBuscarNivel1(null);
+            ddlNivel1.DataTextField = "NIVEL_1";
+            ddlNivel1.DataValueField = "NIVEL_1";
+            ddlNivel1.DataBind();
+        }
+
+        void BuscarNivel2()
+        {
+            ddlNivel2.DataSource = dalCom.GetBuscarNivel2(ddlNivel1.SelectedValue);
+            ddlNivel2.DataTextField = "NIVEL_2";
+            ddlNivel2.DataValueField = "NIVEL_2";
+            ddlNivel2.DataBind();
+        }
+
+        protected void ddlNivel1_DataBound(object sender, EventArgs e)
+        {
+            ddlNivel1.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Seleccione", "0"));
+        }
+
+        protected void ddlNivel2_DataBound(object sender, EventArgs e)
+        {
+            ddlNivel2.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Seleccione", "0"));
+        }
+
+        protected void ddlNivel1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                BuscarNivel2();
+                mdlNuevaGestion.Show();
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void ddlNivel2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                mdlNuevaGestion.Show();
+                DataTable dt = new DataTable();
+                //dt = dalCom.getbuscar
+                
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+                divAlerta.Visible = true;
+            }
+        }
+
+        protected void lbtnNuevaOrdenCompra_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("NewOrdenCompra.aspx?solcom="+hfId.Value+"&id=0");
             }
             catch (Exception ex)
             {

@@ -32,18 +32,72 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+        .modalBackground {
+            background-color: Black;
+            filter: alpha(opacity=90);
+            opacity: 0.8;
+            z-index: 10000;
+        }
 
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <form id="form" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
-            <Scripts>
-                <asp:ScriptReference Path="~/Scripts/AjaxControlToolkit/Bundle" />
-            </Scripts>
-        </asp:ScriptManager>
+
+
+
 
         <!-- Site wrapper -->
         <div class="wrapper">
@@ -193,6 +247,12 @@
             <!-- =============================================== -->
             <div class="content-wrapper">
                 <!-- content-wrapper -->
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                    <Scripts>
+                        <asp:ScriptReference Path="~/Scripts/AjaxControlToolkit/Bundle" />
+                    </Scripts>
+                </asp:ScriptManager>
+
 
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
                 </asp:ContentPlaceHolder>
@@ -237,24 +297,24 @@
 
     <script type="text/javascript">
 <!--
-        $(document).ready(function () {
-            cargarMaster();
-        });
+    $(document).ready(function () {
+        cargarMaster();
+    });
 
-        var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
 
-        prm.add_endRequest(function () {
-            cargarMaster();
-        });
+    prm.add_endRequest(function () {
+        cargarMaster();
+    });
 
-        function cargarMaster() {
-            //agregar jquery de las funciones...
-            window.setTimeout(function () {
-                $(".alert").fadeTo(1500, 0).slideUp(400, function () {
-                    $(this).remove();
-                });
-            }, 7000);
-        }
+    function cargarMaster() {
+        //agregar jquery de las funciones...
+        window.setTimeout(function () {
+            $(".alert").fadeTo(1500, 0).slideUp(400, function () {
+                $(this).remove();
+            });
+        }, 7000);
+    }
 
     //-->
     </script>

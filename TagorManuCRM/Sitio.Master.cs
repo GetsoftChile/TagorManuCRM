@@ -79,6 +79,8 @@ namespace TagorManuCRM
                
                 liMantenciones.Visible = true;
                 liFacturacion.Visible = true;
+                liFacturacion.Visible = true;
+                liGeneraFacturacion.Visible = true;
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
 
@@ -99,7 +101,7 @@ namespace TagorManuCRM
                 liUsuarios.Visible = false;
                 liReporteTickets.Visible = true;
                 liMantenciones.Visible = false;
-                liGeneraFacturacion.Visible = true;
+                 
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }
 
@@ -109,6 +111,7 @@ namespace TagorManuCRM
                 liUsuarios.Visible = false;
                 liReporteTickets.Visible = true;
                 liMantenciones.Visible = true;
+                liFacturacion.Visible = true;
                 liGeneraFacturacion.Visible = true;
                 lblEmpresa.Text = Session["variableEmpresa"].ToString();
             }

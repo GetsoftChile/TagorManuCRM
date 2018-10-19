@@ -4011,5 +4011,95 @@ namespace DAL
             }
         }
 
+        public DataSet getReporteDiarioMantenciones(string idUsuario, string fechaDesde, string fechaHasta, string idArea, string idSucursal, string idZona,
+            string idLocal, string idEstado)
+        {
+            DbCommand cmd = db.GetStoredProcCommand("stp_ReporteDiarioMantenciones");
+
+            if (idUsuario == "0")
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idUsuario", DbType.String, idUsuario);
+            }
+
+            if (fechaDesde == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaDesde", DbType.String, fechaDesde);
+            }
+
+            if (fechaHasta == string.Empty)
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@fechaHasta", DbType.String, fechaHasta);
+            }
+
+            if (idArea == "0")
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idArea", DbType.String, idArea);
+            }
+
+            if (idSucursal == "0")
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idSucursal", DbType.String, idSucursal);
+            }
+
+            if (idZona == "0")
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idZona", DbType.String, idZona);
+            }
+
+            if (idLocal == "0")
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idLocal", DbType.String, idLocal);
+            }
+
+            if (idEstado == "0")
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, null);
+            }
+            else
+            {
+                db.AddInParameter(cmd, "@idEstado", DbType.String, idEstado);
+            }
+
+            try
+            {
+                return db.ExecuteDataSet(cmd);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo exportar las gestiones, " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo exportar las gestiones, " + ex.Message, ex);
+            }
+        }
     }
 }
