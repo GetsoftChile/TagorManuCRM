@@ -665,7 +665,7 @@ namespace TagorManuCRM
                 bodyResolutor += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
                 //com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "Nueva OT Nº" + ticket);
-                com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), "Nueva OT Nº" + ticket);
+                com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), "Nueva OT Nº" + ticket,"");
 
                 lblInfo.Text ="Se generó el siguiente número de OT " + ticket;
                 divAlerta.Attributes["class"] = "alert alert-success";

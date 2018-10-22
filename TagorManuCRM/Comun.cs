@@ -14,6 +14,7 @@ using System.Web.UI;
 using AegisImplicitMail;
 using System.ComponentModel;
 
+
 namespace TagorManuCRM
 {
     public class Comun
@@ -25,6 +26,7 @@ namespace TagorManuCRM
             Regex r = new Regex(@"([0-1][0-9]|2[0-3]):[0-5][0-9]");
             Match m = r.Match(hora);
             return m.Success;
+            
         }
 
         public bool IsNumeric(string s)
@@ -167,7 +169,7 @@ namespace TagorManuCRM
         }
 
         
-        public void EnviarEmailSSLImplicito(string email, string body, string sub)
+        public void EnviarEmailSSLImplicito(string email, string body, string sub, string rutaAdjunto)
         {
             var from = "notificaciones@tagor.cl";
             var host = "mail.tagor.cl";
@@ -190,6 +192,11 @@ namespace TagorManuCRM
             mymessage.HeadersEncoding = System.Text.Encoding.UTF8;
             mymessage.IsBodyHtml = true;
             mymessage.Priority= MailPriority.High;
+            if (rutaAdjunto != string.Empty)
+            {
+                MimeAttachment adj = new MimeAttachment("archivosGestion/" + rutaAdjunto);
+                mymessage.Attachments.Add(adj);
+            }
 
             //Create Smtp Client
             var mailer = new MimeMailer(host, 465);
@@ -198,7 +205,6 @@ namespace TagorManuCRM
             mailer.SslType = SslMode.Ssl;
             mailer.AuthenticationMode = AuthenticationType.Base64;
             
-
             //Set a delegate function for call back
             mailer.SendCompleted += compEvent;
             mailer.SendMailAsync(mymessage);
@@ -218,7 +224,7 @@ namespace TagorManuCRM
         
 
 
-        public string EnviarEmail2(string email, string body, string sub)
+        public string EnviarEmail2(string email, string body, string sub, string rutaAdjunto)
         {
             
 
@@ -239,6 +245,12 @@ namespace TagorManuCRM
             correo.Body = bodyEmail;
             correo.Priority = MailPriority.High;
 
+            if (rutaAdjunto != string.Empty)
+            {
+                Attachment adjunto = new Attachment("archivosGestion/" + rutaAdjunto);
+                correo.Attachments.Add(adjunto);
+            }
+
             //port = "25" userName = "notificaciones@getsoft.cl" password = "nuevaetica123!"
             SmtpClient client = new SmtpClient();
             client.Credentials = new System.Net.NetworkCredential("notificaciones@tagor.cl", "notificaciones123**");
@@ -246,6 +258,8 @@ namespace TagorManuCRM
             client.Host = "mail.tagor.cl";
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
+
+            
 
             string resultado = string.Empty;
             

@@ -370,7 +370,7 @@ namespace ConsolaIngresoTicketEmergencia
 
             TagorManuCRM.Comun com = new TagorManuCRM.Comun();
             //com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
-            com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket);
+            com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), "EMERGENCIA - Nueva OT Nº" + ticket,"");
             
             
         }

@@ -583,17 +583,19 @@ namespace TagorManuCRM
                     fuArchivo2.SaveAs(Server.MapPath(carpeta));
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", carpeta,"");
                 }
-                
+
+                string adjuntoOT = string.Empty;
                 if (fuOrdenTrabajo.HasFile)
                 {
                     string carpeta = "archivosGestion/" + numeroTicket + "_OT_" + fuOrdenTrabajo.FileName;
                     fuOrdenTrabajo.SaveAs(Server.MapPath(carpeta));
+                    adjuntoOT = carpeta;
                     dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
                 }
 
 
                 buscarCaso(hfNumeroTicket.Value);
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text);
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text,Server.MapPath(adjuntoOT));
                 
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
@@ -612,7 +614,7 @@ namespace TagorManuCRM
 
         }
 
-        void EnviarEmails(string estado, string numeroTicket,string usuario, string fechaAgendamiento, string tipoOT, string local, string idArea)
+        void EnviarEmails(string estado, string numeroTicket,string usuario, string fechaAgendamiento, string tipoOT, string local, string idArea, string adjunto)
         {
             string resultado = string.Empty;
             if (estado == "3") //estado cerrado
@@ -622,9 +624,9 @@ namespace TagorManuCRM
                 body += "<br><br><b>Observación de la solución: " + txtObservacionGestion.Text + "</b>";
                 body += "<br><br>";
                 body += "<b><u>Información de la Atención:</u></b>";
-                body += "<br>N° de OT: " + numeroTicket;
+                body += "<br>N° de SOLPED: " + numeroTicket;
                 body += "<br>Fecha: " + DateTime.Now.ToString("G");
-                body += "<br>Observación de la OT: " + txtObservacion.Text;
+                body += "<br>Observación de la SOLPED: " + txtObservacion.Text;
 
                 body += "<br><br>";
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
@@ -642,8 +644,8 @@ namespace TagorManuCRM
                     break;
                 }
 
-                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
-                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
 
 
                 if (tipoOT== "Correctiva")
@@ -654,9 +656,9 @@ namespace TagorManuCRM
                     body += "<br><br><b>Observación de la solución: " + txtObservacionCliente.Text + "</b>";
                     body += "<br><br>";
                     body += "<b><u>Información de la Atención:</u></b>";
-                    body += "<br>N° de OT: " + numeroTicket;
+                    body += "<br>N° de SOLPED: " + numeroTicket;
                     body += "<br>Fecha: " + DateTime.Now.ToString("G");
-                    body += "<br>Observación de la OT: " + txtObservacion.Text;
+                    body += "<br>Observación de la SOLPED: " + txtObservacion.Text;
 
                     body += "<br><br>";
                     body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='15%' alt='Firma Logo' /></td>";
@@ -673,7 +675,7 @@ namespace TagorManuCRM
 
                     if (emails.Trim() != string.Empty)
                     {
-                        com.EnviarEmailSSLImplicito(emails.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        com.EnviarEmailSSLImplicito(emails.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR", adjunto);
                         //com.EnviarEmail(emails.Trim(), body.Replace("\r\n", "<br>"), "Resolucion OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
                     }
                 }
@@ -711,7 +713,7 @@ namespace TagorManuCRM
                     if (email != string.Empty)
                     {
                         //resultado = com.EnviarEmail(email, bodyResolutor.Replace("\r\n", "<br>"), " OT N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
-                        com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), " SOLPED N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ");
+                        com.EnviarEmailSSLImplicito(email, bodyResolutor.Replace("\r\n", "<br>"), " SOLPED N° " + numeroTicket + " , Se ha generado el siguiente caso para su gestión. ", adjunto);
                     }
                 }
             }
@@ -741,7 +743,7 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR", adjunto);
                 
                 if (tipoOT == "Correctiva")
                 {
@@ -771,7 +773,7 @@ namespace TagorManuCRM
                     }
                     if (emails.Trim() != string.Empty)
                     {
-                        com.EnviarEmailSSLImplicito(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                        com.EnviarEmailSSLImplicito(emails, body.Replace("\r\n", "<br>"), "Respuesta Programación OT N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR", adjunto);
                     }
                 }
             }
@@ -810,7 +812,7 @@ namespace TagorManuCRM
                 body += "<table style='width:100%' border='1'><tr><td><img src='http://190.96.2.126/eot/assets/img/logo-tagor.png' width='20%' alt='Firma Logo' /></td>";
                 body += "<td>Mantenimiento Tagor <br>Cerro El Plomo 5931, oficina 612, , Las Condes, Santiago, Chile<br>+56 22 762 2572<br>info@tagor.cl</td></tr></table>";
 
-                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "SOLPED EN PROCESO  N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR");
+                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "SOLPED EN PROCESO  N° " + numeroTicket + ", SERVICIO CLIENTE TAGOR", adjunto);
             }
         }
 
