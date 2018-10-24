@@ -526,6 +526,14 @@ namespace TagorManuCRM
                         divAlerta.Visible = true;
                         return;
                     }
+
+                    string extension = System.IO.Path.GetExtension(fuOrdenTrabajo.FileName.ToLower());
+
+                    if (extension != ".jpg" && extension != ".png" && extension != ".gif" && extension != ".jpeg")
+                    {
+                        Page.ClientScript.RegisterClientScriptBlock(typeof(Page), "Alert", "alert('Porfavor seleccionar una imagen/fotografia para OT .jpg, .jpeg, .png, .gif!')", true);
+                        return;
+                    }
                 }
 
                 //if (ddlEstado.SelectedValue == lblIdEstadoTicket.Text)
@@ -587,15 +595,18 @@ namespace TagorManuCRM
                 string adjuntoOT = string.Empty;
                 if (fuOrdenTrabajo.HasFile)
                 {
-                    string carpeta = "archivosGestion/" + numeroTicket + "_OT_" + fuOrdenTrabajo.FileName;
-                    fuOrdenTrabajo.SaveAs(Server.MapPath(carpeta));
-                    adjuntoOT = carpeta;
-                    dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
+                    
+                        string carpeta = "archivosGestion/" + numeroTicket + "_OT_" + fuOrdenTrabajo.FileName;
+                        fuOrdenTrabajo.SaveAs(Server.MapPath(carpeta));
+                        adjuntoOT = carpeta;
+                        dal.setEditarRutaArchivoAtencionHistorico(Convert.ToInt16(numeroTicket), Convert.ToInt16(correlativo), "", "", carpeta);
+                    
+                    
                 }
 
 
                 buscarCaso(hfNumeroTicket.Value);
-                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text,Server.MapPath(adjuntoOT));
+                EnviarEmails(ddlEstado.SelectedValue, numeroTicket, usuario, fechaAgendamiento, lblTipo.Text,lblIdLocal.Text,lblIdArea.Text,adjuntoOT);
                 
 
                 lblInfo.Text = "Gestión histórica creada correctamete";
@@ -644,10 +655,16 @@ namespace TagorManuCRM
                     break;
                 }
 
-                com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
-                com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
+                if (!string.IsNullOrEmpty(lblEmailCliente.Text.Trim()))
+                {
+                    com.EnviarEmailSSLImplicito(lblEmailCliente.Text.Trim(), body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
+                }
 
-
+                if (!string.IsNullOrEmpty(email))
+                {
+                    com.EnviarEmailSSLImplicito(email, body.Replace("\r\n", "<br>"), "RESOLUCION SOLPED N " + numeroTicket + ", SERVICIO AL CLIENTE TAGOR", adjunto);
+                }
+                
                 if (tipoOT== "Correctiva")
                 {
                     body = string.Empty;

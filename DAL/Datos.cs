@@ -79,7 +79,7 @@ namespace DAL
         {
             DbCommand cmd = db.GetStoredProcCommand("stp_BuscarMensaje");
 
-            db.AddInParameter(cmd, "@idMensaje", DbType.String, idMensaje);
+            db.AddInParameter(cmd, "@idMensaje", DbType.Int32, idMensaje);
 
             try
             {

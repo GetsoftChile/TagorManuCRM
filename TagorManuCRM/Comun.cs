@@ -192,9 +192,12 @@ namespace TagorManuCRM
             mymessage.HeadersEncoding = System.Text.Encoding.UTF8;
             mymessage.IsBodyHtml = true;
             mymessage.Priority= MailPriority.High;
+
+            
+
             if (rutaAdjunto != string.Empty)
             {
-                MimeAttachment adj = new MimeAttachment("archivosGestion/" + rutaAdjunto);
+                MimeAttachment adj = new MimeAttachment(System.Web.HttpContext.Current.Server.MapPath(rutaAdjunto));
                 mymessage.Attachments.Add(adj);
             }
 

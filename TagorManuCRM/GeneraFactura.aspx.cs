@@ -163,6 +163,22 @@ namespace TagorManuCRM
             ddlArea.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Todos", "0"));
         }
 
+        private static void InsertImageToPdf(string sourceFileName, string imageFileName, string newFileName)
+        {
+            using (Stream pdfStream = new FileStream(sourceFileName, FileMode.Open))
+            using (Stream imageStream = new FileStream(imageFileName, FileMode.Open))
+            using (Stream newpdfStream = new FileStream(newFileName, FileMode.Create, FileAccess.ReadWrite))
+            {
+                PdfReader pdfReader = new PdfReader(pdfStream);
+                PdfStamper pdfStamper = new PdfStamper(pdfReader, newpdfStream);
+                PdfContentByte pdfContentByte = pdfStamper.GetOverContent(1);
+                iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imageStream);
+                image.SetAbsolutePosition(300, 600);
+                pdfContentByte.AddImage(image);
+                pdfStamper.Close();
+            }
+        }
+
         public string generaPdf(string idFacturacion)
         {
             string nombreArchivoPdf = "OTS_" + idFacturacion + ".pdf";
@@ -170,13 +186,16 @@ namespace TagorManuCRM
             PdfWriter writePdf = PdfWriter.GetInstance(doc, new FileStream(Server.MapPath("Facturacion/temp/" + nombreArchivoPdf), FileMode.Create));
             writePdf.CompressionLevel = PdfStream.BEST_COMPRESSION;
             doc.Open();
-            
+        
             foreach (GridViewRow row in grvTickets.Rows)
             {
                 //var cb_sty = (HtmlInputCheckBox)row.FindControl("CHK_STY");
                 //DropDownList ddl_distro = (DropDownList)row.FindControl("ddlDistros");
                 Label _lblArchivo = (Label)row.FindControl("lblArchivo");
                 string extension = System.IO.Path.GetExtension(_lblArchivo.Text.ToLower());
+
+                
+
 
                 if (extension==".pdf")
                 {
@@ -187,15 +206,16 @@ namespace TagorManuCRM
                 }
                 else
                 {
-                    
+                    //Stream imageStream = new FileStream(Server.MapPath(_lblArchivo.Text), FileMode.Open);
+                    //System.Drawing.Image image = System.Drawing.Image.FromFile(Server.MapPath(_lblArchivo.Text));
+                    //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(image,BaseColor.WHITE);
 
-                    iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(Server.MapPath(_lblArchivo.Text.ToLower()));
+                    iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(Server.MapPath(_lblArchivo.Text));
                     //jpg.Rotation = 90;
                     //jpg.ScaleToFit(80, 80);
                     //jpg.ScalePercent(70f);
                     //jpg.Rotation = (float)Math.PI / 2;
 
-                    
 
                     if (jpg.Width > jpg.Height)
                     {
@@ -203,13 +223,14 @@ namespace TagorManuCRM
                     }
                    
                     jpg.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
-                   
+
                     //jpg.ScaleToFit(250f,250f);
                     jpg.ScaleToFit(doc.PageSize.Width -50, doc.PageSize.Height);
                     //jpg.CompressionLevel = PdfStream.BEST_COMPRESSION;
                     //jpg.ScaleAbsolute(doc.PageSize.Width - 50, doc.PageSize.Height);
                     //jpg.SetAbsolutePosition(doc.PageSize.Width - 36f - 72f,
                     //doc.PageSize.Height - 36f - 216.6f);
+                    
                     doc.Add(jpg);
                 }
             }
